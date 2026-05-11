@@ -1,0 +1,199 @@
+{% extends "tutor/tutor_index.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center mb-4">Applied List for {{ job.title }}</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Sl.No.</th>
+                <th>Name</th>
+                <th>DOB</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Program</th>
+                <th>Batch</th>
+                <th>Resume</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for JobApplication in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ JobApplication.user.name }}</td>
+                <td>{{ JobApplication.user.date_of_birth }}</td>
+                <td>{{ JobApplication.user.gender }}</td>
+                <td>{{ JobApplication.user.student_email }}</td>
+                <td>{{ JobApplication.user.student_phone }}</td>
+                <td>{{ JobApplication.user.course }}</td>
+                <td>{{ JobApplication.user.batch }}</td>
+                
+                <td>
+                    {% if JobApplication.user.resume %}
+                        <a href="{{ JobApplication.user.resume.url }}" class="btn btn-success">View</a>
+                    {% else %}
+                        <span>No resume available</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ JobApplication.status }}</td>
+
+                <td>
+                    {% if JobApplication.status|lower == 'rejected' %}
+                        <a href="{% url 'reapprove_application' JobApplication.id %}" class="btn btn-warning" onclick="return confirmReapproval()">Reapprove</a>
+                    {% elif JobApplication.status|lower == 'approved' %}
+                        <span class="text-muted">Already Approved</span>
+                    {% else %}
+                        <a href="{% url 'approve_application' JobApplication.id %}" class="btn btn-success" onclick="return confirmApproval()">Approve</a>
+                        <a href="{% url 'reject_application' JobApplication.id %}" class="btn btn-danger" onclick="return confirmRejection()">Reject</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="11" class="text-center">No applications found for your department.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+<div class="btn-container">
+    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+</div>
+
+<script>
+    function confirmApproval() {
+        return confirm("Are you sure you want to approve this application?");
+    }
+
+    function confirmRejection() {
+        return confirm("Are you sure you want to reject this application?");
+    }
+
+    function confirmReapproval() {
+        return confirm("Are you sure you want to reapprove this application?");
+    }
+</script>
+
+<style>
+    /* General container and layout styles */
+    .container {
+        width:80%;
+        margin-top: 40px;
+        border-radius: 8px;
+        padding: 20px;
+        margin-left:2px;
+        margin-right:2px;
+    }
+
+    /* Table styles */
+    .table {
+        width: 70%;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+        background-color:#00B074;
+        color: #ffffff;
+        font-weight: bold;
+        text-align: center;
+        padding: 14px;
+        text-transform: uppercase;
+    }
+
+    .table td {
+        padding: 14px 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #495057;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    /* Button styles */
+    .btn {
+        display: inline-block;
+        padding: 8px 16px;
+        margin:10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        /*float: right; /* Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+    .btn-success {
+        background-color:#00B074;
+        color: #ffffff;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: #ffffff;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .table th, .table td {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .table {
+            width: 100%;
+        }
+
+        .btn {
+            font-size: 14px;
+            padding: 6px 12px;
+        }
+    }
+</style>
+
+{% endblock %}

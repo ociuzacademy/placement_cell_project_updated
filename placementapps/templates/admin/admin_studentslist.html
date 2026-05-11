@@ -1,0 +1,156 @@
+
+
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <h1 class="text-center mb-5">Student Details</h1>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Sl No</th>
+                <th>Name</th>
+                <th>Reg No</th>  <!-- Added Reg No column -->
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Batch</th>
+                <th>Program</th>  <!-- Added Course column -->
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.reg_no }}</td>  <!-- Displaying Reg No -->
+                <td>{{ student.student_email }}</td>
+                <td>{{ student.student_phone }}</td>
+                <td>{{ student.batch }}</td>
+                <td>
+                    {% if student.course %}
+                        {{ student.course.name }}
+                    {% else %}
+                        None
+                    {% endif %}
+                </td>
+                 
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" class="text-center">No students found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+<style>
+    /* General container and layout styles */
+    .container-xxl {
+        margin: 2px;
+    }
+
+    .text-center h1 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        color: #333333;
+        margin: 0px;
+    }
+
+    .wow {
+        animation-duration: 0.8s;
+        animation-timing-function: ease-in-out;
+    }
+
+    /* Table styles */
+    .table {
+        width: 100%; /* Ensure the table takes full container width */
+        border-collapse: collapse;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+        background-color: #00B074;
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-family: 'Poppins', sans-serif;
+        font-size: 12px; /* Increased font size for readability */
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    .table td {
+        padding: 12px 15px;
+        text-align: center;
+        font-family: 'Arial', sans-serif;
+        font-size: 12px; /* Slightly increased font size */
+        color: #555555;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Image styles */
+    .img-fluid.rounded-circle {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+
+    /* Button styles */
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600; /* Slightly increased weight for button text */
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #00B074;
+        color: #ffffff;
+    }
+
+    .btn-primary:hover {
+        background-color: #00895d;
+    }
+
+    .btn-danger {
+        background-color: #ff5e5e;
+        color: #ffffff;
+    }
+
+    .btn-danger:hover {
+        background-color: #d9534f;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 500px) {
+        .table th, .table td {
+            font-size: 12px; /* Ensuring better readability on smaller screens */
+        }
+
+        .img-fluid.rounded-circle {
+            width: 50px;
+            height: 50px;
+        }
+    }
+</style>

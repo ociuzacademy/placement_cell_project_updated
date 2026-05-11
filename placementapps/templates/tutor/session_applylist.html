@@ -1,0 +1,142 @@
+{% extends "tutor/tutor_index.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h2>Applied Students for {{ session.session_name }}</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sl. No.</th>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Course</th>
+                <th>Batch</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.student_email }}</td>
+                <td>{{ student.student_phone }}</td>
+                <td>{{ student.course.name }}</td>
+                <td>{{ student.batch }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No applications found for this session.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="btn-container">
+    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+</div>
+
+<style>
+    /* General container and layout styles */
+    .container {
+        margin-top: 20px;
+    }
+
+    /* Table styles */
+    .table {
+        width: 100%;
+        max-width: 1000px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+        background-color: #00B074;
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table td {
+        padding: 12px 15px;
+        text-align: center;
+        font-size: 12px;
+        color: #555555;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Button styles */
+    .btn {
+        display: inline-block;
+        padding: 6px 14px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success {
+        background-color: #00B074;
+        color: #ffffff;
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+       /* float: right; /* Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+    .btn-success:hover {
+        background-color: #00895d;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .table th, .table td {
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .table {
+            width: 100%;
+        }
+
+        .btn {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+    }
+</style>
+{% endblock %}

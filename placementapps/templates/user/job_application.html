@@ -1,0 +1,221 @@
+{% extends "user/user_index.html" %}
+
+{% block content %}
+<div class="form-container">
+    <form id="applicationForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Apply for {{ job.title }}</h1>
+
+        <label for="full_name">Full Name</label>
+        <input type="text" id="full_name" name="full_name" required>
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" required>
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" required>
+    
+        <label for="contact_number">Contact Number</label>
+        <input type="tel" id="contact_number" name="contact_number" required>
+
+        <label for="degree_program">Degree Program</label>
+        <input type="text" id="degree_program" name="degree_program" required>
+
+        <label for="institution">Institution</label>
+        <input type="text" id="institution" name="institution" required>
+
+        <label for="grad_year">Graduation Year</label>
+        <input type="number" id="grad_year" name="grad_year" min="1900" max="2099" required>
+
+
+        <label for="resume">Upload Resume</label>
+        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+
+        <label for="photo_id">Upload Photo ID</label>
+        <input type="file" id="photo_id" name="photo_id" accept="image/*" required>
+
+        <div class="form-buttons">
+            <button type="submit" class="btn">Submit Application</button>
+            <a href="javascript:history.go(-1);" class="btn back-button">Back</a>
+        </div>
+    </form>
+</div>
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        <div class="alert {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Modal for Confirmation -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to submit your application?</p>
+        <div class="modal-buttons">
+            <button id="confirmButton" class="btn btn-success">Yes</button>
+            <button id="cancelButton" class="btn btn-danger">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to show the modal
+    function showModal() {
+        const modal = document.getElementById('confirmationModal');
+        modal.style.display = 'flex';
+    }
+
+    // Function to hide the modal
+    function hideModal() {
+        const modal = document.getElementById('confirmationModal');
+        modal.style.display = 'none';
+    }
+
+    // Handle form submission
+    document.getElementById('applicationForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        showModal(); // Show the confirmation modal
+    });
+
+    // Handle "Yes" button in the modal
+    document.getElementById('confirmButton').addEventListener('click', function() {
+        hideModal(); // Close the modal
+        document.getElementById('applicationForm').submit(); // Submit the form
+    });
+
+    // Handle "Cancel" button in the modal
+    document.getElementById('cancelButton').addEventListener('click', hideModal);
+
+    // Close modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('confirmationModal');
+        if (event.target === modal) {
+            hideModal();
+        }
+    });
+</script>
+
+<style>
+    /* Form styling */
+    form {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    form h1 {
+        text-align: center;
+        color: black;
+    }
+    form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    form input, form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .form-buttons .btn {
+        width: 48%;
+        padding: 10px;
+        background-color: #00B074;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-buttons .btn:hover {
+        background-color: #009f64;
+    }
+
+    .form-buttons .back-button {
+        background-color: black;
+    }
+
+    .form-buttons .back-button:hover {
+        background-color: #5a6268;
+    }
+
+    /* Modal Styling */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        text-align: center;
+        min-width: 400px;
+        max-width: 90%;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-content p {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+</style>
+
+{% endblock %}

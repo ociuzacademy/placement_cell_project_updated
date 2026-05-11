@@ -1,0 +1,133 @@
+{% extends "admin/admin_index.html" %}
+{% block content %}
+<div class="container-x-xl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h1 class="mb-5">Tutor Details</h1>
+        </div>
+        <div class="row g-4">
+            {% for x in data %}
+            <div class="col-md-4 col-sm-6 col-lg-3">
+                <div class="card h-100 shadow-sm text-center wow fadeIn d-flex flex-column" data-wow-delay="0.1s">
+                    <div class="card-body flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+                        <img src="{{ x.image.url }}" class="img-fluid rounded-circle tutor-image mb-3" alt="Tutor Image">
+                        <h5 class="card-title">{{ x.name }}</h5>
+                        <p class="card-text">
+                            <strong>Email:</strong> {{ x.email }}<br>
+                            <strong>Gender:</strong> {{ x.gender }}<br>
+                            <strong>Phone:</strong> {{ x.mobile_number }}<br>
+                            <strong>Department:</strong> {{ x.department.name }}<br>
+                            <strong>Program:</strong> {{ x.course.name }}<br>
+                            <strong>Batch:</strong> {{ x.batch }}
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex p-0">
+                        <a href="/admin_approved_tutor/?id={{ x.id }}" class="btn btn-success w-50 py-3 border-end">Approve</a>
+                        <a href="/admin_rejected_tutor/?id={{ x.id }}" class="btn btn-danger w-50 py-3">Reject</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No tutors found...</p>
+              
+                
+            </div>
+            {% endfor %}
+        </div>
+        <div class="btn-container">
+            <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .tutor-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .tutor-image:hover {
+        transform: scale(1.1);
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center; /* Center the content horizontally */
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+    }
+
+    .btn {
+        transition: background-color 0.3s ease;
+        border-radius: 0;
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        /*float: right;  Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+    
+    .btn-success:hover {
+        background-color: #00895d;
+    }
+
+    .btn-danger:hover {
+        background-color: #d9534f;
+    }
+
+    .border-end {
+        border-right: 1px solid #ddd;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .tutor-image {
+            width: 80px;
+            height: 80px;
+        }
+
+        .card-title {
+            font-size: 16px;
+        }
+
+        .btn {
+            font-size: 14px;
+        }
+    }
+</style>
+{% endblock %}

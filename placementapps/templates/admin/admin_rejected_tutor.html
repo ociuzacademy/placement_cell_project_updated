@@ -1,0 +1,142 @@
+{% extends "admin/admin_index.html" %}
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="mb-5">Rejected Tutors</h1>
+        </div>
+        <div class="row g-4">
+            {% for x in data %}
+            <div class="col-md-4 col-sm-6">
+                <div class="card h-100 shadow-sm">
+                    <!-- Tutor Image -->
+                    <div class="card-header p-0">
+                        <img src="{{ x.image.url }}" class="card-img-top tutor-image" alt="Tutor Image">
+                    </div>
+                    <!-- Tutor Details -->
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ x.name }}</h5>
+                        <p class="card-text">
+                            <strong>Department:</strong> {{ x.departmen.name }}<br>
+                            <strong>Course:</strong> {{ x.course.name }}<br>
+                            <strong>Email:</strong> {{ x.email }}<br>
+                            <strong>Gender:</strong> {{ x.gender }}<br>
+                            <strong>Mobile:</strong> {{ x.mobile_number }}<br>
+                            <strong>Batch:</strong> {{ x.batch }}
+                        </p>
+                    </div>
+                    <!-- Reapprove Button -->
+                    <div class="card-footer bg-white text-center">
+                        <a href="/admin_approved_tutor/?id={{ x.id }}" class="btn btn-reapprove w-100">Reapprove</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No rejected tutors found...</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-container">
+        <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+    </div>
+</div>
+
+<style>
+    /* General Card Styles */
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    /* Reapprove Button */
+    .btn-reapprove {
+        padding: 12px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        background-color: rgb(83, 130, 7);
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        /*float: right; Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+    .btn-reapprove:hover {
+        background-color: rgb(62, 99, 6);
+    }
+
+    /* Tutor Image Hover */
+    .card-img-top:hover {
+        transform: scale(1.05);
+        transition: all 0.3s ease;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .card-img-top {
+            height: 180px;
+        }
+
+        .card-title {
+            font-size: 16px;
+        }
+
+        .btn-reapprove {
+            font-size: 12px;
+            padding: 8px 12px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .card-img-top {
+            height: 150px;
+        }
+
+        .card-title {
+            font-size: 14px;
+        }
+
+        .btn-reapprove {
+            padding: 6px 10px;
+        }
+    }
+</style>
+{% endblock %}

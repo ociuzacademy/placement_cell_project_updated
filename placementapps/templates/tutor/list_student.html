@@ -1,0 +1,148 @@
+{% extends "tutor/tutor_index.html" %}
+
+{% block content %}
+<div class="container-xl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h1 class="mb-5">Student Details</h1>
+        </div>
+
+        <!-- Display success, warning, or error messages -->
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Form for Excel file upload -->
+        <div class="mb-4">
+            <h2 class="text-primary">Upload Student Data</h2>
+            <form method="POST" enctype="multipart/form-data" action="{% url 'upload_excel' %}">
+                {% csrf_token %}
+                <div class="form-group d-flex align-items-center">
+                    <label for="excel_file" class="me-2">Upload Excel File</label>
+                    <input type="file" class="form-control me-2" name="excel_file" id="excel_file" required>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Student Details Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Sl No</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Course</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Batch</th>
+                        <th>Year</th>
+                        <th>Supply</th>
+                        <th>Roll No</th>
+                        <th>Registration No</th>
+                        <th>Student ID</th>
+                        <th>Address</th>
+                        <th>Date of Birth</th>
+                        <th>Resume</th>
+                        <th>Pancard Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in data %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            {% if x.image %}
+                            <img src="{{ x.image.url }}" class="img-fluid rounded-circle" alt="Profile Image" style="width: 50px; height: 50px; object-fit: cover;">
+                            {% else %}
+                            <img src="default-image.jpg" class="img-fluid rounded-circle" alt="Default Profile Image" style="width: 50px; height: 50px; object-fit: cover;">
+                            {% endif %}
+                        </td>
+                        <td>{{ x.name }}</td>
+                        <td>{{ x.department.name }}</td>
+                        <td>{{ x.course.name }}</td>  <!-- Correct way to display course name -->
+                        <td>{{ x.student_email }}</td>
+                        <td>{{ x.student_phone }}</td>
+                        <td>{{ x.batch }}</td>
+                        <td>{{ x.year }}</td>
+                        <td>{{ x.supply }}</td>
+                        <td>{{ x.roll_no }}</td>
+                        <td>{{ x.reg_no }}</td>
+                        <td>{{ x.student_id }}</td>
+                        <td>{{ x.address }}</td>
+                        <td>{{ x.date_of_birth|date:"Y-m-d" }}</td>
+                        <td>
+                            {% if x.resume %}
+                            <a href="{{ x.resume.url }}" target="_blank">View Resume</a>
+                            {% else %}
+                            Not Available
+                            {% endif %}
+                        </td>
+                        <td>{{ x.pancard_number }}</td>
+                        <td>
+                            <a href="/delete_student/?id={{ x.id }}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="18" class="text-center text-muted">No students found...</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="btn-container">
+    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+</div>
+
+
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table img {
+        display: block;
+        margin: auto;
+    }
+
+    .btn-danger {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        /*float: right; /* Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+</style>
+
+{% endblock %}

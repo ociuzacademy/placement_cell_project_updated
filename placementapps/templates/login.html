@@ -1,0 +1,287 @@
+{% extends "index.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            background-color: #f0f8f7;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 7rem;
+            padding: 0 2rem;
+        }
+
+        .img {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .img img {
+            width: 500px;
+        }
+
+        .login-content {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+        }
+
+        form {
+            width: 360px;
+        }
+
+        .login-content h2 {
+            margin: 15px 0;
+            color: #333;
+            text-transform: uppercase;
+            font-size: 2.5rem;
+        }
+
+        .input-div {
+            position: relative;
+            display: grid;
+            grid-template-columns: 7% 93%;
+            margin: 25px 0;
+            padding: 5px 0;
+            border-bottom: 2px solid #d9d9d9;
+        }
+
+        .i {
+            color: #d9d9d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input-div>div {
+            position: relative;
+            height: 45px;
+        }
+
+        .input-div>div>h5 {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+            transition: .3s;
+        }
+
+        .input-div>div>input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            background: none;
+            padding: 0.5rem 0.7rem;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .select-wrapper_1 {
+            position: relative;
+            margin: 25px 0;
+            width: 100%;
+        }
+
+        .select-wrapper_1 select {
+            width: 100%;
+            margin-left: -15px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-repeat: no-repeat;
+            background-position: calc(100% - 15px) center;
+            background-size: 10px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .select-wrapper_1 select:hover {
+            background-color: #f0f8f7;
+            box-shadow: 0 4px 6px rgba(242, 229, 229, 0.15);
+        }
+
+        .btn_submit {
+            display: block;
+            width: 100%;
+            height: 50px;
+            border-radius: 25px;
+            outline: none;
+            border: none;
+            background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+            font-size: 1.2rem;
+            color: #fff;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: .5s;
+        }
+
+        .btn_submit:hover {
+            background-position: right;
+        }
+
+        @media screen and (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .img {
+                display: none;
+            }
+
+            .login-content {
+                justify-content: center;
+            }
+        }
+    </style>
+    <script>
+        function toggleFields() {
+            const role = document.getElementById("role").value;
+            document.getElementById("student-fields").style.display = role === "student" ? "block" : "none";
+            document.getElementById("faculty-fields").style.display = (role === "faculty" || role === "admin") ? "block" : "none";
+        }
+
+        function validateForm() {
+            const role = document.getElementById("role").value;
+            const studentFields = document.getElementById("student-fields");
+            const facultyFields = document.getElementById("faculty-fields");
+
+            if (!role) {
+                alert("Please select a role.");
+                return false;
+            }
+
+            if (role === "student") {
+                const studentId = studentFields.querySelector("[name='student_id']").value;
+                const studentEmail = studentFields.querySelector("[name='student_email']").value;
+
+                if (!studentId || !studentEmail) {
+                    alert("Please fill out all fields for the student role.");
+                    return false;
+                } else {
+                    if (confirm("Student login successful! Do you want to proceed?")) {
+                        return true; // Proceed with form submission
+                    } else {
+                        window.location.href = "{% url 'index' %}"; // Redirect to the index page
+                        return false;
+                    }
+                }
+            } else if (role === "faculty" || role === "admin") {
+                const email = facultyFields.querySelector("[name='email']").value;
+                const password = facultyFields.querySelector("[name='password']").value;
+
+                if (!email || !password) {
+                    alert(`Please fill out all fields for the ${role} role.`);
+                    return false;
+                } else {
+                    if (confirm(`${role.charAt(0).toUpperCase() + role.slice(1)} login successful! Do you want to proceed?`)) {
+                        return true; // Proceed with form submission
+                    } else {
+                        window.location.href = "/index"; // Redirect to the index page
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="img">
+            <img src="/static/img/bg.svg" alt="Background Image">
+        </div>
+        <div class="login-content">
+            <form method="POST" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <h2 class="title">Welcome</h2>
+
+                <div class="select-wrapper_1">
+                    <select id="role" name="role" onchange="toggleFields()" required>
+                        <option value="">Select Role</option>
+                        <option value="student">Student</option>
+                        <option value="faculty">Faculty</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <!-- Student Fields -->
+                <div id="student-fields" style="display: none;">
+                    <div class="input-div">
+                        <div class="i"><i class="fas fa-id-badge"></i></div>
+                        <div class="div">
+                            <h5>Student ID</h5>
+                            <input type="text" name="student_id" class="input">
+                        </div>
+                    </div>
+                    <div class="input-div">
+                        <div class="i"><i class="fas fa-envelope"></i></div>
+                        <div class="div">
+                            <h5>Student Email</h5>
+                            <input type="email" name="student_email" class="input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Faculty/Admin Fields -->
+                <div id="faculty-fields" style="display: none;">
+                    <div class="input-div">
+                        <div class="i"><i class="fas fa-envelope"></i></div>
+                        <div class="div">
+                            <h5>Email</h5>
+                            <input type="email" name="email" class="input">
+                        </div>
+                    </div>
+                    <div class="input-div">
+                        <div class="i"><i class="fas fa-lock"></i></div>
+                        <div class="div">
+                            <h5>Password</h5>
+                            <input type="password" name="password" class="input">
+                        </div>
+                    </div>
+                </div>
+
+
+
+    <input type="submit" class="btn_submit" value="Login">
+    </form>
+    </div>
+    </div>
+</body>
+
+</html>
+
+{% endblock %}

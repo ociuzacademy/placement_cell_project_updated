@@ -1,0 +1,103 @@
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center mb-4">Edit Orientation Session</h1>
+    <form method="post" action="{% url 'admin_editsession' TrainingSession.id %}" class="form-container">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="session_name" class="form-label">Session Name</label>
+            <input type="text" class="form-control" id="session_name" name="session_name" value="{{ TrainingSession.session_name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" name="description" value="{{ TrainingSession.description }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="trainer_name" class="form-label">Trainer Name</label>
+            <input type="text" class="form-control" id="trainer_name" name="trainer_name" value="{{ TrainingSession.trainer_name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="venue" class="form-label">Venue</label>
+            <input type="text" class="form-control" id="venue" name="venue" value="{{ TrainingSession.venue }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="time" class="form-label">Time</label>
+            <input type="text" class="form-control" id="time" name="time" value="{{ TrainingSession.time|date:'h:i A' }}" required>
+        </div>
+        <button type="submit" class="btn btn-warning w-100">Update Session</button>
+    </form>
+</div>
+<style>
+    
+
+    /* General container styles */
+    .container {
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    }
+
+    /* Form headings */
+    h1 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        color: #444444;
+        text-align: center;
+    }
+
+    /* Form labels */
+    .form-label {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #555555;
+    }
+
+    /* Form inputs */
+    .form-control {
+        font-family: 'Arial', sans-serif;
+        font-size: 15px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #5e5df0; /* Change border color on focus */
+        box-shadow: 0 0 8px rgba(94, 93, 240, 0.4); /* Glow effect on focus */
+    }
+
+    /* Button styles */
+    .btn-warning {
+        background-color: #28a745; /* Bootstrap success color (green) */
+        border: none; /* Remove border */
+        border-radius: 6px; /* Rounded corners */
+        padding: 12px; /* Padding for the button */
+        font-size: 16px; /* Font size */
+        font-weight: 600; /* Font weight */
+        color: white; /* Text color */
+       
+    }
+
+    .btn-warning:hover {
+        background-color: #218838; /* Darker green on hover */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            width: 90%; /* Make the form responsive */
+        }
+
+        .form-control {
+            font-size: 14px; /* Adjust font size for smaller screens */
+        }
+
+        .btn-warning {
+            font-size: 14px; /* Adjust button font size */
+        }
+    }
+</style>
+
+{% endblock %}

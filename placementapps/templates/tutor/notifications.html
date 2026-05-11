@@ -1,0 +1,114 @@
+{% extends "tutor/tutor_index.html" %}
+{% block content %}
+    <h1>Notifications</h1>
+    
+    <ul class="notifications-list">
+        {% for notification in notifications %}
+            <li class="notification-item {% if not notification.is_read %}new-notification{% endif %}">
+                <a href="{% url 'tutor_job_list' %}" class="notification-link">
+                    <div class="notification-content">
+                        <p class="notification-message">{{ notification.message }}</p>
+                        <small class="notification-time">{{ notification.created_at }}</small>
+                    </div>
+                    {% if not notification.is_read %}
+                        <span class="notification-new">NEW</span>
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="btn-container">
+        <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+    </div>
+    
+
+    <style>
+        .notifications-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-width: 900px;
+            margin: 0 auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f5f7fa; /* Light gray background */
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background-color: #ebeff3; /* Slightly darker gray on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .notification-content {
+            flex-grow: 1;
+        }
+
+        .notification-message {
+            font-size: 17px;
+            margin: 0;
+            font-weight: 500;
+            color: #333; /* Dark gray text */
+        }
+
+        .notification-time {
+            font-size: 14px;
+            color: #9e9e9e; /* Lighter gray color */
+            margin-top: 6px;
+        }
+
+        .notification-new {
+            background-color: #00796b; /* Teal background for "NEW" */
+            color: white;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        .new-notification {
+            border-left: 6px solid #00796b; /* Teal border for new notification */
+            background-color: #e0f2f1; /* Light teal background for new notification */
+        }
+        .btn-back {
+            background-color: black;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+           /* float: right; /* Moves the button to the right */
+        }
+        
+        .btn-back:hover {
+            background-color: #333;
+        }
+        .btn-container {
+            padding:10px;
+            display: flex;
+            justify-content: flex-end; /* Aligns button to the right */
+            margin-bottom: 20px; /* Adds spacing below the button */
+        }
+    </style>
+{% endblock %}

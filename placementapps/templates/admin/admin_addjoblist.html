@@ -1,0 +1,276 @@
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="form-container">
+        <h2 class="text-center mb-4">Add Job Details</h2>
+        <form method="post" enctype="multipart/form-data" id="jobForm">
+            {% csrf_token %}
+            
+            <!-- Job Title -->
+            <div class="mb-3">
+                <label for="title" class="form-label">Job Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+
+            <!-- Company Logo -->
+            <div class="mb-3">
+                <label for="logo" class="form-label">Company Logo</label>
+                <input type="file" class="form-control" id="logo" name="logo">
+            </div>
+
+            <!-- Job Type and Description -->
+            <div class="form-row mb-3">
+                <div class="form-control-half">
+                    <label for="job_type" class="form-label">Job Type</label>
+                    <select class="form-control" id="job_type" name="job_type" required>
+                        <option value="full-time">Full-Time</option>
+                        <option value="part-time">Part-Time</option>
+                    </select>
+                </div>
+                <div class="form-control-half">
+                    <label for="description" class="form-label">Job Description</label>
+                    <input type="text" class="form-control" id="description" name="description" required>
+                </div>
+            </div>
+
+            <!-- Job Location -->
+            <div class="mb-3">
+                <label for="place" class="form-label">Job Place</label>
+                <input type="text" class="form-control" id="place" name="place" required>
+            </div>
+
+            <!-- Vacancy -->
+            <div class="mb-3">
+                <label for="vacancy" class="form-label">Vacancy</label>
+                <input type="number" class="form-control" id="vacancy" name="vacancy" min="1" placeholder="Enter number of vacancies" required>
+            </div>
+
+            <!-- Department -->
+            <div class="mb-3">
+                <label for="department" class="form-label">Department</label>
+                <select class="form-control" id="department" name="department" required>
+                    {% for department in departments %}
+                        <option value="{{ department.id }}">{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Passout Year -->
+            <div class="mb-3">
+                <label for="passout_year" class="form-label">Passout Year</label>
+                <input type="number" class="form-control" id="passout_year" name="passoutyear" placeholder="Enter Passout Year" required>
+            </div>
+
+            <!-- Salary -->
+            <div class="mb-3">
+                <label for="salary" class="form-label">Salary</label>
+                <input type="number" class="form-control" id="salary" name="salary" step="0.01" placeholder="Enter salary (e.g., 50000.00)" required>
+            </div>
+
+            <!-- Responsibilities -->
+            <div class="mb-3">
+                <label for="responsibilities" class="form-label">Responsibilities</label>
+                <textarea class="form-control" id="responsibilities" name="responsibilities" rows="4" placeholder="Enter job responsibilities"></textarea>
+            </div>
+
+            <!-- Qualifications -->
+            <div class="mb-3">
+                <label for="qualifications" class="form-label">Qualifications</label>
+                <textarea class="form-control" id="qualifications" name="qualifications" rows="4" placeholder="Enter job qualifications"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit w-100">Add Job</button>
+        </form>
+    </div>
+ 
+</div>
+<div class="btn-container">
+    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+</div>
+
+<!-- Success Modal -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <h4>Job Added Successfully!</h4>
+        <button id="okBtn" class="btn-success">OK</button>
+        <button id="cancelBtn" class="btn-danger">Cancel</button>
+    </div>
+</div>
+<style>
+    /* General container styles */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Form container */
+    .form-container {
+        width: 100%;
+        max-width: 850px;
+        padding: 30px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Form headings */
+    .form-container h2 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        color: #444444;
+        margin-bottom: 20px;
+    }
+
+    /* Form labels */
+    .form-label {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #555555;
+    }
+
+    /* Form inputs */
+    .form-control {
+        font-family: 'Arial', sans-serif;
+        font-size: 15px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #5e5df0;
+        box-shadow: 0 0 8px rgba(94, 93, 240, 0.4);
+    }
+
+    /* Submit button */
+    .btn-submit {
+        background:#00B074;
+        border: none;
+        padding: 12px 20px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background: #00B074;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(94, 93, 240, 0.2);
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 6px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 300px;
+    }
+
+    .modal button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+    
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+        color: white;
+    }
+</style>
+<script>
+    // Show success message on form submission
+    document.getElementById('jobForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        
+        let formData = new FormData(this);
+        
+        fetch("{% url 'admin_addjoblist' %}", {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show the success modal
+                document.getElementById('successModal').style.display = 'flex';
+            } else {
+                alert('Error: ' + data.error);
+            }
+        })
+        .catch(error => console.log('Error:', error));
+    });
+
+    // Handle OK button click (redirect to admin_joblist)
+    document.getElementById('okBtn').addEventListener('click', function () {
+        // Hide the success modal
+        document.getElementById('successModal').style.display = 'none';
+        // Reset the form
+        document.getElementById('jobForm').reset();
+        // Redirect to admin_joblist
+        window.location.href = "{% url 'admin_joblist' %}";
+    });
+
+    // Handle Cancel button click (redirect to admin_addjoblist)
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        // Hide the success modal
+        document.getElementById('successModal').style.display = 'none';
+        // Redirect to admin_addjoblist
+        window.location.href = "{% url 'admin_addjoblist' %}";
+    });
+</script>
+
+
+{% endblock %}

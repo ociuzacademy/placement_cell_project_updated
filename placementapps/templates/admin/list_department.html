@@ -1,0 +1,162 @@
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Departments</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sl. No.</th>
+                <th>Department Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for department in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <!-- Display the department icon next to the name -->
+                    <i class="fa {{ department.icon }}"></i> {{ department.name }}
+                </td>
+                <td>
+                    <a href="{% url 'edit_department' department.id %}" class="btn btn-edit btn-sm">Edit</a>
+                    <a href="/delete_department/?id={{ department.id }}" class="btn btn-delete btn-sm">Delete</a>
+                    <a href="{% url 'add_course' department.id %}" class="btn btn-add-course btn-sm">Add Program</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No departments found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="javascript:history.go(-1);" class="btn btn-back back-right">Back</a>
+</div>
+
+<style>
+    /* General container and layout styles */
+    .container {
+        font-family: 'Poppins', sans-serif;
+        margin-top: 20px;
+    }
+
+    /* Table styles */
+    .table {
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+        background-color: #00B074;
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table td {
+        padding: 12px 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #555555;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Button styles */
+    .btn {
+        display: inline-block;
+        padding: 6px 14px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+        background-color: #55afff; /* Custom blue */
+        color: white;
+    }
+
+    .btn-delete {
+        background-color: #e74c3c; /* Custom red */
+        color: white;
+    }
+
+    .btn-add-course {
+        background-color: #00B074; /* Custom green */
+        color: white;
+    }
+
+    /* Back button styles */
+    .btn-back {
+        width: 100%;
+        height: 50px;
+        padding: 12px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        background:#55afff; /* Blue for View Departments */
+        height: 50px;
+        background: #000000; /* Black background color */
+        color: #ffffff;      /* White text color */
+        border: none;        /* Remove border */
+    }
+
+    .btn-back:hover {
+        background: #333333; /* Darker gray for hover effect */
+        color: #ffffff;      /* Keep white text */
+    }
+
+    /* Position Back button on the right side */
+    .back-right {
+        display: block;
+        margin-left: auto; /* Push the button to the right */
+        margin-right: 0;
+        text-align: right;
+        width: fit-content; /* Adjust the width to fit content */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .table th, .table td {
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .table {
+            width: 100%;
+        }
+
+        .btn {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+    }
+</style>
+{% endblock %}
