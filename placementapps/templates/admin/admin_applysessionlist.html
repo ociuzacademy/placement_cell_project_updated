@@ -1,0 +1,77 @@
+{% extends "admin/admin_index.html" %}
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center mb-4">Applications for {{ session_name }}</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sl. No.</th>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Program</th>
+                <th>Batch</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ application.user.name }}</td>
+                <td>{{ application.user.student_email }}</td>
+                <td>{{ application.user.student_phone }}</td>
+                <td>{{ application.user.course.name }}</td>
+                <td>{{ application.user.batch }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No applications found for this session.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<style>
+    .container {
+        margin-top: 20px;
+    }
+
+    .table {
+        width: 100%;
+        max-width: 80%;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+        background-color: #00B074;
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table td {
+        padding: 12px 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #555555;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+{% endblock %}

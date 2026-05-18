@@ -1,0 +1,173 @@
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <h2 class="mb-5 text-center">Add Orientation Session</h2>
+
+        <!-- Toast Notification -->
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+            <div id="messageToast" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastMessage"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Start -->
+        <form method="POST" class="form-container">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-12">
+                    <label for="id_session_name" class="form-label">Session Name</label>
+                    <input type="text" class="form-control" id="id_session_name" name="session_name" value="{{ form.session_name.value }}" required>
+                </div>
+                <div class="col-12">
+                    <label for="id_description" class="form-label">Description</label>
+                    <textarea class="form-control" id="id_description" name="description" rows="3" required>{{ form.description.value }}</textarea>
+                </div>
+                <div class="col-12">
+                    <label for="id_trainer_name" class="form-label">Resource Person</label>
+                    <input type="text" class="form-control" id="id_trainer_name" name="trainer_name" value="{{ form.trainer_name.value }}" required>
+                </div>
+                <div class="col-12">
+                    <label for="id_venue" class="form-label">Venue</label>
+                    <input type="text" class="form-control" id="id_venue" name="venue" value="{{ form.venue.value }}" required>
+                </div>
+                <div class="col-12">
+                    <label for="id_time" class="form-label">Time</label>
+                    <input type="time" class="form-control" id="id_time" name="time" value="{{ form.time.value }}" required>
+                </div>
+                <div class="col-12">
+                    <label for="id_training_dates" class="form-label">Date</label>
+                    <textarea class="form-control" id="id_training_dates" name="training_dates" rows="3" placeholder="Enter dates as YYYY-MM-DD, separated by commas." required>{{ form.training_dates.value }}</textarea>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary w-100">Add Session</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="btn-container">
+        <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+    </div>
+    
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        color: #444444;
+    }
+
+    .form-label {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #555555;
+    }
+
+    .form-control {
+        font-size: 15px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #5e5df0;
+        box-shadow: 0 0 8px rgba(94, 93, 240, 0.4);
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+    
+    .btn-primary {
+        background-color: #00B074;
+        border: none;
+        border-radius: 6px;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #00895d;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            width: 90%;
+        }
+        .form-control {
+            font-size: 14px;
+        }
+        .btn-primary {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<!-- JavaScript for Toast Messages -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertMessage = "{{ alert_message|escapejs }}";
+        const successMessage = "{{ success_message|escapejs }}";
+        
+        function showToast(message, isSuccess = false) {
+            const toastEl = document.getElementById("messageToast");
+            const toastMessage = document.getElementById("toastMessage");
+            
+            if (isSuccess) {
+                toastEl.classList.replace("bg-danger", "bg-success"); // Change to green for success
+            } else {
+                toastEl.classList.replace("bg-success", "bg-danger"); // Keep red for errors
+            }
+            
+            toastMessage.textContent = message;
+            
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+
+        if (alertMessage) {
+            showToast(alertMessage, false);
+        }
+        if (successMessage) {
+            showToast(successMessage, true);
+        }
+    });
+</script>
+
+{% endblock %}

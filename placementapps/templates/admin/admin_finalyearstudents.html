@@ -1,0 +1,27 @@
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+ <!-- Category Start -->
+ <div class="container-xxl py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">Departments</h1>
+        <div class="row g-4">
+            {% for department in departments %}
+                <div class="col-lg-3 col-sm-6">
+                    <a class="cat-item rounded p-4" href="{% url 'courses_listing' department.id %}">
+                        <i class="fa fa-3x {{ department.icon }} text-primary mb-4"></i>
+                        <h6 class="mb-3">{{ department.name }}</h6>
+                    </a>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <p>No departments found.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<!-- Category End -->
+{% endblock %}

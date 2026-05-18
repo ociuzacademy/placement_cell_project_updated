@@ -1,0 +1,194 @@
+{% extends "tutor/tutor_index.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-header text-center">
+        <br>
+        <h1>Edit Tutor Profile</h1>
+    </div>
+    <div class="card mt-4">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <!-- CSRF Token -->
+                {% csrf_token %}
+
+                <!-- Personal Details -->
+                <h3>Personal Details</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ data.name }}" required>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-control" id="gender" name="gender">
+                            <option value="" {% if not data.gender %}selected{% endif %}>Select Gender</option>
+                            <option value="Male" {% if data.gender == "Male" %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if data.gender == "Female" %}selected{% endif %}>Female</option>
+                            <option value="Others" {% if data.gender == "Others" %}selected{% endif %}>Others</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="mobile_number" class="form-label">Mobile Number</label>
+                        <input type="text" class="form-control" id="mobile_number" name="mobile_number" value="{{ data.mobile_number }}" pattern="\d{10}" title="Enter a 10-digit mobile number">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ data.email }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
+                </div>
+
+                <!-- Academic Details -->
+<h3>Academic Details</h3>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="department">Department:</label>
+        <select class="form-control" name="department">
+            <option value="" disabled {% if not data.department %}selected{% endif %}>Select Department</option>
+            {% for department in departments %}
+                <option value="{{ department.id }}" {% if data.department == department.id %}selected{% endif %}>{{ department.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="course">Course:</label>
+        <select class="form-control" name="course">
+            <option value="" disabled {% if not data.course %}selected{% endif %}>Select Course</option>
+            {% for course in courses %}
+                <option value="{{ course.id }}" {% if data.course == course.id %}selected{% endif %}>{{ course.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<!-- Add Batch Field -->
+<div class="mb-3">
+    <label for="batch" class="form-label">Batch (comma-separated)</label>
+    <input type="text" class="form-control" id="batch" name="batch" value="{{ data.batch }}" placeholder="E.g., 2022-2025,2026-2029,2020-2023">
+</div>
+
+
+
+                <!-- Profile Image -->
+                <h3>Profile Image</h3>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Profile Image</label>
+                    <input type="file" class="form-control" id="image" name="image">
+                    {% if data.image %}
+                        <img src="{{ data.image.url }}" alt="Profile Image" class="mt-2 img-fluid" style="max-width: 150px;">
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="btn-container">
+    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+</div>
+
+<style>
+    /* Profile Header */
+    .profile-header {
+        margin-bottom: 20px;
+    }
+
+    /* Card Body */
+    .container .card-body {
+        padding: 40px;
+        background-color: #fff; /* Ensure white background */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
+
+    /* Form Controls */
+    .container .form-control {
+        font-size: 16px; /* Ensure readability */
+        padding: 12px;
+        border: 1px solid #ddd; /* Light border */
+        border-radius: 6px; /* Rounded for aesthetic */
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transitions */
+    }
+
+    .container .form-control:focus {
+        border-color: #00B074; /* Highlight border */
+        box-shadow: 0 0 6px rgba(0, 176, 116, 0.2); /* Glow effect for focus */
+        outline: none; /* Remove default focus outline */
+    }
+
+    .container label {
+        font-weight: bold; /* Bold labels for better visibility */
+        margin-bottom: 6px;
+        display: block; /* Ensure proper spacing */
+    }
+
+    .container h3 {
+        border-bottom: 2px solid #00B074; /* Underline for headers */
+        padding-bottom: 5px;
+        margin-bottom: 20px;
+        color: #333; /* Dark text for headers */
+        font-size: 1.5rem; /* Clear and structured font size */
+    }
+
+    /* Profile Image Styling */
+    .container img {
+        border: 2px solid #ddd; /* Border for image */
+        border-radius: 8px; /* Rounded corners */
+        margin-top: 10px;
+        max-width: 150px; /* Consistent size */
+        display: block; /* Ensure proper alignment */
+    }
+
+    /* Button Styling */
+    .container .btn-primary {
+        font-size: 16px; /* Readable font size */
+        padding: 12px 24px; /* Comfortable padding */
+        border-radius: 8px; /* Rounded corners */
+        background-color: #00B074; /* Primary button color */
+        border: none; /* Remove default border */
+        transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out; /* Smooth hover effect */
+    }
+
+    .container .btn-primary:hover {
+        background-color: #008F5F; /* Darken button on hover */
+        transform: scale(1.05); /* Slight scaling effect */
+    }
+
+    .container .btn-primary:focus {
+        background-color: #007B4A; /* Further darken on focus */
+        box-shadow: 0 0 8px rgba(0, 123, 74, 0.4); /* Glow for focus */
+        outline: none; /* Remove focus outline */
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+       /* float: right; /* Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+</style>
+
+
+{% endblock %}

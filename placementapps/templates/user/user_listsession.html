@@ -1,0 +1,41 @@
+{% extends "user/user_index.html" %}
+
+{% block content %}
+<!-- Training Sessions List Start -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row gy-5 gx-4">
+            <div class="col-12">
+                <h2 class="mb-5 text-center">Training Sessions</h2>
+                <div class="list-group">
+                    {% for session in training_sessions %}
+                        <div class="list-group-item p-4 mb-4">
+                            <h3>{{ session.session_name }}</h3>
+                            <p><strong>Description:</strong> {{ session.description }}</p>
+                            <p><strong>Trainer Name:</strong> {{ session.trainer_name }}</p>
+                            <p><strong>Venue:</strong> {{ session.venue }}</p>
+                            <p><strong>Time:</strong> {{ session.time }}</p>
+                          
+                            <p><strong>Training Dates:</strong></p>
+                            <ul>
+                                {% for date in session.training_dates %}
+                                    <li>{{ date }}</li>
+                                {% endfor %}
+                            </ul>
+                            <a href="{% url 'admin_editsession' session.id %}" class="btn btn-warning btn-sm">Edit</a>
+
+                            <a href="{% url 'delete_TrainingSession' session_id=session.id %}" class="btn btn-danger btn-sm">Delete</a>
+
+
+                        </div>
+                    {% empty %}
+                        <p>No training sessions available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<!-- Training Sessions List End -->
+{% endblock %}

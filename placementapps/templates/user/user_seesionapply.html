@@ -1,0 +1,141 @@
+{% extends "user/user_index.html" %}
+
+{% block content %}
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 50px;
+    }
+    .apply-container {
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .apply-container label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: #333;
+    }
+    .apply-container input,
+    .apply-container select,
+    .apply-container textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    .apply-container button {
+        width: 100%;
+        padding: 10px;
+        background-color:#00B074;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    /* Footer Styling */
+    .footer {
+        background-color: #333;
+        color: white;
+        padding: 20px;
+        text-align: center;
+       
+        bottom: 0;
+        width: 100%;
+    }
+
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+       /* float: right; /* Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+
+
+    .footer a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+    .footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<!-- Student Apply Form Start -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <h2 class="mb-5">Apply for Orientation Session</h2>
+        <div class="apply-container">
+            <form method="post" id="applyForm">
+                {% csrf_token %}
+                <label for="session">Select Training Session:</label>
+                <select name="session" id="session" required>
+                    {% for session in training_sessions %}
+                        <option value="{{ session.id }}">{{ session.session_name }}</option>
+                    {% endfor %}
+                </select>
+            
+                <label for="name">Student Name:</label>
+                <input type="text" name="name" id="name" placeholder="Enter your name" required>
+            
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" placeholder="Enter your email" required>
+            
+                <label for="phone">Phone Number:</label>
+                <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" required>
+            
+                <label for="comments">Additional Comments (Optional):</label>
+                <textarea name="comments" id="comments" rows="4" placeholder="Enter any additional comments"></textarea>
+            
+                <button type="submit">Submit Application</button>
+            </form>
+            
+            <script>
+                // Get the form element and the selected session
+                var form = document.getElementById('applyForm');
+                var sessionSelect = document.getElementById('session');
+                
+                // Get the current URL from Django and replace the ID dynamically
+                var baseUrl = "{% url 'user_seesionapply' id='2' %}";  // This is the base URL with placeholder for id
+                
+                // Update form action before submission
+                form.onsubmit = function() {
+                    var sessionId = sessionSelect.value;  // Get the selected session id
+                    form.action = baseUrl.replace('2', sessionId);  // Replace '2' with the selected session ID
+                };
+            </script>
+            
+        </div>
+    </div>
+   
+</div>
+<div class="btn-container">
+    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+</div>
+
+  
+
+{% endblock %}

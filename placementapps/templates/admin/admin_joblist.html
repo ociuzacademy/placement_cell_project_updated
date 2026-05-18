@@ -1,0 +1,199 @@
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+<div class="container-x-xl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+           
+            <h1 class="mb-5">Job Details</h1>
+            
+        </div>
+
+        <!-- Job Cards Start -->
+        <div class="row g-4">
+            {% for x in data %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow-sm border-light d-flex flex-column" style="width: 100%; height: 100%;">
+                    <!-- Company Logo -->
+                    <div class="text-center">
+                        {% if x.logo %}
+                            <img src="{{ x.logo.url }}" alt="Company Logo" class="img-fluid rounded-circle mb-3" style="max-width: 100px;">
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body flex-grow-1">
+                        <!-- Job Details -->
+                        <h5 class="card-title">{{ x.title }}</h5>
+                        <p class="card-text"><strong>Job Type:</strong> {{ x.job_type }}</p>
+                        <p class="card-text"><strong>Department:</strong> {{ x.department.name }}</p>
+                        <p class="card-text"><strong>Salary:</strong> {{ x.salary }}</p>
+                        <p class="card-text"><strong>Passout Year:</strong> {{ x.passoutyear }}</p>
+                        <p class="card-text"><strong>Responsibilities:</strong> {{ x.responsibilities }}</p>
+                        <p class="card-text"><strong>Qualifications:</strong> {{ x.qualifications }}</p>
+                        <p class="card-text"><strong>Vacancy:</strong> {{ x.vacancy }}</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="card-footer text-center">
+                        
+                        <a href="{% url 'delete_job' x.id %}" class="btn btn-danger w-100 py-2 mb-2">Delete</a>
+
+                        <a href="{% url 'admin_applylist' x.id %}" class="btn btn-applylist w-100 py-2 mb-2">View Applied List</a>
+                        <a href="{% url 'jobdownload_excel' x.id %}" class="btn btn-download w-100 py-2">Download Applications</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">No job details found.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Job Cards End -->
+        <div class="btn-container">
+            <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+        </div>
+        
+    </div>
+</div>
+
+<style>
+    /* General container and layout styles */
+    .container-x-xl {
+        margin: 2px;
+    }
+
+    .text-center h1 {
+        font-weight: 500;
+        color: #333333;
+        margin: 0px 0px 0px 0px;
+    }
+
+    .wow {
+        animation-duration: 0.8s;
+        animation-timing-function: ease-in-out;
+    }
+
+    /* Card styles */
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        height: 70%;
+    }
+
+    .card-body {
+        padding: 20px;
+        flex-grow: 1; /* Ensures the body grows to take up the available space */
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 14px;
+        color: #333;
+    }
+
+    /* Image styles */
+    .img-fluid.rounded-circle {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    /* Button styles */
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 100;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .btn-danger {
+        background-color: #ff4040;
+        color: #ffffff;
+        margin: 5px 0;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: #e60000;
+    }
+
+    /* Apply List Button (Blue) */
+    .btn-applylist {
+        background-color: #007bff;  /* Blue color for Apply List */
+        color: #ffffff;
+        margin: 5px 0;
+        transition: background-color 0.3s ease;
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+         /*float: right; Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+    
+    .btn-applylist:hover {
+        background-color: #0056b3;  /* Darker blue when hovered */
+    }
+
+    /* Download Applications Button (Green) */
+    .btn-download {
+        background-color: #28a745;  /* Green color for Download Applications */
+        color: #ffffff;
+        margin: 5px 0;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-download:hover {
+        background-color: #218838;  /* Darker green when hovered */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 15px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .card-body {
+            padding: 10px;
+        }
+
+        .card-title {
+            font-size: 18px;
+        }
+
+        .card-text {
+            font-size: 12px;
+        }
+    }
+</style>
+
+{% endblock %}

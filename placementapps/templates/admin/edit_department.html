@@ -1,0 +1,35 @@
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center mb-4">Edit Department</h1>
+    <form id="editDepartmentForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Department Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ department.name }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Update Department</button>
+    </form>
+</div>
+
+<script>
+    // Handle form submission
+    document.getElementById('editDepartmentForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Show confirmation dialog with "OK" and "Cancel"
+        var userConfirmed = confirm('Are you sure you want to update the department?');
+
+        if (userConfirmed) {
+            // If user clicks "OK", submit the form
+            this.submit();
+        } else {
+            // If user clicks "Cancel", do nothing
+            console.log('Department update canceled.');
+        }
+    });
+</script>
+
+{% endblock %}

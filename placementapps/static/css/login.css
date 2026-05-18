@@ -1,0 +1,115 @@
+/* General Styles */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.wave {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
+    width: 100%;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 7rem;
+    padding: 0 2rem;
+}
+
+.img {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.login-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.img img {
+    width: 500px;
+}
+
+form {
+    width: 360px;
+}
+
+.login-content img {
+    height: 100px;
+}
+
+.login-content h2 {
+    margin: 15px 0;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 2.9rem;
+}
+
+/* Role Dropdown */
+.role-select {
+    margin: 25px 0;
+    text-align: left;
+    position: relative;
+}
+
+.role-select label {
+    font-size: 1.2rem;
+    color: #555;
+    font-family: 'Poppins', sans-serif;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.role-select select {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 2px solid #d9d9d9;
+    border-radius: 25px;
+    background: #f9f9f9;
+    color: #555;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.role-select select:focus {
+    border-color: #38d39f;
+    background: #fff;
+}
+
+.role-select::after {
+    content: '\f107';
+    font-family: 'FontAwesome';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    pointer-events: none;
+}
+
+/* Input Fields */
+.input-div {
+    position: relative;
+    display: grid;
+    grid-template-columns: 7% 93%;
+    margin: 25px 0;
+    padding: 5px 0;
+    border-bottom: 2px solid #d9d9d9;
+}
+
+

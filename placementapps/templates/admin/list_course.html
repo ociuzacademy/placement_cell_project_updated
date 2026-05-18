@@ -1,0 +1,130 @@
+{% extends "admin/admin_index.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center mb-4">{{ department.name }} - Courses</h1>
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sl. No.</th>
+                <th>Course Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ course.name }}</td>
+                <td>
+                    <a href="{% url 'delete_course' course.id %}" class="btn btn-delete btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No courses found in this department.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'add_course' department.id %}" class="btn btn-add-course">Add New Course</a>
+</div>
+
+<style>
+    /* General container and layout styles */
+    .container {
+        font-family: 'Poppins', sans-serif;
+        margin-top: 20px;
+    }
+
+    /* Table styles */
+    .table {
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+        background-color: #00B074; /* Green for header */
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table td {
+        padding: 12px 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #555555;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Button styles */
+    .btn {
+        display: inline-block;
+        padding: 8px 16px; /* Increased padding for better touch targets */
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none; /* Remove underline from links */
+        text-align: center; /* Center text */
+    }
+
+    .btn-add-course {
+        background-color: #27ae60; /* Custom green for Add Course */
+        color: white;
+    }
+
+    .btn-add-course:hover {
+        background-color: #219653; /* Darker green on hover */
+    }
+
+    .btn-delete {
+        background-color: #e74c3c; /* Custom red for Delete */
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background-color: #c0392b; /* Darker red on hover */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .table th, .table td {
+            font-size: 12px;
+        }
+
+        .btn {
+            font-size: 12px; /* Smaller font size for buttons on smaller screens */
+            padding: 6px 12px; /* Adjust padding for smaller screens */
+        }
+    }
+
+    @media (max-width: 450px) {
+        .table {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

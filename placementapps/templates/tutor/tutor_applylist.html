@@ -1,0 +1,165 @@
+
+{% extends "tutor/tutor_index.html" %}
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center mb-4">Applied List</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sl. No.</th>
+                <th>Full</th>
+                <th>DOB</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Contact</th>
+                <th>Degree</th>
+                <th>Institution</th>
+                <th>Graduation</th>
+                <th>Resume</th>
+                <th>Pancard</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for JobApplication in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{JobApplication.full_name }}</td>
+                <td>{{ JobApplication.dob }}</td>
+                <td>{{ JobApplication.email }}</td>
+                <td>{{ JobApplication.gender }}</td>
+                <td>{{ JobApplication.contact_number }}</td>
+                <td>{{ JobApplication.degree_program }}</td>
+                <td>{{ JobApplication.institution }}</td>
+                <td>{{ JobApplication.grad_year }}</td>
+                
+                
+                <td><a href="{{ JobApplication.resume.url }}" class="btn btn-success">View</a></td>
+               
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="11" class="text-center">No applications found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="btn-container">
+        <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+    </div>
+    
+</div>
+
+<style>
+    /* General container and layout styles */
+    .container {
+        font-family: 'Poppins', sans-serif;
+        margin-top: 20px;
+    }
+
+    /* Table styles */
+    .table {
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+        background-color: #00B074;
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table td {
+        padding: 12px 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #555555;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Button styles */
+    .btn {
+        display: inline-block;
+        padding: 6px 14px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success {
+        background-color: #00B074;
+        color: #ffffff;
+    }
+    .btn-back {
+        background-color: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        /*float: right; /* Moves the button to the right */
+    }
+    
+    .btn-back:hover {
+        background-color: #333;
+    }
+    .btn-container {
+        padding:10px;
+        display: flex;
+        justify-content: flex-end; /* Aligns button to the right */
+        margin-bottom: 20px; /* Adds spacing below the button */
+    }
+    .btn-success:hover {
+        background-color: #00895d;
+    }
+
+    .btn-danger {
+        background-color: #ff5e5e;
+        color: #ffffff;
+    }
+
+    .btn-danger:hover {
+        background-color: #d9534f;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .table th, .table td {
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .table {
+            width: 100%;
+        }
+
+        .btn {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+    }
+</style>
+{% endblock %}

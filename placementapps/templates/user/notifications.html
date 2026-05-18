@@ -1,0 +1,190 @@
+{% extends "user/user_index.html" %}
+
+{% block content %}
+
+<head>
+    <style>
+        /* General Page Layout */
+        body {
+            background-color: #f1f8ff;
+            /* Light blue background for the body */
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container_1 {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+            max-width: 900px;
+            margin-top: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .container_1:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #3b3f4f;
+            /* Darker gray-blue */
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+        }
+
+        /* Notification List Styles */
+        .list-group-item {
+            padding: 18px;
+            font-size: 1rem;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            /* Makes it clickable */
+        }
+
+        .list-group-item:hover {
+            background-color: #e3f7f0;
+            /* Light green background on hover */
+            transform: translateY(-5px);
+        }
+
+        /* Unread Notification Styles */
+        .list-group-item-warning {
+            background-color: #e3f7f0;
+            /* Light green background */
+            border-left: 5px solid #00B074;
+            /* Vibrant green left border */
+            color: #2e7d5e;
+            /* Darker green text */
+            font-weight: bold;
+        }
+
+        .list-group-item-warning:hover {
+            background-color: #d0f2e4;
+            /* Lighter green on hover */
+            border-color: #007e51;
+            /* Darker green border on hover */
+        }
+
+        /* Read Notification Styles */
+        .list-group-item {
+            background-color: #ffffff;
+            color: #4f4f4f;
+            /* Slightly darker gray text */
+        }
+
+        /* Text Styling */
+        .list-group-item strong {
+            font-weight: bold;
+            color: #00B074;
+            /* Vibrant green for highlighted text */
+        }
+
+        .list-group-item p {
+            color: #6c757d;
+            /* Muted gray text */
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Empty Notification Message */
+        .list-group-item.text-center {
+            font-style: italic;
+            color: #6c757d;
+            /* Light gray for empty state */
+        }
+
+        /* Small Timestamp Styling */
+        .timestamp {
+            color: #a5a5a5;
+            /* Light gray color for timestamp */
+            font-size: 0.8rem;
+            display: block;
+            margin-top: 8px;
+        }
+
+        /* Subtle Animation for the Container */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Media Query for Mobile */
+        @media (max-width: 767px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .list-group-item {
+                font-size: 0.9rem;
+            }
+
+            .container_1 {
+                padding: 15px;
+                margin-top: 20px;
+            }
+        }
+
+        .list-group-item {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<center>
+    {% extends "tutor/tutor_index.html" %}
+    {% block content %}
+    <h1>Notifications</h1>
+    <ul class="notifications-list">
+        {% for notification in notifications %}
+        >
+        <!-- Data attribute stores the URL for the JS to read -->
+        <a href="{% url 'tutor_job_list' %}" class="notification-link"
+            data-read-url="{% url 'mark_notification_as_read' notification.id %}">
+            <div class="notification-content">
+                <p class="notification-message">{{ notification.message }}</p>
+                <small class="notification-time">{{ notification.created_at }}</small>
+            </div>
+        </a>
+        </li>
+        {% empty %}
+        <p>No notifications available.</p>
+        {% endfor %}
+    </ul>
+
+    <script>
+        document.querySelectorAll('.notification-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                const url = this.getAttribute('data-read-url');
+                // Send request to mark as read
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                // The browser will then follow the standard <a> href link automatically
+            });
+        });
+    </script>
+</center>
+{% endblock %}

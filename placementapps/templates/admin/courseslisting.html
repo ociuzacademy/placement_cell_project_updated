@@ -1,0 +1,206 @@
+{% extends "admin/admin_index.html" %}
+{% load custom_filters %}
+{% block content %}
+
+<style>
+    /* Global Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    /* Back Button Styling */
+    .btn-back {
+        background-color: #212529; /* Dark gray/black */
+        color: #ffffff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-size: 16px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        transition: all 0.3s ease-in-out;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-back:hover {
+        background-color: #343a40; /* Slightly lighter black */
+        transform: scale(1.05);
+    }
+
+    /* Course Cards Styling - Uniform Size */
+    .col-lg-4, .col-md-6 {
+        display: flex;
+    }
+
+    .cat-item {
+        background: white;
+        border-radius: 12px;
+        text-align: center;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        height: 100%; /* Ensures all cards take equal height */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .cat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Icon Styling */
+    .cat-item i {
+        color: #00B074;
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    /* Tutor Info - Left Aligned */
+    .tutor-info {
+        background: #f9f9f9;
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 10px;
+        text-align: left;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Dropdown Style */
+    .batch-selection .form-select {
+        border-radius: 8px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        transition: border 0.3s ease-in-out;
+    }
+
+    .batch-selection .form-select:focus {
+        border-color: #00B074;
+        outline: none;
+    }
+
+    /* View Students Button */
+    .view-students-btn {
+        margin-top: 10px;
+        padding: 12px 18px;
+        background: #00B074;
+        color: white;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+    .view-students-btn:hover {
+        background: #008f5e;
+        transform: scale(1.05);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .btn-back {
+            position: relative;
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+        }
+    }
+</style>
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">Courses for {{ department.name }}</h1>
+
+        <!-- Courses Grid -->
+        <div class="row g-4">
+            {% for course in courses %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="card cat-item p-4">
+                        <i class="fa fa-3x {{ course.icon }} text-primary"></i>
+                        <h6 class="mb-3">{{ course.name }}</h6>
+
+                        <!-- Display Tutors for this course -->
+                        <div class="tutor-list">
+                            {% for tutor in course.tutors.all %}
+                                <div class="tutor-info">
+                                    <p><strong>Tutor:</strong> {{ tutor.name }}</p>
+                                    <p><strong>Contact:</strong> {{ tutor.mobile_number }}</p>
+
+                                    <!-- Batch Selection Dropdown for each tutor -->
+                                    <div class="batch-selection mb-4">
+                                        <label for="batch-select-{{ course.id }}-{{ tutor.id }}" class="form-label">
+                                            Select Batch for {{ tutor.name }}
+                                        </label>
+                                        <select id="batch-select-{{ course.id }}-{{ tutor.id }}" class="form-select batch-select" data-course-id="{{ course.id }}">
+                                            <option value="">Select Batch</option>
+                                            {% for batch in course_batches|get_item:course.id|get_item:tutor.id %}
+                                                <option value="{{ batch }}">{{ batch }}</option>
+                                            {% empty %}
+                                                <option value="" disabled>No batches available</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>No tutors available for this course.</p>
+                            {% endfor %}
+                        </div>
+
+                        <!-- View Students Button -->
+                        <div class="year-buttons text-center">
+                            <a href="javascript:void(0);" class="btn view-students-btn" data-course-id="{{ course.id }}">
+                                View Students
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <p>No courses available for this department.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Back Button -->
+        <a href="javascript:history.go(-1);" class="btn btn-back back-right">Back</a>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.view-students-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const courseId = this.getAttribute('data-course-id');
+
+            // Find the nearest batch dropdown inside the same course card
+            const card = this.closest('.cat-item');  // Find the card container
+            const batchSelect = card.querySelector('.batch-select');  // Select the dropdown within the card
+            
+            if (!batchSelect) {
+                alert('Batch dropdown not found!');
+                return;
+            }
+
+            const batch = batchSelect.value;
+
+            if (batch) {
+                const url = new URL(window.location.href);
+                url.pathname = '/view_final_year_student/';
+                url.searchParams.set('id', courseId);
+                url.searchParams.set('batch', batch);
+                window.location.href = url.toString();
+            } else {
+                alert('Please select a batch first!');
+            }
+        });
+    });
+</script>
+
+{% endblock %}
