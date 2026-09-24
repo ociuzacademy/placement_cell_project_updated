@@ -14,7 +14,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -23,8 +25,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; font-weight: 700; }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
 
         :root {
             --color-navy: #1E293B;
@@ -67,8 +80,14 @@
             --color-gold: #FBBF24;
         }
 
-        html { scroll-behavior: smooth; color-scheme: light; }
-        [data-theme="dark"] html { color-scheme: dark; }
+        html {
+            scroll-behavior: smooth;
+            color-scheme: light;
+        }
+
+        [data-theme="dark"] html {
+            color-scheme: dark;
+        }
 
         body {
             background-color: var(--bg-primary);
@@ -83,6 +102,7 @@
             padding: 1.1rem 0 !important;
             box-shadow: var(--shadow-md);
         }
+
         .navbar-brand {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
@@ -91,6 +111,7 @@
             letter-spacing: -0.5px;
             padding: 0 !important;
         }
+
         .nav-link {
             color: rgba(255, 255, 255, 0.85) !important;
             font-weight: 500;
@@ -98,7 +119,11 @@
             margin: 0 0.35rem;
             transition: color 0.3s ease;
         }
-        .nav-link:hover, .nav-link.active { color: var(--color-gold) !important; }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-gold) !important;
+        }
 
         .dropdown-menu {
             background: var(--bg-secondary);
@@ -108,6 +133,7 @@
             padding: 0.5rem;
             margin-top: 0.5rem;
         }
+
         .dropdown-item {
             color: var(--text-primary);
             font-size: 0.9rem;
@@ -116,6 +142,7 @@
             padding: 0.5rem 0.75rem;
             transition: all 0.2s ease;
         }
+
         .dropdown-item:hover {
             background: var(--color-gold);
             color: var(--color-navy);
@@ -134,6 +161,7 @@
             display: inline-block;
             margin-left: 0.75rem;
         }
+
         .btn-nav-gold:hover {
             background: var(--color-gold-light);
             transform: translateY(-2px);
@@ -153,6 +181,7 @@
             transition: all 0.3s ease;
             margin-left: 1rem;
         }
+
         .theme-toggle button {
             background: transparent;
             border: none;
@@ -167,6 +196,7 @@
             cursor: pointer;
             font-size: 0.9rem;
         }
+
         .theme-toggle button.active {
             background: var(--color-gold);
             color: var(--color-navy);
@@ -178,12 +208,14 @@
             height: 520px;
             overflow: hidden;
         }
+
         .header-carousel-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             filter: brightness(0.75);
         }
+
         .carousel-overlay {
             position: absolute;
             inset: 0;
@@ -191,6 +223,7 @@
             display: flex;
             align-items: center;
         }
+
         .carousel-overlay h1 {
             color: #fff;
             font-size: 3rem;
@@ -199,6 +232,7 @@
             letter-spacing: -1px;
             margin-bottom: 1.25rem;
         }
+
         .carousel-overlay p {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.1rem;
@@ -206,6 +240,7 @@
             margin-bottom: 2rem;
             line-height: 1.7;
         }
+
         .btn-primary-gold {
             background: var(--color-gold);
             border: none;
@@ -221,12 +256,14 @@
             gap: 0.5rem;
             letter-spacing: 0.3px;
         }
+
         .btn-primary-gold:hover {
             background: var(--color-gold-light);
             transform: translateY(-3px);
             box-shadow: 0 12px 24px rgba(245, 158, 11, 0.3);
             color: var(--color-navy);
         }
+
         .btn-secondary-white {
             background: rgba(255, 255, 255, 0.15);
             border: 2px solid white;
@@ -242,6 +279,7 @@
             gap: 0.5rem;
             letter-spacing: 0.3px;
         }
+
         .btn-secondary-white:hover {
             background: white;
             color: var(--color-navy);
@@ -257,6 +295,7 @@
             color: var(--text-primary);
             text-align: center;
         }
+
         .section-subtitle {
             font-size: 1rem;
             color: var(--text-secondary);
@@ -281,6 +320,7 @@
             overflow: hidden;
             height: 100%;
         }
+
         .cat-item::before {
             content: '';
             position: absolute;
@@ -292,6 +332,7 @@
             border-radius: 50%;
             pointer-events: none;
         }
+
         .cat-item i {
             color: var(--color-gold) !important;
             font-size: 2.5rem;
@@ -299,6 +340,7 @@
             display: inline-block;
             transition: transform 0.3s ease;
         }
+
         .cat-item h6 {
             color: var(--text-primary) !important;
             font-size: 1.05rem;
@@ -308,11 +350,13 @@
             position: relative;
             z-index: 1;
         }
+
         .cat-item:hover {
             border-color: var(--color-gold) !important;
             transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
         }
+
         .cat-item:hover i {
             transform: scale(1.15);
         }
@@ -322,10 +366,12 @@
             padding: 5rem 0;
             background: var(--bg-primary);
         }
+
         .about-section img {
             border-radius: 0.75rem;
             box-shadow: var(--shadow-md);
         }
+
         .about-section h1 {
             font-size: 2.25rem;
             font-weight: 800;
@@ -333,16 +379,19 @@
             letter-spacing: -0.5px;
             margin-bottom: 1.25rem;
         }
+
         .about-section p {
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.8;
         }
+
         .about-check {
             color: var(--color-gold) !important;
             font-size: 1rem;
             margin-right: 0.6rem;
         }
+
         .btn-outline-navy {
             background: transparent;
             border: 2px solid var(--color-navy);
@@ -356,15 +405,18 @@
             display: inline-block;
             letter-spacing: 0.3px;
         }
+
         [data-theme="dark"] .btn-outline-navy {
             border-color: var(--color-gold);
             color: var(--color-gold);
         }
+
         .btn-outline-navy:hover {
             background: var(--color-navy);
             color: #fff;
             box-shadow: var(--shadow-md);
         }
+
         [data-theme="dark"] .btn-outline-navy:hover {
             background: var(--color-gold);
             color: var(--color-navy);
@@ -378,6 +430,7 @@
             font-size: 0.9rem;
             margin-top: 4rem;
         }
+
         .footer h6 {
             color: white;
             font-size: 0.95rem;
@@ -386,16 +439,19 @@
             letter-spacing: 0.5px;
             font-family: 'Playfair Display', serif;
         }
+
         .footer a {
             color: var(--color-gold);
             text-decoration: none;
             transition: all 0.3s ease;
             font-weight: 500;
         }
+
         .footer a:hover {
             color: var(--color-gold-light);
             text-decoration: underline;
         }
+
         .footer .social-btn {
             width: 36px;
             height: 36px;
@@ -409,12 +465,14 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
+
         .footer .social-btn:hover {
             background: var(--color-gold);
             color: var(--color-navy);
             border-color: var(--color-gold);
             transform: translateY(-3px);
         }
+
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
@@ -442,7 +500,12 @@
             opacity: 0;
             pointer-events: none;
         }
-        .back-to-top.show { opacity: 1; pointer-events: auto; }
+
+        .back-to-top.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         .back-to-top:hover {
             background: var(--color-gold-light);
             color: var(--color-navy);
@@ -451,326 +514,369 @@
 
         /* ===== Responsive ===== */
         @media (max-width: 768px) {
-            .carousel-overlay h1 { font-size: 2rem; }
-            .carousel-overlay p { font-size: 1rem; }
-            .header-carousel-item { height: 420px; }
-            .section-title { font-size: 1.85rem; }
-            .about-section h1 { font-size: 1.65rem; }
-            .navbar-brand { font-size: 1.4rem; }
+            .carousel-overlay h1 {
+                font-size: 2rem;
+            }
+
+            .carousel-overlay p {
+                font-size: 1rem;
+            }
+
+            .header-carousel-item {
+                height: 420px;
+            }
+
+            .section-title {
+                font-size: 1.85rem;
+            }
+
+            .about-section h1 {
+                font-size: 1.65rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            * { animation: none !important; transition: none !important; }
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<!-- ===== Navbar ===== -->
-<nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container-lg">
-        <a class="navbar-brand" href="/admin_index/">CampusHire</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            style="border-color: rgba(255,255,255,0.5);">
-            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-        </button>
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-lg">
+            <a class="navbar-brand" href="/admin_index/">CampusHire</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border-color: rgba(255,255,255,0.5);">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a href="{% url 'admin_index' %}" class="nav-link active">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'admin_about' %}" class="nav-link active">About</a>
-                </li>
-                <!-- Jobs Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Jobs</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'admin_addjoblist' %}" class="dropdown-item">Add Job</a></li>
-                        <li><a href="{% url 'admin_joblist' %}" class="dropdown-item">Job List</a></li>
-                    </ul>
-                </li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a href="{% url 'admin_index' %}" class="nav-link active">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'admin_about' %}" class="nav-link active">About</a>
+                    </li>
+                    <!-- Jobs Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                            aria-expanded="false">Jobs</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'admin_addjoblist' %}" class="dropdown-item">Add Job</a></li>
+                            <li><a href="{% url 'admin_joblist' %}" class="dropdown-item">Job List</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Orientation Session Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Orientation</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'admin_training_sessions' %}" class="dropdown-item">Add Session</a></li>
-                        <li><a href="{% url 'admin_sessionlist' %}" class="dropdown-item">List Session</a></li>
-                    </ul>
-                </li>
+                    <!-- Orientation Session Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                            aria-expanded="false">Orientation</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'admin_training_sessions' %}" class="dropdown-item">Add Session</a></li>
+                            <li><a href="{% url 'admin_sessionlist' %}" class="dropdown-item">List Session</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Tutors Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Tutors</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'admin_view_tutor' %}" class="dropdown-item">Pending</a></li>
-                        <li><a href="{% url 'admin_view_approved_tutor' %}" class="dropdown-item">Approved</a></li>
-                        <li><a href="{% url 'admin_view_rejected_tutor' %}" class="dropdown-item">Rejected</a></li>
-                    </ul>
-                </li>
+                    <!-- Tutors Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                            aria-expanded="false">Tutors</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'admin_view_tutor' %}" class="dropdown-item">Pending</a></li>
+                            <li><a href="{% url 'admin_view_approved_tutor' %}" class="dropdown-item">Approved</a></li>
+                            <li><a href="{% url 'admin_view_rejected_tutor' %}" class="dropdown-item">Rejected</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Department Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Department</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'add_department' %}" class="dropdown-item">Add Department</a></li>
-                        <li><a href="{% url 'list_department' %}" class="dropdown-item">List Department</a></li>
-                    </ul>
-                </li>
+                    <!-- Department Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                            aria-expanded="false">Department</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'add_department' %}" class="dropdown-item">Add Department</a></li>
+                            <li><a href="{% url 'list_department' %}" class="dropdown-item">List Department</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Theme Toggle -->
-                <li class="nav-item">
-                    <div class="theme-toggle">
-                        <button class="theme-btn light active" id="lightBtn" title="Light mode" type="button">
-                            <i class="bi bi-sun-fill"></i>
-                        </button>
-                        <button class="theme-btn dark" id="darkBtn" title="Dark mode" type="button">
-                            <i class="bi bi-moon-fill"></i>
-                        </button>
-                    </div>
-                </li>
+                    <!-- Theme Toggle -->
+                    <li class="nav-item">
+                        <div class="theme-toggle">
+                            <button class="theme-btn light active" id="lightBtn" title="Light mode" type="button">
+                                <i class="bi bi-sun-fill"></i>
+                            </button>
+                            <button class="theme-btn dark" id="darkBtn" title="Dark mode" type="button">
+                                <i class="bi bi-moon-fill"></i>
+                            </button>
+                        </div>
+                    </li>
 
-                <!-- Logout -->
-                <li class="nav-item">
-                    <a href="{% url 'logout' %}" class="btn-nav-gold">Logout</a>
-                </li>
-            </ul>
+                    <!-- Logout -->
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="btn-nav-gold">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-<!-- Navbar End -->
-{% if messages %}
+    </nav>
+    <!-- Navbar End -->
+    {% if messages %}
     {% for message in messages %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
+    <div class="alert 
+            {% if message.tags == 'success' %}
+                alert-success
+            {% elif message.tags == 'warning' %}
+                alert-warning
+            {% elif message.tags == 'error' %}
+                alert-danger
+            {% elif message.tags == 'info' %}
+                alert-info
+            {% else %}
+                alert-secondary
+            {% endif %}" role="alert">
 
-{% block content %}
-<!-- ===== Carousel Start ===== -->
-<div class="container-fluid p-0">
-    <div id="headerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="header-carousel-item">
-                    <img src="/static/img/carousel-1.jpg" alt="Campus to corporate">
-                    <div class="carousel-overlay">
-                        <div class="container-lg">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <h1>From campus to corporate, we pave the way</h1>
-                                    <p>It's not what you achieve, it's what you overcome. That's what defines your career. – Carlton Fisk</p>
-                                    <a href="/admin_joblist/" class="btn-primary-gold">
-                                        <i class="bi bi-search"></i> Search A Job
-                                    </a>
-                                    <a href="/admin_view_tutor/" class="btn-secondary-white ms-2">
-                                        <i class="bi bi-people"></i> Find A Talent
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="header-carousel-item">
-                    <img src="/static/img/carousel-2.jpg" alt="Startup jobs">
-                    <div class="carousel-overlay">
-                        <div class="container-lg">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <h1>Find The Best Startup Job That Fits You</h1>
-                                    <p>The journey to your dream job begins here.</p>
-                                    <a href="/admin_joblist/" class="btn-primary-gold">
-                                        <i class="bi bi-search"></i> Search A Job
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{ message }}
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#headerCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#headerCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
-</div>
-<!-- Carousel End -->
+    {% endfor %}
+    {% endif %}
+
+    {% block content %}
+    <!-- ===== Carousel Start ===== -->
+    <div class="container-fluid p-0">
+        <div id="headerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="header-carousel-item">
+                        <img src="/static/img/carousel-1.jpg" alt="Campus to corporate">
+                        <div class="carousel-overlay">
+                            <div class="container-lg">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h1>From campus to corporate, we pave the way</h1>
+                                        <p>It's not what you achieve, it's what you overcome. That's what defines your
+                                            career. – Carlton Fisk</p>
+                                        <a href="/admin_joblist/" class="btn-primary-gold">
+                                            <i class="bi bi-search"></i> Search A Job
+                                        </a>
+                                        <a href="/admin_view_tutor/" class="btn-secondary-white ms-2">
+                                            <i class="bi bi-people"></i> Find A Talent
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="header-carousel-item">
+                        <img src="/static/img/carousel-2.jpg" alt="Startup jobs">
+                        <div class="carousel-overlay">
+                            <div class="container-lg">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h1>Find The Best Startup Job That Fits You</h1>
+                                        <p>The journey to your dream job begins here.</p>
+                                        <a href="/admin_joblist/" class="btn-primary-gold">
+                                            <i class="bi bi-search"></i> Search A Job
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#headerCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#headerCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
 
 
-<!-- ===== Departments Start ===== -->
-<div class="container-lg py-5">
-    <h2 class="section-title">Departments</h2>
-    <p class="section-subtitle">Manage courses and students by department</p>
+    <!-- ===== Departments Start ===== -->
+    <div class="container-lg py-5">
+        <h2 class="section-title">Departments</h2>
+        <p class="section-subtitle">Manage courses and students by department</p>
 
-    <div class="row g-4">
-        {% for department in departments %}
+        <div class="row g-4">
+            {% for department in departments %}
             <div class="col-lg-3 col-sm-6">
                 <a class="cat-item" href="{% url 'courses_listing' department.id %}">
                     <i class="bi {{ department.icon }}"></i>
                     <h6>{{ department.name }}</h6>
                 </a>
             </div>
-        {% empty %}
+            {% empty %}
             <div class="col-12 text-center">
                 <p class="text-secondary">No departments found.</p>
             </div>
-        {% endfor %}
-    </div>
-</div>
-<!-- Departments End -->
-
-
-<!-- ===== About Start ===== -->
-<div class="about-section">
-    <div class="container-lg">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <img class="img-fluid w-100" src="/static/img/about-1.jpg" alt="About 1">
-                    </div>
-                    <div class="col-6">
-                        <img class="img-fluid w-100" src="/static/img/about-2.jpg" alt="About 2" style="margin-top: 15%;">
-                    </div>
-                    <div class="col-6">
-                        <img class="img-fluid w-100" src="/static/img/about-3.jpg" alt="About 3">
-                    </div>
-                    <div class="col-6">
-                        <img class="img-fluid w-100" src="/static/img/about-4.jpg" alt="About 4">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <h1>We Help To Get The Best Job And Find A Talent</h1>
-                <p class="mb-4">
-                    At Vimala College, the Placement Cell is here to support students in finding their ideal job
-                    opportunities and help companies find the right talent. We provide personalized career guidance,
-                    resume support, interview preparation, and more to ensure students are job-ready.
-                </p>
-
-                <p><i class="bi bi-check-circle-fill about-check"></i> We connect employers with skilled graduates</p>
-                <p><i class="bi bi-check-circle-fill about-check"></i> We simplify the hiring process for companies and students</p>
-                <p><i class="bi bi-check-circle-fill about-check"></i> We create successful career connections</p>
-
-                <a class="btn-outline-navy mt-3" href="#">Read More</a>
-            </div>
+            {% endfor %}
         </div>
     </div>
-</div>
-<!-- About End -->
-
-{% endblock %}
+    <!-- Departments End -->
 
 
-<!-- ===== Footer ===== -->
-<footer class="footer">
-    <div class="container-lg">
-        <div class="row mb-4">
-            <div class="col-md-3 mb-3">
-                <h6>CampusHire</h6>
-                <p class="mb-0" style="font-size: 0.85rem; opacity: 0.85;">Premium platform connecting campus talent
-                    with career opportunity.</p>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6>Admin Tools</h6>
-                <ul class="list-unstyled small">
-                    <li><a href="/admin_joblist/">Job List</a></li>
-                    <li><a href="/admin_sessionlist/">Sessions</a></li>
-                    <li><a href="/list_department/">Departments</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6>Tutors</h6>
-                <ul class="list-unstyled small">
-                    <li><a href="/admin_view_tutor/">Pending</a></li>
-                    <li><a href="/admin_view_approved_tutor/">Approved</a></li>
-                    <li><a href="/admin_view_rejected_tutor/">Rejected</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6>Contact</h6>
-                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-geo-alt-fill me-2"></i>Mannuthy</p>
-                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-telephone-fill me-2"></i>9876543210</p>
-                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-envelope-fill me-2"></i>afsasiddique@gmail.com</p>
-                <div class="d-flex pt-2">
-                    <a class="social-btn" href="https://www.twitter.com/login"><i class="bi bi-twitter"></i></a>
-                    <a class="social-btn" href="https://www.facebook.com/login/"><i class="bi bi-facebook"></i></a>
-                    <a class="social-btn" href="https://www.youtube.com/"><i class="bi bi-youtube"></i></a>
-                    <a class="social-btn" href="https://www.linkedin.com/login"><i class="bi bi-linkedin"></i></a>
+    <!-- ===== About Start ===== -->
+    <div class="about-section">
+        <div class="container-lg">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <img class="img-fluid w-100" src="/static/img/about-1.jpg" alt="About 1">
+                        </div>
+                        <div class="col-6">
+                            <img class="img-fluid w-100" src="/static/img/about-2.jpg" alt="About 2"
+                                style="margin-top: 15%;">
+                        </div>
+                        <div class="col-6">
+                            <img class="img-fluid w-100" src="/static/img/about-3.jpg" alt="About 3">
+                        </div>
+                        <div class="col-6">
+                            <img class="img-fluid w-100" src="/static/img/about-4.jpg" alt="About 4">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h1>We Help To Get The Best Job And Find A Talent</h1>
+                    <p class="mb-4">
+                        At Vimala College, the Placement Cell is here to support students in finding their ideal job
+                        opportunities and help companies find the right talent. We provide personalized career guidance,
+                        resume support, interview preparation, and more to ensure students are job-ready.
+                    </p>
+
+                    <p><i class="bi bi-check-circle-fill about-check"></i> We connect employers with skilled graduates
+                    </p>
+                    <p><i class="bi bi-check-circle-fill about-check"></i> We simplify the hiring process for companies
+                        and students</p>
+                    <p><i class="bi bi-check-circle-fill about-check"></i> We create successful career connections</p>
+
+                    <a class="btn-outline-navy mt-3" href="#">Read More</a>
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p class="mb-0">&copy; 2024 CampusHire. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
-        </div>
     </div>
-</footer>
+    <!-- About End -->
 
-<!-- Back to Top -->
-<a href="#" class="back-to-top" id="backToTop"><i class="bi bi-arrow-up"></i></a>
+    {% endblock %}
 
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <div class="container-lg">
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <h6>CampusHire</h6>
+                    <p class="mb-0" style="font-size: 0.85rem; opacity: 0.85;">Premium platform connecting campus talent
+                        with career opportunity.</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Admin Tools</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="/admin_joblist/">Job List</a></li>
+                        <li><a href="/admin_sessionlist/">Sessions</a></li>
+                        <li><a href="/list_department/">Departments</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Tutors</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="/admin_view_tutor/">Pending</a></li>
+                        <li><a href="/admin_view_approved_tutor/">Approved</a></li>
+                        <li><a href="/admin_view_rejected_tutor/">Rejected</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Contact</h6>
+                    <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-geo-alt-fill me-2"></i>Mannuthy</p>
+                    <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-telephone-fill me-2"></i>9876543210</p>
+                    <p class="mb-2" style="font-size: 0.85rem;"><i
+                            class="bi bi-envelope-fill me-2"></i>afsasiddique@gmail.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="social-btn" href="https://www.twitter.com/login"><i class="bi bi-twitter"></i></a>
+                        <a class="social-btn" href="https://www.facebook.com/login/"><i class="bi bi-facebook"></i></a>
+                        <a class="social-btn" href="https://www.youtube.com/"><i class="bi bi-youtube"></i></a>
+                        <a class="social-btn" href="https://www.linkedin.com/login"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2024 CampusHire. All rights reserved. | <a href="#">Privacy Policy</a> | <a
+                        href="#">Terms of Use</a></p>
+            </div>
+        </div>
+    </footer>
 
-<script>
-    // ===== Theme Management =====
-    const htmlElement = document.documentElement;
-    const lightBtn = document.getElementById('lightBtn');
-    const darkBtn = document.getElementById('darkBtn');
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top" id="backToTop"><i class="bi bi-arrow-up"></i></a>
 
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    htmlElement.setAttribute('data-theme', savedTheme);
-    updateThemeButtons(savedTheme);
 
-    lightBtn.addEventListener('click', () => {
-        htmlElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        updateThemeButtons('light');
-    });
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    darkBtn.addEventListener('click', () => {
-        htmlElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        updateThemeButtons('dark');
-    });
+    <script>
+        // ===== Theme Management =====
+        const htmlElement = document.documentElement;
+        const lightBtn = document.getElementById('lightBtn');
+        const darkBtn = document.getElementById('darkBtn');
 
-    function updateThemeButtons(theme) {
-        if (theme === 'light') {
-            lightBtn.classList.add('active');
-            darkBtn.classList.remove('active');
-        } else {
-            darkBtn.classList.add('active');
-            lightBtn.classList.remove('active');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeButtons(savedTheme);
+
+        lightBtn.addEventListener('click', () => {
+            htmlElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            updateThemeButtons('light');
+        });
+
+        darkBtn.addEventListener('click', () => {
+            htmlElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            updateThemeButtons('dark');
+        });
+
+        function updateThemeButtons(theme) {
+            if (theme === 'light') {
+                lightBtn.classList.add('active');
+                darkBtn.classList.remove('active');
+            } else {
+                darkBtn.classList.add('active');
+                lightBtn.classList.remove('active');
+            }
         }
-    }
 
-    // ===== Back to Top =====
-    const backToTop = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTop.classList.add('show');
-        } else {
-            backToTop.classList.remove('show');
-        }
-    });
-    backToTop.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-</script>
+        // ===== Back to Top =====
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
 
 </html>

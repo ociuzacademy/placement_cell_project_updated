@@ -14,7 +14,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -23,8 +25,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; font-weight: 700; }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
 
         :root {
             --color-navy: #1E293B;
@@ -67,8 +80,14 @@
             --color-gold: #FBBF24;
         }
 
-        html { scroll-behavior: smooth; color-scheme: light; }
-        [data-theme="dark"] html { color-scheme: dark; }
+        html {
+            scroll-behavior: smooth;
+            color-scheme: light;
+        }
+
+        [data-theme="dark"] html {
+            color-scheme: dark;
+        }
 
         body {
             background-color: var(--bg-primary);
@@ -83,6 +102,7 @@
             padding: 1.1rem 0 !important;
             box-shadow: var(--shadow-md);
         }
+
         .navbar-brand {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
@@ -91,6 +111,7 @@
             letter-spacing: -0.5px;
             padding: 0 !important;
         }
+
         .nav-link {
             color: rgba(255, 255, 255, 0.85) !important;
             font-weight: 500;
@@ -98,7 +119,11 @@
             margin: 0 0.35rem;
             transition: color 0.3s ease;
         }
-        .nav-link:hover, .nav-link.active { color: var(--color-gold) !important; }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-gold) !important;
+        }
 
         .dropdown-menu {
             background: var(--bg-secondary);
@@ -108,6 +133,7 @@
             padding: 0.5rem;
             margin-top: 0.5rem;
         }
+
         .dropdown-item {
             color: var(--text-primary);
             font-size: 0.9rem;
@@ -116,6 +142,7 @@
             padding: 0.5rem 0.75rem;
             transition: all 0.2s ease;
         }
+
         .dropdown-item:hover {
             background: var(--color-gold);
             color: var(--color-navy);
@@ -134,6 +161,7 @@
             display: inline-block;
             margin-left: 0.75rem;
         }
+
         .btn-nav-gold:hover {
             background: var(--color-gold-light);
             transform: translateY(-2px);
@@ -153,6 +181,7 @@
             transition: all 0.3s ease;
             margin-left: 1rem;
         }
+
         .theme-toggle button {
             background: transparent;
             border: none;
@@ -167,6 +196,7 @@
             cursor: pointer;
             font-size: 0.9rem;
         }
+
         .theme-toggle button.active {
             background: var(--color-gold);
             color: var(--color-navy);
@@ -179,7 +209,11 @@
             font-size: 1rem;
             padding: 0.5rem !important;
         }
-        .notif-bell:hover { color: var(--color-gold) !important; }
+
+        .notif-bell:hover {
+            color: var(--color-gold) !important;
+        }
+
         .notif-badge {
             background: var(--color-gold) !important;
             color: var(--color-navy) !important;
@@ -194,12 +228,14 @@
             height: 520px;
             overflow: hidden;
         }
+
         .header-carousel-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             filter: brightness(0.75);
         }
+
         .carousel-overlay {
             position: absolute;
             inset: 0;
@@ -207,6 +243,7 @@
             display: flex;
             align-items: center;
         }
+
         .carousel-overlay h1 {
             color: #fff;
             font-size: 3rem;
@@ -215,6 +252,7 @@
             letter-spacing: -1px;
             margin-bottom: 1.25rem;
         }
+
         .carousel-overlay p {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.1rem;
@@ -222,6 +260,7 @@
             margin-bottom: 2rem;
             line-height: 1.7;
         }
+
         .btn-primary-gold {
             background: var(--color-gold);
             border: none;
@@ -237,6 +276,7 @@
             gap: 0.5rem;
             letter-spacing: 0.3px;
         }
+
         .btn-primary-gold:hover {
             background: var(--color-gold-light);
             transform: translateY(-3px);
@@ -254,6 +294,7 @@
             color: var(--text-primary);
             text-align: center;
         }
+
         .section-subtitle {
             font-size: 1rem;
             color: var(--text-secondary);
@@ -269,10 +310,12 @@
             padding: 5rem 0;
             background: var(--bg-primary);
         }
+
         .about-section img {
             border-radius: 0.75rem;
             box-shadow: var(--shadow-md);
         }
+
         .about-section h1 {
             font-size: 2.25rem;
             font-weight: 800;
@@ -280,16 +323,19 @@
             letter-spacing: -0.5px;
             margin-bottom: 1.25rem;
         }
+
         .about-section p {
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.8;
         }
+
         .about-check {
             color: var(--color-gold) !important;
             font-size: 1rem;
             margin-right: 0.6rem;
         }
+
         .btn-outline-navy {
             background: transparent;
             border: 2px solid var(--color-navy);
@@ -303,15 +349,18 @@
             display: inline-block;
             letter-spacing: 0.3px;
         }
+
         [data-theme="dark"] .btn-outline-navy {
             border-color: var(--color-gold);
             color: var(--color-gold);
         }
+
         .btn-outline-navy:hover {
             background: var(--color-navy);
             color: #fff;
             box-shadow: var(--shadow-md);
         }
+
         [data-theme="dark"] .btn-outline-navy:hover {
             background: var(--color-gold);
             color: var(--color-navy);
@@ -326,6 +375,7 @@
             flex-wrap: wrap;
             border: none;
         }
+
         .job-tabs .nav-link {
             background: var(--bg-secondary) !important;
             border: 2px solid var(--border-light) !important;
@@ -338,17 +388,24 @@
             transition: all 0.3s ease;
             margin: 0 !important;
         }
+
         .job-tabs .nav-link:hover {
             border-color: var(--color-gold) !important;
             color: var(--color-gold) !important;
         }
+
         .job-tabs .nav-link.active {
             background: var(--color-navy) !important;
             border-color: var(--color-navy) !important;
             color: #fff !important;
             box-shadow: var(--shadow-md);
         }
-        .job-tabs .nav-link h6 { color: inherit !important; font-size: 0.95rem; margin: 0; }
+
+        .job-tabs .nav-link h6 {
+            color: inherit !important;
+            font-size: 0.95rem;
+            margin: 0;
+        }
 
         .job-item {
             background: var(--bg-secondary) !important;
@@ -359,6 +416,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .job-item::before {
             content: '';
             position: absolute;
@@ -370,12 +428,17 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .job-item:hover {
             border-color: var(--color-gold) !important;
             box-shadow: var(--shadow-lg);
             transform: translateY(-4px);
         }
-        .job-item:hover::before { opacity: 1; }
+
+        .job-item:hover::before {
+            opacity: 1;
+        }
+
         .job-item img {
             border-radius: 0.5rem !important;
             border: 1px solid var(--border-light) !important;
@@ -383,6 +446,7 @@
             object-fit: contain;
             padding: 0.25rem;
         }
+
         .job-item h5 {
             color: var(--text-primary) !important;
             font-weight: 700;
@@ -390,11 +454,16 @@
             letter-spacing: -0.3px;
             margin-bottom: 0.75rem;
         }
-        .job-item .text-primary { color: var(--color-gold) !important; }
+
+        .job-item .text-primary {
+            color: var(--color-gold) !important;
+        }
+
         .job-item .text-truncate {
             color: var(--text-secondary) !important;
             font-size: 0.85rem;
         }
+
         .btn-job-apply {
             background: var(--color-gold);
             color: var(--color-navy);
@@ -408,12 +477,14 @@
             text-decoration: none;
             display: inline-block;
         }
+
         .btn-job-apply:hover {
             background: var(--color-gold-light);
             color: var(--color-navy);
             transform: translateY(-2px);
             box-shadow: 0 8px 16px rgba(245, 158, 11, 0.25);
         }
+
         .btn-job-outline {
             background: transparent;
             color: var(--text-primary);
@@ -426,16 +497,19 @@
             text-decoration: none;
             display: inline-block;
         }
+
         .btn-job-outline:hover {
             border-color: var(--color-navy);
             background: var(--color-navy);
             color: #fff;
         }
+
         [data-theme="dark"] .btn-job-outline:hover {
             border-color: var(--color-gold);
             background: var(--color-gold);
             color: var(--color-navy);
         }
+
         .btn-browse-more {
             background: var(--color-navy);
             color: #fff;
@@ -449,6 +523,7 @@
             text-decoration: none;
             display: inline-block;
         }
+
         .btn-browse-more:hover {
             background: var(--color-navy-light);
             color: #fff;
@@ -464,6 +539,7 @@
             font-size: 0.9rem;
             margin-top: 4rem;
         }
+
         .footer h6 {
             color: white;
             font-size: 0.95rem;
@@ -472,16 +548,19 @@
             letter-spacing: 0.5px;
             font-family: 'Playfair Display', serif;
         }
+
         .footer a {
             color: var(--color-gold);
             text-decoration: none;
             transition: all 0.3s ease;
             font-weight: 500;
         }
+
         .footer a:hover {
             color: var(--color-gold-light);
             text-decoration: underline;
         }
+
         .footer .social-btn {
             width: 36px;
             height: 36px;
@@ -495,12 +574,14 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
+
         .footer .social-btn:hover {
             background: var(--color-gold);
             color: var(--color-navy);
             border-color: var(--color-gold);
             transform: translateY(-3px);
         }
+
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
@@ -528,7 +609,12 @@
             opacity: 0;
             pointer-events: none;
         }
-        .back-to-top.show { opacity: 1; pointer-events: auto; }
+
+        .back-to-top.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         .back-to-top:hover {
             background: var(--color-gold-light);
             color: var(--color-navy);
@@ -537,425 +623,495 @@
 
         /* ===== Responsive ===== */
         @media (max-width: 768px) {
-            .carousel-overlay h1 { font-size: 2rem; }
-            .carousel-overlay p { font-size: 1rem; }
-            .header-carousel-item { height: 420px; }
-            .section-title { font-size: 1.85rem; }
-            .about-section h1 { font-size: 1.65rem; }
-            .job-item { padding: 1.25rem !important; }
-            .job-item h5 { font-size: 1rem; }
-            .navbar-brand { font-size: 1.4rem; }
+            .carousel-overlay h1 {
+                font-size: 2rem;
+            }
+
+            .carousel-overlay p {
+                font-size: 1rem;
+            }
+
+            .header-carousel-item {
+                height: 420px;
+            }
+
+            .section-title {
+                font-size: 1.85rem;
+            }
+
+            .about-section h1 {
+                font-size: 1.65rem;
+            }
+
+            .job-item {
+                padding: 1.25rem !important;
+            }
+
+            .job-item h5 {
+                font-size: 1rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            * { animation: none !important; transition: none !important; }
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<!-- ===== Navbar ===== -->
-<nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container-lg">
-        <a class="navbar-brand" href="{% url 'tutor_index' %}">CampusHire</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            style="border-color: rgba(255,255,255,0.5);">
-            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-        </button>
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-lg">
+            <a class="navbar-brand" href="{% url 'tutor_index' %}">CampusHire</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border-color: rgba(255,255,255,0.5);">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a href="{% url 'tutor_index' %}" class="nav-link active">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'tutor_about' %}" class="nav-link">About</a>
-                </li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a href="{% url 'tutor_index' %}" class="nav-link active">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'tutor_about' %}" class="nav-link">About</a>
+                    </li>
 
-                <!-- Jobs Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'tutor_job_list' %}" class="dropdown-item">Job List</a></li>
-                    </ul>
-                </li>
+                    <!-- Jobs Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'tutor_job_list' %}" class="dropdown-item">Job List</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Students Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Students</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'list_student' %}" class="dropdown-item">List Student</a></li>
-                    </ul>
-                </li>
+                    <!-- Students Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Students</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'list_student' %}" class="dropdown-item">List Student</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Orientation Session Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Orientation</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'tutor_sessionlist' %}" class="dropdown-item">List Session</a></li>
-                    </ul>
-                </li>
+                    <!-- Orientation Session Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Orientation</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'tutor_sessionlist' %}" class="dropdown-item">List Session</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Profile -->
-                <li class="nav-item">
-                    <a href="{% url 'tutor_profile' %}" class="nav-link">Profile</a>
-                </li>
+                    <!-- Profile -->
+                    <li class="nav-item">
+                        <a href="{% url 'tutor_profile' %}" class="nav-link">Profile</a>
+                    </li>
 
-                <!-- Notifications -->
-                <li class="nav-item">
-                    <a href="{% url 'tutor_notifications' %}" class="nav-link notif-bell">
-                        <i class="bi bi-bell-fill"></i>
-                        {% if notifications_count > 0 %}
-                            <span class="badge rounded-pill notif-badge position-absolute top-0 start-100 translate-middle">
+                    <!-- Notifications -->
+                    <li class="nav-item">
+                        <a href="{% url 'tutor_notifications' %}" class="nav-link notif-bell">
+                            <i class="bi bi-bell-fill"></i>
+                            {% if notifications_count > 0 %}
+                            <span
+                                class="badge rounded-pill notif-badge position-absolute top-0 start-100 translate-middle">
                                 {{ notifications_count }}
                             </span>
-                        {% endif %}
-                    </a>
-                </li>
+                            {% endif %}
+                        </a>
+                    </li>
 
-                <!-- Theme Toggle -->
-                <li class="nav-item">
-                    <div class="theme-toggle">
-                        <button class="theme-btn light active" id="lightBtn" title="Light mode" type="button">
-                            <i class="bi bi-sun-fill"></i>
-                        </button>
-                        <button class="theme-btn dark" id="darkBtn" title="Dark mode" type="button">
-                            <i class="bi bi-moon-fill"></i>
-                        </button>
-                    </div>
-                </li>
+                    <!-- Theme Toggle -->
+                    <li class="nav-item">
+                        <div class="theme-toggle">
+                            <button class="theme-btn light active" id="lightBtn" title="Light mode" type="button">
+                                <i class="bi bi-sun-fill"></i>
+                            </button>
+                            <button class="theme-btn dark" id="darkBtn" title="Dark mode" type="button">
+                                <i class="bi bi-moon-fill"></i>
+                            </button>
+                        </div>
+                    </li>
 
-                <!-- Logout -->
-                <li class="nav-item">
-                    <a href="{% url 'logout' %}" class="btn-nav-gold">Logout</a>
-                </li>
-            </ul>
+                    <!-- Logout -->
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="btn-nav-gold">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-{% if messages %}
+    </nav>
+    {% if messages %}
     {% for message in messages %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
+    <div class="alert 
+            {% if message.tags == 'success' %}
+                alert-success
+            {% elif message.tags == 'warning' %}
+                alert-warning
+            {% elif message.tags == 'error' %}
+                alert-danger
+            {% elif message.tags == 'info' %}
+                alert-info
+            {% else %}
+                alert-secondary
+            {% endif %}" role="alert">
+
+        {{ message }}
+
+    </div>
     {% endfor %}
-{% endif %}
+    {% endif %}
 
-{% block content %}
-<!-- ===== Carousel Start ===== -->
-<div class="container-fluid p-0">
-    <div id="headerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="header-carousel-item">
-                    <img src="/static/img/carousel-1.jpg" alt="Campus to corporate">
-                    <div class="carousel-overlay">
-                        <div class="container-lg">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <h1>From campus to corporate, we pave the way</h1>
-                                    <p>It's not what you achieve, it's what you overcome. That's what defines your career. – Carlton Fisk</p>
-                                    <a href="{% url 'tutor_job_list' %}" class="btn-primary-gold">
-                                        <i class="bi bi-search"></i> Search A Job
-                                    </a>
+    {% block content %}
+    <!-- ===== Carousel Start ===== -->
+    <div class="container-fluid p-0">
+        <div id="headerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="header-carousel-item">
+                        <img src="/static/img/carousel-1.jpg" alt="Campus to corporate">
+                        <div class="carousel-overlay">
+                            <div class="container-lg">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h1>From campus to corporate, we pave the way</h1>
+                                        <p>It's not what you achieve, it's what you overcome. That's what defines your
+                                            career. – Carlton Fisk</p>
+                                        <a href="{% url 'tutor_job_list' %}" class="btn-primary-gold">
+                                            <i class="bi bi-search"></i> Search A Job
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="header-carousel-item">
+                        <img src="/static/img/carousel-2.jpg" alt="Startup jobs">
+                        <div class="carousel-overlay">
+                            <div class="container-lg">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h1>Find The Best Startup Job That Fits You</h1>
+                                        <p>The journey to your dream job begins here.</p>
+                                        <a href="{% url 'tutor_job_list' %}" class="btn-primary-gold">
+                                            <i class="bi bi-search"></i> Search A Job
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="carousel-item">
-                <div class="header-carousel-item">
-                    <img src="/static/img/carousel-2.jpg" alt="Startup jobs">
-                    <div class="carousel-overlay">
-                        <div class="container-lg">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <h1>Find The Best Startup Job That Fits You</h1>
-                                    <p>The journey to your dream job begins here.</p>
-                                    <a href="{% url 'tutor_job_list' %}" class="btn-primary-gold">
-                                        <i class="bi bi-search"></i> Search A Job
-                                    </a>
-                                </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#headerCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#headerCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+
+    <!-- ===== About Start ===== -->
+    <div class="about-section">
+        <div class="container-lg">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <img class="img-fluid w-100" src="/static/img/about-1.jpg" alt="About 1">
+                        </div>
+                        <div class="col-6">
+                            <img class="img-fluid w-100" src="/static/img/about-2.jpg" alt="About 2"
+                                style="margin-top: 15%;">
+                        </div>
+                        <div class="col-6">
+                            <img class="img-fluid w-100" src="/static/img/about-3.jpg" alt="About 3">
+                        </div>
+                        <div class="col-6">
+                            <img class="img-fluid w-100" src="/static/img/about-4.jpg" alt="About 4">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h1>We Help To Get The Best Job And Find A Talent</h1>
+                    <p class="mb-4">
+                        At Vimala College, the Placement Cell is here to support students in finding their ideal job
+                        opportunities and help companies find the right talent. We provide personalized career guidance,
+                        resume support, interview preparation, and more to ensure students are job-ready.
+                    </p>
+
+                    <p><i class="bi bi-check-circle-fill about-check"></i> We connect employers with skilled graduates
+                    </p>
+                    <p><i class="bi bi-check-circle-fill about-check"></i> We simplify the hiring process for companies
+                        and students</p>
+                    <p><i class="bi bi-check-circle-fill about-check"></i> We create successful career connections</p>
+
+                    <a class="btn-outline-navy mt-3" href="{% url 'tutor_about' %}">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    {% comment %}
+    <!-- ===== Job Listing (commented out in original — uncomment to enable) ===== -->
+    <div class="container-lg py-5">
+        <h2 class="section-title">Job Listing</h2>
+        <p class="section-subtitle">Manage and review job opportunities for your students</p>
+
+        <ul class="nav nav-pills job-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#featured-jobs" type="button"
+                    role="tab">Featured</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#full-time-jobs" type="button"
+                    role="tab">Full Time</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#part-time-jobs" type="button"
+                    role="tab">Part Time</button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Featured -->
+            <div id="featured-jobs" class="tab-pane fade show active" role="tabpanel">
+                {% for job in featured_jobs %}
+                <div class="job-item mb-4">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt=""
+                                style="width: 80px; height: 80px;">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">{{ job.title }}</h5>
+                                <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{
+                                    job.place }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{
+                                    job.job_type }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{
+                                    job.salary }}</span>
+                                <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{
+                                    job.department.name }}</span>
                             </div>
                         </div>
+                        <div
+                            class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3 gap-2 flex-wrap">
+                                <a class="btn-job-outline" href="/tutor_job_detail/{{ job.id }}/">Read More</a>
+                                <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Applied List</button>
+                            </div>
+                            <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted:
+                                {{ job.date }}</small>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
+            </div>
+
+            <!-- Full-Time -->
+            <div id="full-time-jobs" class="tab-pane fade" role="tabpanel">
+                {% for job in full_time_jobs %}
+                <div class="job-item mb-4">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt=""
+                                style="width: 80px; height: 80px;">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">{{ job.title }}</h5>
+                                <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{
+                                    job.place }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{
+                                    job.job_type }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{
+                                    job.salary }}</span>
+                                <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{
+                                    job.department.name }}</span>
+                            </div>
+                        </div>
+                        <div
+                            class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3 gap-2 flex-wrap">
+                                <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">Read More</a>
+                                <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
+                            </div>
+                            <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted:
+                                {{ job.date }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Part-Time -->
+            <div id="part-time-jobs" class="tab-pane fade" role="tabpanel">
+                {% for job in part_time_jobs %}
+                <div class="job-item mb-4">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt=""
+                                style="width: 80px; height: 80px;">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">{{ job.title }}</h5>
+                                <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{
+                                    job.place }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{
+                                    job.job_type }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{
+                                    job.salary }}</span>
+                                <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{
+                                    job.department.name }}</span>
+                            </div>
+                        </div>
+                        <div
+                            class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3 gap-2 flex-wrap">
+                                <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">Read More</a>
+                                <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
+                            </div>
+                            <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted:
+                                {{ job.date }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#headerCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#headerCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</div>
-<!-- Carousel End -->
-
-
-<!-- ===== About Start ===== -->
-<div class="about-section">
-    <div class="container-lg">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <img class="img-fluid w-100" src="/static/img/about-1.jpg" alt="About 1">
-                    </div>
-                    <div class="col-6">
-                        <img class="img-fluid w-100" src="/static/img/about-2.jpg" alt="About 2" style="margin-top: 15%;">
-                    </div>
-                    <div class="col-6">
-                        <img class="img-fluid w-100" src="/static/img/about-3.jpg" alt="About 3">
-                    </div>
-                    <div class="col-6">
-                        <img class="img-fluid w-100" src="/static/img/about-4.jpg" alt="About 4">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <h1>We Help To Get The Best Job And Find A Talent</h1>
-                <p class="mb-4">
-                    At Vimala College, the Placement Cell is here to support students in finding their ideal job
-                    opportunities and help companies find the right talent. We provide personalized career guidance,
-                    resume support, interview preparation, and more to ensure students are job-ready.
-                </p>
-
-                <p><i class="bi bi-check-circle-fill about-check"></i> We connect employers with skilled graduates</p>
-                <p><i class="bi bi-check-circle-fill about-check"></i> We simplify the hiring process for companies and students</p>
-                <p><i class="bi bi-check-circle-fill about-check"></i> We create successful career connections</p>
-
-                <a class="btn-outline-navy mt-3" href="{% url 'tutor_about' %}">Read More</a>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- About End -->
-
-
-{% comment %}
-<!-- ===== Job Listing (commented out in original — uncomment to enable) ===== -->
-<div class="container-lg py-5">
-    <h2 class="section-title">Job Listing</h2>
-    <p class="section-subtitle">Manage and review job opportunities for your students</p>
-
-    <ul class="nav nav-pills job-tabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#featured-jobs" type="button" role="tab">Featured</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#full-time-jobs" type="button" role="tab">Full Time</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#part-time-jobs" type="button" role="tab">Part Time</button>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-        <!-- Featured -->
-        <div id="featured-jobs" class="tab-pane fade show active" role="tabpanel">
-            {% for job in featured_jobs %}
-            <div class="job-item mb-4">
-                <div class="row g-4">
-                    <div class="col-12 col-md-8 d-flex align-items-center">
-                        <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                        <div class="text-start ps-4">
-                            <h5 class="mb-3">{{ job.title }}</h5>
-                            <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
-                            <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                            <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
-                            <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                        <div class="d-flex mb-3 gap-2 flex-wrap">
-                            <a class="btn-job-outline" href="/tutor_job_detail/{{ job.id }}/">Read More</a>
-                            <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Applied List</button>
-                        </div>
-                        <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Full-Time -->
-        <div id="full-time-jobs" class="tab-pane fade" role="tabpanel">
-            {% for job in full_time_jobs %}
-            <div class="job-item mb-4">
-                <div class="row g-4">
-                    <div class="col-12 col-md-8 d-flex align-items-center">
-                        <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                        <div class="text-start ps-4">
-                            <h5 class="mb-3">{{ job.title }}</h5>
-                            <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
-                            <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                            <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
-                            <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                        <div class="d-flex mb-3 gap-2 flex-wrap">
-                            <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                            <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
-                        </div>
-                        <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Part-Time -->
-        <div id="part-time-jobs" class="tab-pane fade" role="tabpanel">
-            {% for job in part_time_jobs %}
-            <div class="job-item mb-4">
-                <div class="row g-4">
-                    <div class="col-12 col-md-8 d-flex align-items-center">
-                        <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                        <div class="text-start ps-4">
-                            <h5 class="mb-3">{{ job.title }}</h5>
-                            <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
-                            <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                            <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
-                            <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                        <div class="d-flex mb-3 gap-2 flex-wrap">
-                            <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                            <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
-                        </div>
-                        <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+        <div class="d-flex justify-content-center mt-4">
+            <a class="btn-browse-more" href="{% url 'tutor_job_list' %}">Browse More Jobs</a>
         </div>
     </div>
+    {% endcomment %}
 
-    <div class="d-flex justify-content-center mt-4">
-        <a class="btn-browse-more" href="{% url 'tutor_job_list' %}">Browse More Jobs</a>
-    </div>
-</div>
-{% endcomment %}
-
-{% endblock %}
+    {% endblock %}
 
 
-<!-- ===== Footer ===== -->
-<footer class="footer">
-    <div class="container-lg">
-        <div class="row mb-4">
-            <div class="col-md-3 mb-3">
-                <h6>CampusHire</h6>
-                <p class="mb-0" style="font-size: 0.85rem; opacity: 0.85;">Premium platform connecting campus talent
-                    with career opportunity.</p>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6>For Students</h6>
-                <ul class="list-unstyled small">
-                    <li><a href="{% url 'tutor_job_list' %}">Browse Jobs</a></li>
-                    <li><a href="{% url 'list_student' %}">Students</a></li>
-                    <li><a href="{% url 'tutor_sessionlist' %}">Sessions</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6>Quick Links</h6>
-                <ul class="list-unstyled small">
-                    <li><a href="{% url 'tutor_about' %}">About</a></li>
-                    <li><a href="{% url 'tutor_profile' %}">Profile</a></li>
-                    <li><a href="{% url 'tutor_notifications' %}">Notifications</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6>Contact</h6>
-                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-geo-alt-fill me-2"></i>Mannuthy</p>
-                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-telephone-fill me-2"></i>9876543210</p>
-                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-envelope-fill me-2"></i>afsasiddique@gmail.com</p>
-                <div class="d-flex pt-2">
-                    <a class="social-btn" href="https://www.twitter.com/login"><i class="bi bi-twitter"></i></a>
-                    <a class="social-btn" href="https://www.facebook.com/login/"><i class="bi bi-facebook"></i></a>
-                    <a class="social-btn" href="https://www.youtube.com/"><i class="bi bi-youtube"></i></a>
-                    <a class="social-btn" href="https://www.linkedin.com/login"><i class="bi bi-linkedin"></i></a>
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <div class="container-lg">
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <h6>CampusHire</h6>
+                    <p class="mb-0" style="font-size: 0.85rem; opacity: 0.85;">Premium platform connecting campus talent
+                        with career opportunity.</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>For Students</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="{% url 'tutor_job_list' %}">Browse Jobs</a></li>
+                        <li><a href="{% url 'list_student' %}">Students</a></li>
+                        <li><a href="{% url 'tutor_sessionlist' %}">Sessions</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="{% url 'tutor_about' %}">About</a></li>
+                        <li><a href="{% url 'tutor_profile' %}">Profile</a></li>
+                        <li><a href="{% url 'tutor_notifications' %}">Notifications</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Contact</h6>
+                    <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-geo-alt-fill me-2"></i>Mannuthy</p>
+                    <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-telephone-fill me-2"></i>9876543210</p>
+                    <p class="mb-2" style="font-size: 0.85rem;"><i
+                            class="bi bi-envelope-fill me-2"></i>afsasiddique@gmail.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="social-btn" href="https://www.twitter.com/login"><i class="bi bi-twitter"></i></a>
+                        <a class="social-btn" href="https://www.facebook.com/login/"><i class="bi bi-facebook"></i></a>
+                        <a class="social-btn" href="https://www.youtube.com/"><i class="bi bi-youtube"></i></a>
+                        <a class="social-btn" href="https://www.linkedin.com/login"><i class="bi bi-linkedin"></i></a>
+                    </div>
                 </div>
             </div>
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2024 CampusHire. All rights reserved. | <a href="#">Privacy Policy</a> | <a
+                        href="#">Terms of Use</a></p>
+            </div>
         </div>
-        <div class="footer-bottom">
-            <p class="mb-0">&copy; 2024 CampusHire. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
-<!-- Back to Top -->
-<a href="#" class="back-to-top" id="backToTop"><i class="bi bi-arrow-up"></i></a>
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top" id="backToTop"><i class="bi bi-arrow-up"></i></a>
 
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    // ===== Theme Management =====
-    const htmlElement = document.documentElement;
-    const lightBtn = document.getElementById('lightBtn');
-    const darkBtn = document.getElementById('darkBtn');
+    <script>
+        // ===== Theme Management =====
+        const htmlElement = document.documentElement;
+        const lightBtn = document.getElementById('lightBtn');
+        const darkBtn = document.getElementById('darkBtn');
 
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    htmlElement.setAttribute('data-theme', savedTheme);
-    updateThemeButtons(savedTheme);
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeButtons(savedTheme);
 
-    lightBtn.addEventListener('click', () => {
-        htmlElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        updateThemeButtons('light');
-    });
+        lightBtn.addEventListener('click', () => {
+            htmlElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            updateThemeButtons('light');
+        });
 
-    darkBtn.addEventListener('click', () => {
-        htmlElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        updateThemeButtons('dark');
-    });
+        darkBtn.addEventListener('click', () => {
+            htmlElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            updateThemeButtons('dark');
+        });
 
-    function updateThemeButtons(theme) {
-        if (theme === 'light') {
-            lightBtn.classList.add('active');
-            darkBtn.classList.remove('active');
-        } else {
-            darkBtn.classList.add('active');
-            lightBtn.classList.remove('active');
+        function updateThemeButtons(theme) {
+            if (theme === 'light') {
+                lightBtn.classList.add('active');
+                darkBtn.classList.remove('active');
+            } else {
+                darkBtn.classList.add('active');
+                lightBtn.classList.remove('active');
+            }
         }
-    }
 
-    // ===== Back to Top =====
-    const backToTop = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTop.classList.add('show');
-        } else {
-            backToTop.classList.remove('show');
-        }
-    });
-    backToTop.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // ===== Smooth scroll for hash links =====
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href !== '#' && document.querySelector(href)) {
-                e.preventDefault();
-                document.querySelector(href).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // ===== Back to Top =====
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
             }
         });
-    });
-</script>
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== Smooth scroll for hash links =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

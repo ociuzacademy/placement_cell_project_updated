@@ -30,64 +30,240 @@ from .models import Job, tbl_student, tbl_tutor, tbl_department
 
 def index(request):
     return render(request, 'index.html')
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.contrib import messages
+from django.db.models import Q
+
+from .models import (
+    Job,
+    tbl_student,
+    tbl_tutor,
+    tbl_admin,
+    tbl_department
+)
+
 
 def login(request):
+
+    # Jobs for homepage/login page
     full_time_jobs = Job.objects.filter(job_type='full-time')
     part_time_jobs = Job.objects.filter(job_type='part-time')
-    featured_jobs = Job.objects.filter(Q(job_type='full-time') | Q(job_type='part-time')).order_by('-date')[:5]
+
+    featured_jobs = Job.objects.filter(
+        Q(job_type='full-time') | Q(job_type='part-time')
+    ).order_by('-date')[:5]
 
     if request.method == "POST":
-        role = request.POST.get('role')  
+
+        role = request.POST.get('role')
         pswd = request.POST.get('password')
 
-        # Handle student login
+        # =====================================================
+        # STUDENT LOGIN
+        # =====================================================
         if role == "student":
+
             student_id = request.POST.get('student_id')
             student_email = request.POST.get('student_email')
 
-            student_var = tbl_student.objects.filter(student_email=student_email, student_id=student_id)
+            student_var = tbl_student.objects.filter(
+                student_email=student_email,
+                student_id=student_id
+            )
+
             if student_var.exists():
+
                 student = student_var.first()
+
                 request.session['id'] = student.id
-                return render(request, 'user/user_index.html', {
+                request.session['role'] = 'student'
+
+                return render(
+                    request,
+                    'user/user_index.html',
+                    {
+                        'full_time_jobs': full_time_jobs,
+                        'part_time_jobs': part_time_jobs,
+                        'featured_jobs': featured_jobs
+                    }
+                )
+
+            else:
+                messages.error(
+                    request,
+                    "Invalid student credentials!"
+                )
+
+                return render(
+                    request,
+                    "login.html",
+                    {
+                        'full_time_jobs': full_time_jobs,
+                        'part_time_jobs': part_time_jobs,
+                        'featured_jobs': featured_jobs
+                    }
+                )
+
+        # =====================================================
+        # FACULTY / TUTOR LOGIN
+        # =====================================================
+        elif role == "faculty":
+
+            faculty_email = request.POST.get('email')
+
+            tutor_var = tbl_tutor.objects.filter(
+                email=faculty_email,
+                password=pswd
+            )
+
+            if tutor_var.exists():
+
+                tutor_instance = tutor_var.first()
+
+                # Approved tutor
+                if tutor_instance.status == 'approved':
+
+                    request.session['id'] = tutor_instance.id
+                    request.session['role'] = 'faculty'
+
+                    return render(
+                        request,
+                        'tutor/tutor_index.html'
+                    )
+
+                # Pending tutor
+                elif tutor_instance.status == 'pending':
+
+                    messages.warning(
+                        request,
+                        "Your faculty account is still pending approval."
+                    )
+
+                    return render(
+                        request,
+                        'login.html',
+                        {
+                            'full_time_jobs': full_time_jobs,
+                            'part_time_jobs': part_time_jobs,
+                            'featured_jobs': featured_jobs
+                        }
+                    )
+
+                # Rejected tutor
+                elif tutor_instance.status == 'rejected':
+
+                    messages.error(
+                        request,
+                        "Your faculty account has been rejected."
+                    )
+
+                    return render(
+                        request,
+                        'login.html',
+                        {
+                            'full_time_jobs': full_time_jobs,
+                            'part_time_jobs': part_time_jobs,
+                            'featured_jobs': featured_jobs
+                        }
+                    )
+
+            else:
+
+                messages.error(
+                    request,
+                    "Invalid faculty credentials!"
+                )
+
+                return render(
+                    request,
+                    'login.html',
+                    {
+                        'full_time_jobs': full_time_jobs,
+                        'part_time_jobs': part_time_jobs,
+                        'featured_jobs': featured_jobs
+                    }
+                )
+
+        # =====================================================
+        # ADMIN LOGIN
+        # =====================================================
+        elif role == "admin":
+
+            admin_email = request.POST.get('email')
+
+            admin_var = tbl_admin.objects.filter(
+                email=admin_email,
+                password=pswd
+            )
+
+            if admin_var.exists():
+
+                admin = admin_var.first()
+
+                request.session['id'] = admin.id
+                request.session['role'] = 'admin'
+
+                departments = tbl_department.objects.all()
+
+                return render(
+                    request,
+                    'admin/admin_index.html',
+                    {
+                        'departments': departments
+                    }
+                )
+
+            else:
+
+                messages.error(
+                    request,
+                    "Invalid admin credentials!"
+                )
+
+                return render(
+                    request,
+                    'login.html',
+                    {
+                        'full_time_jobs': full_time_jobs,
+                        'part_time_jobs': part_time_jobs,
+                        'featured_jobs': featured_jobs
+                    }
+                )
+
+        # =====================================================
+        # INVALID ROLE
+        # =====================================================
+        else:
+
+            messages.warning(
+                request,
+                "Please select a valid role!"
+            )
+
+            return render(
+                request,
+                'login.html',
+                {
                     'full_time_jobs': full_time_jobs,
                     'part_time_jobs': part_time_jobs,
                     'featured_jobs': featured_jobs
-                })  
-            else:
-                return HttpResponse("<script>alert('Invalid student credentials!'); window.location='/';</script>")
+                }
+            )
 
-        # Handle faculty login
-        elif role == "faculty":
-            faculty_email = request.POST.get('email')
+    # =========================================================
+    # GET REQUEST
+    # =========================================================
 
-            tutor_var = tbl_tutor.objects.filter(email=faculty_email, password=pswd)
-            if tutor_var.exists():
-                tutor_instance = tutor_var.first()
-                if tutor_instance.status == 'approved':
-                    request.session['id'] = tutor_instance.id
-                    return render(request, 'tutor/tutor_index.html')
-                elif tutor_instance.status == 'pending':
-                    return render(request, 'index.html')  
-
-            return HttpResponse("<script>alert('Invalid faculty credentials!'); window.location='/';</script>")
-
-        # Handle admin login
-        elif role == "admin":
-            admin_email = request.POST.get('email')
-            admin_var = tbl_admin.objects.filter(email=admin_email, password=pswd)
-            if admin_var.exists():
-                admin = admin_var.first()
-                request.session['id'] = admin.id
-                departments = tbl_department.objects.all()
-                return render(request, 'admin/admin_index.html', {'departments': departments})
-            else:
-                return HttpResponse("<script>alert('Invalid admin credentials!'); window.location='/';</script>")
-        else:
-            return HttpResponse("<script>alert('Please select a valid role!'); window.location='/';</script>")
-
-    return render(request, "login.html")
-
+    return render(
+        request,
+        "login.html",
+        {
+            'full_time_jobs': full_time_jobs,
+            'part_time_jobs': part_time_jobs,
+            'featured_jobs': featured_jobs
+        }
+    )
 
 def logout(request):
     if request.session.has_key('id'):
