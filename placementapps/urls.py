@@ -29,7 +29,7 @@ urlpatterns = [
     path('delete_department/', views.delete_department, name='delete_department'),
     path('view_department/', views.view_department, name='view_department'),
     path('job_list/', views.job_list, name='job_list'),
-    path('job_detail/', views.job_detail, name='job_detail'),
+    path('job_detail/<int:job_id>/',views.job_detail,name='job_detail'),
     path('admin_addjoblist/', views.admin_addjoblist, name='admin_addjoblist'),
     path('admin_joblist/', views.admin_joblist, name='admin_joblist'),
     path('admin_jobdetail/', views.admin_jobdetail, name='admin_jobdetail'),
@@ -75,7 +75,7 @@ urlpatterns = [
     path('approve/<int:application_id>/', views.approve_application, name='approve_application'),
     path('reject/<int:application_id>/', views.reject_application, name='reject_application'),
     path('notifications/', views.student_notifications, name='student_notifications'),
-   path('delete_job/<int:job_id>/', views.delete_job, name='delete_job'),
+    path('delete_job/<int:job_id>/', views.delete_job, name='delete_job'),
 ]
 
 

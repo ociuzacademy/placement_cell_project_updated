@@ -352,8 +352,16 @@ def user_index(request):
 def job_list(request):
     return render(request, 'user/job_list.html')
 
-def job_detail(request):
-    return render(request, 'user/job_detail.html')
+def job_detail(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+
+    return render(
+        request,
+        'user/user_job_detail.html',
+        {
+            'job': job
+        }
+    )
 
 def user_profile(request):
     if 'id' not in request.session:
@@ -708,39 +716,83 @@ def tutor_job_detail(request, id):
 
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.http import JsonResponse
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+
+
 def apply_for_job(request, job_id):
-    if request.method == 'POST':
-        # Get the student object based on the logged-in user
-        student = request.user.tbl_student
 
-        # Get the job object based on job_id
-        job = get_object_or_404(Job, id=job_id)
+    if request.method != 'POST':
+        messages.error(request, "Invalid request.")
+        return redirect('job_detail', job_id=job_id)
 
-        # Check if the student has already applied for this job
-        existing_application = JobApplication.objects.filter(user=student, job=job).exists()
-        if existing_application:
-            return JsonResponse({'success': False, 'message': 'You have already applied for this job.'})
+    # Get logged-in student
+    student_id = request.session.get('id')
 
-        # Create the application
-        job_application = JobApplication.objects.create(user=student, job=job)
+    if not student_id:
+        messages.warning(request, "Please login first.")
+        return redirect('/')
 
-        # Create a notification for the tutor
-        tutor = job.course.tutor  # Assuming each job is linked to a course and the course has a tutor
+    student = get_object_or_404(
+        tbl_student,
+        id=student_id
+    )
 
-        # Corrected variable name and added notification save
-        notification = TutorNotification(
-            course=job.course,
-            student=student,
-            job=job,
-            notification_type='job_application',
-            message=f'{student.name} has applied for the job: {job.title}',
-            is_read=False
+    # Get job
+    job = get_object_or_404(
+        Job,
+        id=job_id
+    )
+
+    # Check duplicate application
+    existing_application = JobApplication.objects.filter(
+        user=student,
+        job=job
+    ).exists()
+
+    if existing_application:
+        messages.warning(
+            request,
+            "You have already applied for this job."
         )
-        notification.save()  # Save the notification
+        return redirect('job_detail', job_id=job.id)
 
-        return JsonResponse({'success': True, 'message': 'Successfully applied for the job!'})
-    
-    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+    # Create application
+    JobApplication.objects.create(
+        user=student,
+        job=job
+    )
+
+    # Find tutor
+    tutor = tbl_tutor.objects.filter(
+        department=job.department,
+        course=student.course,
+        batch=student.batch,
+        status='approved'
+    ).first()
+
+    # Create tutor notification
+    if tutor:
+        TutorNotification.objects.create(
+            tutor=tutor,
+            job=job,
+            message=f'{student.name} has applied for the job: {job.title}'
+        )
+
+    messages.success(
+        request,
+        "Successfully applied for the job!"
+    )
+
+    return redirect(
+        'job_detail',
+        job_id=job.id
+    )
+
+
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from datetime import datetime
@@ -992,31 +1044,31 @@ def user_applied_sessions(request):
 
     return render(request, 'user/user_applied_sessions.html', {'applied_sessions': applied_sessions})
 
-def apply_for_job(request, job_id):
-    # Get the user_id from the session
-    user_id = request.session.get('id')
+# def apply_for_job(request, job_id):
+#     # Get the user_id from the session
+#     user_id = request.session.get('id')
 
-    # Check if user_id is available in the session
-    if not user_id:
-        return JsonResponse({'success': False, 'message': 'You must be logged in to apply for a job.'})
+#     # Check if user_id is available in the session
+#     if not user_id:
+#         return JsonResponse({'success': False, 'message': 'You must be logged in to apply for a job.'})
 
-    try:
-        # Retrieve the student object using the session user_id
-        student = get_object_or_404(tbl_student, id=user_id)
-    except tbl_student.DoesNotExist:
-        return JsonResponse({'success': False, 'message': 'Student information not found for this user.'})
+#     try:
+#         # Retrieve the student object using the session user_id
+#         student = get_object_or_404(tbl_student, id=user_id)
+#     except tbl_student.DoesNotExist:
+#         return JsonResponse({'success': False, 'message': 'Student information not found for this user.'})
 
-    # Get the job object based on job_id
-    job = get_object_or_404(Job, id=job_id)
+#     # Get the job object based on job_id
+#     job = get_object_or_404(Job, id=job_id)
 
-    # Check if the student has already applied for the job
-    existing_application = JobApplication.objects.filter(user=student, job=job).exists()
-    if existing_application:
-        return JsonResponse({'success': False, 'message': 'You have already applied for this job.'})
+#     # Check if the student has already applied for the job
+#     existing_application = JobApplication.objects.filter(user=student, job=job).exists()
+#     if existing_application:
+#         return JsonResponse({'success': False, 'message': 'You have already applied for this job.'})
 
-    # Create a new application
-    JobApplication.objects.create(user=student, job=job)
-    return JsonResponse({'success': True, 'message': 'Successfully applied for the job!'})
+#     # Create a new application
+#     JobApplication.objects.create(user=student, job=job)
+#     return JsonResponse({'success': True, 'message': 'Successfully applied for the job!'})
 
 
 from django.shortcuts import render, redirect
@@ -1534,7 +1586,7 @@ def student_notifications(request):
 
     if not student_id:
         print("No student in session")
-        return render(request, 'user/notifications.html', {'notifications': []})
+        return render(request, 'user/user_notifications.html', {'notifications': []})
 
     student = tbl_student.objects.get(id=student_id)
 
@@ -1544,7 +1596,7 @@ def student_notifications(request):
 
     print("Notifications count:", notifications.count())
 
-    return render(request, 'user/notifications.html', {
+    return render(request, 'user/user_notifications.html', {
         'notifications': notifications
     })
 

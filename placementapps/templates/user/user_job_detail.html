@@ -146,6 +146,7 @@
         color: var(--color-navy);
         border-color: var(--color-gold);
     }
+
     .btn-apply-now:hover {
         background: var(--color-gold-light);
         border-color: var(--color-gold-light);
@@ -160,6 +161,7 @@
         color: var(--text-secondary);
         border-color: var(--border-normal);
     }
+
     .btn-back:hover {
         background: var(--text-secondary);
         color: #fff;
@@ -224,10 +226,29 @@
         font-weight: 600;
     }
 
+    .btn-apply-now {
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border-color: var(--color-gold);
+    }
+
+    .btn-apply-now:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
     /* ===== Responsive ===== */
     @media (max-width: 991px) {
-        .job-detail-wrapper { padding: 2.5rem 0; }
-        .sidebar-panel { margin-top: 1rem; }
+        .job-detail-wrapper {
+            padding: 2.5rem 0;
+        }
+
+        .sidebar-panel {
+            margin-top: 1rem;
+        }
     }
 
     @media (max-width: 768px) {
@@ -237,12 +258,28 @@
             text-align: left;
             padding: 1.5rem;
         }
-        .job-header h3 { font-size: 1.35rem; }
-        .job-meta { gap: 0.9rem; font-size: 0.8rem; }
-        .sidebar-panel { padding: 1.5rem; }
-        .back-action-row { flex-direction: column-reverse; }
+
+        .job-header h3 {
+            font-size: 1.35rem;
+        }
+
+        .job-meta {
+            gap: 0.9rem;
+            font-size: 0.8rem;
+        }
+
+        .sidebar-panel {
+            padding: 1.5rem;
+        }
+
+        .back-action-row {
+            flex-direction: column-reverse;
+        }
+
         .btn-back,
-        .btn-apply-now { width: 100%; }
+        .btn-apply-now {
+            width: 100%;
+        }
     }
 </style>
 
@@ -258,9 +295,9 @@
                 <!-- Job header -->
                 <div class="job-header">
                     {% if job.logo %}
-                        <img src="{{ job.logo.url }}" alt="{{ job.title }}">
+                    <img src="{{ job.logo.url }}" alt="{{ job.title }}">
                     {% else %}
-                        <img src="{% static 'img/default-logo.jpg' %}" alt="Default Logo">
+                    <img src="{% static 'img/default-logo.jpg' %}" alt="Default Logo">
                     {% endif %}
                     <div>
                         <h3>{{ job.title }}</h3>
@@ -301,9 +338,13 @@
                     <a href="javascript:history.go(-1);" class="btn-back">
                         <i class="bi bi-arrow-left"></i> Back
                     </a>
-                    <a href="{% url 'apply_for_job' job.id %}" class="btn-apply-now">
-                        <i class="bi bi-send"></i> Apply Now
-                    </a>
+                    <form method="POST" action="{% url 'apply_for_job' job.id %}">
+                        {% csrf_token %}
+
+                        <button type="submit" class="btn-apply-now">
+                            <i class="bi bi-send"></i> Apply Now
+                        </button>
+                    </form>
                 </div>
 
             </div>
@@ -315,7 +356,8 @@
                 <div class="sidebar-panel">
                     <h4>Job Summary</h4>
                     <p><i class="bi bi-calendar-event"></i> <span><strong>Published:</strong> {{ job.date }}</span></p>
-                    <p><i class="bi bi-briefcase"></i> <span><strong>Nature:</strong> {{ job.get_job_type_display }}</span></p>
+                    <p><i class="bi bi-briefcase"></i> <span><strong>Nature:</strong> {{ job.get_job_type_display
+                            }}</span></p>
                     <p><i class="bi bi-cash-stack"></i> <span><strong>Salary:</strong> ₹{{ job.salary }}</span></p>
                     <p><i class="bi bi-geo-alt-fill"></i> <span><strong>Location:</strong> {{ job.place }}</span></p>
                     <p><i class="bi bi-people"></i> <span><strong>Vacancies:</strong> {{ job.vacancy }}</span></p>

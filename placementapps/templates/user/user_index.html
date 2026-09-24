@@ -725,7 +725,7 @@
 
                     <!-- Notification Bell -->
                     <li class="nav-item">
-                        <a href="{% url 'user_notifications' %}" class="nav-link notif-bell">
+                        <a href="{% url 'student_notifications' %}" class="nav-link notif-bell">
                             <i class="bi bi-bell-fill"></i>
                             {% if notifications_count > 0 %}
                             <span
@@ -1083,7 +1083,7 @@
                     <ul class="list-unstyled small">
                         <li><a href="{% url 'user_about' %}">About</a></li>
                         <li><a href="{% url 'user_sessionlist' %}">Orientation</a></li>
-                        <li><a href="{% url 'user_notifications' %}">Notifications</a></li>
+                        <li><a href="{% url 'student_notifications' %}">Notifications</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-3">
