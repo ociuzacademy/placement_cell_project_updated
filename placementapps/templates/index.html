@@ -743,12 +743,20 @@
                             <i class="bi bi-moon-fill"></i>
                         </button>
                     </div>
-                    <a href="/register/" class="btn-nav-gold">Register</a>
+                   
                 </div>
             </div>
         </div>
     </nav>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
     {% block content %}
+    
     <!-- ===== Hero Section ===== -->
     <section class="hero" id="home">
         <div class="container-lg">

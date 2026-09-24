@@ -542,7 +542,13 @@
     </div>
 </nav>
 <!-- Navbar End -->
-
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 
 {% block content %}
 <!-- ===== Carousel Start ===== -->
