@@ -676,6 +676,11 @@ def tutor_applylist(request):
     data = JobApplication.objects.all() 
     return render(request, 'tutor/tutor_applylist.html', {'data': data})
 
+def about(request):
+    return render(request, 'about.html')
+
+def admin_about(request):
+    return render(request, 'admin/admin_about.html')
 
 def user_about(request):
     return render(request, 'user/user_about.html')

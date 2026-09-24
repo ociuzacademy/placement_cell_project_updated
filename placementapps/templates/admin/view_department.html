@@ -1,120 +1,243 @@
 {% extends "admin/admin_index.html" %}
+{% load static %}
+
 {% block content %}
-<div class="container my-4">
-    <h1 class="text-center mb-4">Department List</h1>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Sl. No.</th>
-                <th>Department Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for department in data %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ department.name }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3" class="text-center">No departments found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
 
 <style>
-    /* General container and layout styles */
-    .container {
-        font-family: 'Poppins', sans-serif;
-        margin-top: 20px;
+    /* ===== Simple Department List Page ===== */
+    .dept-simple-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
     }
 
-    /* Table styles */
-    .table {
-        width: 100%;
-        max-width: 800px;
-        margin: auto;
-        background-color: #ffffff;
-        border-radius: 10px;
+    .dept-simple-header {
+        max-width: 700px;
+        margin: 0 auto 2.5rem;
+        padding: 0 1rem;
+        text-align: center;
+    }
+
+    .dept-simple-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.5rem;
+        letter-spacing: -0.8px;
+        margin-bottom: 0.5rem;
+    }
+
+    .dept-simple-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .dept-simple-header .gold-bar {
+        width: 60px;
+        height: 4px;
+        background: var(--color-gold);
+        border-radius: 2px;
+        margin: 1rem auto 0;
+    }
+
+    /* ===== Table wrapper ===== */
+    .table-wrapper {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .table-responsive-custom {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
         overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-lg);
+        position: relative;
     }
 
-    .table th {
-        background-color: #00B074;
-        color: #ffffff;
-        font-weight: bold;
+    .table-responsive-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        z-index: 2;
+    }
+
+    .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ===== Table ===== */
+    .dept-simple-table {
+        width: 100%;
+        min-width: 400px;
+        margin: 0;
+        border-collapse: collapse;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .dept-simple-table thead {
+        background: var(--color-navy);
+        position: relative;
+        z-index: 1;
+    }
+
+    .dept-simple-table thead th {
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
-        padding: 12px;
-        text-align: center;
-    }
-
-    .table td {
-        padding: 12px 15px;
-        text-align: center;
-        font-size: 14px;
-        color: #555555;
-    }
-
-    .table tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    .table tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Button styles */
-    .btn {
-        display: inline-block;
-        padding: 6px 14px;
-        font-size: 14px;
+        padding: 1rem 0.85rem;
+        text-align: left;
+        white-space: nowrap;
         border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        border-bottom: 2px solid var(--color-gold);
     }
 
-    .btn-success {
-        background-color: #00B074;
-        color: #ffffff;
+    .dept-simple-table thead th:first-child {
+        text-align: center;
+        width: 100px;
     }
 
-    .btn-success:hover {
-        background-color: #00895d;
+    .dept-simple-table tbody tr {
+        border-bottom: 1px solid var(--border-light);
+        transition: background-color 0.2s ease;
     }
 
-    .btn-danger {
-        background-color: #ff5e5e;
-        color: #ffffff;
+    .dept-simple-table tbody tr:last-child {
+        border-bottom: none;
     }
 
-    .btn-danger:hover {
-        background-color: #d9534f;
+    .dept-simple-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.06);
     }
 
-    /* Responsive adjustments */
+    [data-theme="dark"] .dept-simple-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.08);
+    }
+
+    .dept-simple-table tbody td {
+        padding: 0.95rem 0.85rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-weight: 500;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .dept-simple-table tbody td:first-child {
+        text-align: center;
+        font-weight: 700;
+        color: var(--color-gold);
+        font-size: 0.95rem;
+    }
+
+    .dept-simple-table tbody td .dept-name {
+        color: var(--text-primary);
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .dept-simple-table tbody td .dept-name::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--color-gold);
+        flex-shrink: 0;
+    }
+
+    /* Empty row */
+    .empty-row td {
+        text-align: center !important;
+        padding: 3rem 1rem !important;
+        color: var(--text-tertiary) !important;
+        font-style: italic;
+        font-size: 0.95rem !important;
+    }
+    .empty-row i {
+        display: block;
+        font-size: 2.5rem;
+        color: var(--color-gold);
+        margin-bottom: 0.75rem;
+        opacity: 0.6;
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-        .table th, .table td {
-            font-size: 12px;
+        .dept-simple-header h1 { font-size: 1.85rem; }
+        .dept-simple-table thead th {
+            padding: 0.85rem 0.65rem;
+            font-size: 0.7rem;
+        }
+        .dept-simple-table tbody td {
+            padding: 0.8rem 0.65rem;
+            font-size: 0.85rem;
         }
     }
 
     @media (max-width: 450px) {
-        .table {
-            width: 100%;
-        }
-
-        .btn {
-            font-size: 12px;
-            padding: 5px 10px;
-        }
+        .dept-simple-wrapper { padding: 1.5rem 0; }
+        .dept-simple-header { padding: 0 0.75rem; }
+        .table-wrapper { padding: 0 0.5rem; }
     }
 </style>
+
+
+<!-- ===== Simple Department List ===== -->
+<section class="dept-simple-wrapper">
+
+    <!-- Header -->
+    <div class="dept-simple-header">
+        <h1>Department List</h1>
+        <p class="subtitle">All departments registered on the platform</p>
+        <div class="gold-bar"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+        <div class="table-responsive-custom">
+            <div class="table-scroll">
+                <table class="dept-simple-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Department Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for department in data %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <span class="dept-name">{{ department.name }}</span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr class="empty-row">
+                            <td colspan="2">
+                                <i class="bi bi-building"></i>
+                                No departments found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
 {% endblock %}

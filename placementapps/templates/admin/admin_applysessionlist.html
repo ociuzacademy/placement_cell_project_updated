@@ -1,77 +1,274 @@
 {% extends "admin/admin_index.html" %}
+{% load static %}
+
 {% block content %}
-<div class="container my-4">
-    <h1 class="text-center mb-4">Applications for {{ session_name }}</h1>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Sl. No.</th>
-                <th>Student Name</th>
-                <th>Email</th>
-                <th>Contact</th>
-                <th>Program</th>
-                <th>Batch</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in data %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ application.user.name }}</td>
-                <td>{{ application.user.student_email }}</td>
-                <td>{{ application.user.student_phone }}</td>
-                <td>{{ application.user.course.name }}</td>
-                <td>{{ application.user.batch }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" class="text-center">No applications found for this session.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+
 <style>
-    .container {
-        margin-top: 20px;
+    /* ===== Session Applied List ===== */
+    .session-list-wrapper {
+        padding: 3rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
     }
 
-    .table {
-        width: 100%;
-        max-width: 80%;
-        margin: auto;
-        background-color: #ffffff;
-        border-radius: 10px;
+    .session-header {
+        max-width: 1000px;
+        margin: 0 auto 2rem;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .session-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.1rem;
+        letter-spacing: -0.5px;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .session-header h1 span {
+        color: var(--color-gold);
+    }
+
+    .session-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin: 0.25rem 0 0;
+    }
+
+    .count-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+    }
+    .count-badge i { font-size: 1rem; }
+
+    /* ===== Table wrapper ===== */
+    .table-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .table-responsive-custom {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
         overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-lg);
+        position: relative;
     }
 
-    .table th {
-        background-color: #00B074;
-        color: #ffffff;
-        font-weight: bold;
+    .table-responsive-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        z-index: 2;
+    }
+
+    .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ===== Table ===== */
+    .session-table {
+        width: 100%;
+        min-width: 760px;
+        margin: 0;
+        border-collapse: collapse;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .session-table thead {
+        background: var(--color-navy);
+        position: relative;
+        z-index: 1;
+    }
+
+    .session-table thead th {
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
-        padding: 12px;
+        padding: 1rem 0.85rem;
+        text-align: left;
+        white-space: nowrap;
+        border: none;
+        border-bottom: 2px solid var(--color-gold);
+    }
+
+    .session-table thead th:first-child {
         text-align: center;
+        width: 70px;
     }
 
-    .table td {
-        padding: 12px 15px;
+    .session-table tbody tr {
+        border-bottom: 1px solid var(--border-light);
+        transition: background-color 0.2s ease;
+    }
+
+    .session-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .session-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.06);
+    }
+
+    [data-theme="dark"] .session-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.08);
+    }
+
+    .session-table tbody td {
+        padding: 0.95rem 0.85rem;
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+        font-weight: 500;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .session-table tbody td:first-child {
         text-align: center;
-        font-size: 14px;
-        color: #555555;
+        font-weight: 700;
+        color: var(--color-gold);
+        font-size: 0.95rem;
     }
 
-    .table tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
+    .session-table tbody td .name-cell {
+        color: var(--text-primary);
+        font-weight: 600;
     }
 
-    .table tbody tr:nth-child(even) {
-        background-color: #ffffff;
+    .session-table tbody td a.email-link {
+        color: var(--color-gold);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    .session-table tbody td a.email-link:hover {
+        color: var(--color-gold-light);
+        text-decoration: underline;
     }
 
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
+    /* Empty row */
+    .empty-row td {
+        text-align: center !important;
+        padding: 3rem 1rem !important;
+        color: var(--text-tertiary) !important;
+        font-style: italic;
+        font-size: 0.95rem !important;
+    }
+    .empty-row i {
+        display: block;
+        font-size: 2.5rem;
+        color: var(--color-gold);
+        margin-bottom: 0.75rem;
+        opacity: 0.6;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+        .session-header h1 {
+            font-size: 1.55rem;
+        }
+        .session-table thead th {
+            padding: 0.85rem 0.65rem;
+            font-size: 0.7rem;
+        }
+        .session-table tbody td {
+            padding: 0.8rem 0.65rem;
+            font-size: 0.82rem;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .session-list-wrapper { padding: 1.5rem 0; }
+        .session-header { padding: 0 0.75rem; }
+        .table-wrapper { padding: 0 0.5rem; }
     }
 </style>
+
+
+<!-- ===== Session Applied List ===== -->
+<section class="session-list-wrapper">
+
+    <!-- Header -->
+    <div class="session-header">
+        <div>
+            <h1>Applications for <span>{{ session_name }}</span></h1>
+            <p class="subtitle">Students who have registered for this orientation session</p>
+        </div>
+        <div class="count-badge">
+            <i class="bi bi-people-fill"></i>
+            Total: {{ data|length }}
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+        <div class="table-responsive-custom">
+            <div class="table-scroll">
+                <table class="session-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Program</th>
+                            <th>Batch</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for application in data %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><span class="name-cell">{{ application.user.name }}</span></td>
+                            <td>
+                                <a class="email-link" href="mailto:{{ application.user.student_email }}">
+                                    {{ application.user.student_email }}
+                                </a>
+                            </td>
+                            <td>{{ application.user.student_phone }}</td>
+                            <td>{{ application.user.course.name }}</td>
+                            <td>{{ application.user.batch }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr class="empty-row">
+                            <td colspan="6">
+                                <i class="bi bi-inbox"></i>
+                                No applications found for this session.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
 {% endblock %}

@@ -1,212 +1,452 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "index.html" %}
+{% load static %}
 
-<head>
-    <meta charset="utf-8">
-    <title>JobEntry - Job Portal Website Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+{% block content %}
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+<style>
+    /* ===== About Page ===== */
+    .about-wrapper {
+        padding: 5rem 0;
+        background: var(--bg-primary);
+    }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    .about-image-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    .about-image-grid img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-md);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        aspect-ratio: 1 / 1;
+    }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    .about-image-grid img:hover {
+        transform: scale(1.03);
+        box-shadow: var(--shadow-xl);
+    }
 
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-</head>
+    .about-image-grid .staggered { margin-top: 15%; }
 
-<body>
-    <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+    /* ===== Text column ===== */
+    .about-text h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.25rem;
+        letter-spacing: -0.8px;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+    .about-text h1 span { color: var(--color-gold); }
+    .about-text p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.85;
+        margin-bottom: 1.15rem;
+    }
+    .about-text p:last-of-type { margin-bottom: 2rem; }
+
+    /* ===== Stats cards ===== */
+    .stats-grid {
+        max-width: 1200px;
+        margin: 4rem auto 0;
+        padding: 0 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+    .stat-card {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.75rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+    }
+    .stat-card:hover {
+        border-color: var(--color-gold);
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-xl);
+    }
+    .stat-card .stat-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px; height: 56px;
+        background: linear-gradient(135deg, var(--color-navy), var(--color-navy-light));
+        color: var(--color-gold);
+        border-radius: 0.75rem;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .stat-card .stat-number {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--color-gold);
+        font-size: 2.25rem;
+        letter-spacing: -1px;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    .stat-card .stat-label {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    /* ===== Who We Serve ===== */
+    .serve-section {
+        max-width: 1200px;
+        margin: 4rem auto 0;
+        padding: 0 1rem;
+    }
+    .serve-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2rem;
+        letter-spacing: -0.5px;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    .serve-subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+    .serve-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    .serve-card {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 2rem 1.75rem;
+        transition: all 0.3s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    .serve-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+    }
+    .serve-card:hover {
+        border-color: var(--color-gold);
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-xl);
+    }
+    .serve-card .serve-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px; height: 56px;
+        background: linear-gradient(135deg, var(--color-navy), var(--color-navy-light));
+        color: var(--color-gold);
+        border-radius: 0.75rem;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+    .serve-card h5 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.2rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 0.75rem;
+    }
+    .serve-card p {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 1rem;
+    }
+    .serve-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .serve-card ul li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        padding: 0.35rem 0;
+        line-height: 1.5;
+    }
+    .serve-card ul li i {
+        color: var(--color-gold);
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
+
+    /* ===== CTA ===== */
+    .about-cta {
+        max-width: 1200px;
+        margin: 4rem auto 0;
+        padding: 0 1rem;
+    }
+    .about-cta-inner {
+        background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
+        border-radius: 0.75rem;
+        padding: 3rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .about-cta-inner::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -10%;
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .about-cta-inner h2 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: #fff;
+        font-size: 1.85rem;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
+    }
+    .about-cta-inner p {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 1.75rem;
+        position: relative;
+        z-index: 1;
+    }
+    .btn-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border: 2px solid var(--color-gold);
+        padding: 0.85rem 2rem;
+        border-radius: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
+    .btn-cta:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 991px) {
+        .about-wrapper { padding: 3.5rem 0; }
+        .about-text { margin-top: 2.5rem; }
+        .about-text h1 { font-size: 1.85rem; }
+    }
+    @media (max-width: 576px) {
+        .about-text h1 { font-size: 1.5rem; }
+        .about-image-grid { gap: 0.75rem; }
+        .stat-card .stat-number { font-size: 1.85rem; }
+        .serve-title { font-size: 1.5rem; }
+        .about-cta-inner h2 { font-size: 1.4rem; }
+    }
+</style>
+
+
+<!-- ===== About Section ===== -->
+<section class="about-wrapper">
+    <div class="container-lg">
+
+        <!-- ============================================================== -->
+        <!-- Top: image grid + intro text                                   -->
+        <!-- ============================================================== -->
+        <div class="row g-5 align-items-center">
+
+            <!-- Image grid -->
+            <div class="col-lg-6">
+                <div class="about-image-grid">
+                    <img src="{% static 'img/about-1.jpg' %}" alt="About 1">
+                    <img src="{% static 'img/about-2.jpg' %}" alt="About 2" class="staggered">
+                    <img src="{% static 'img/about-3.jpg' %}" alt="About 3">
+                    <img src="{% static 'img/about-4.jpg' %}" alt="About 4">
+                </div>
+            </div>
+
+            <!-- Text column -->
+            <div class="col-lg-6">
+                <div class="about-text">
+                    <h1>Connecting Talent with <span>Opportunity</span></h1>
+
+                    <p>
+                        CampusHire is a unified placement platform that brings students, tutors, and administrators
+                        together in one place. From the first job application to the final interview, we provide the
+                        tools, structure, and support needed to turn academic potential into real-world careers.
+                    </p>
+
+                    <p>
+                        Built for colleges and universities, CampusHire streamlines the entire placement journey —
+                        from publishing job postings and organizing orientation sessions to tracking applications
+                        and guiding students through every stage of their career development.
+                    </p>
+
+                    <p>
+                        We believe that every student deserves access to the right opportunities, every tutor deserves
+                        the tools to support them, and every institution deserves a platform that makes placement
+                        seamless.
+                    </p>
+
+                    <a class="btn-cta" href="{% url 'index' %}" style="background: var(--color-gold); color: var(--color-navy); text-decoration: none;">
+                        <i class="bi bi-house"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- Platform stats                                                 -->
+        <!-- ============================================================== -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-briefcase-fill"></i></span>
+                <div class="stat-number">5,000+</div>
+                <div class="stat-label">Active Jobs</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-building"></i></span>
+                <div class="stat-number">1,000+</div>
+                <div class="stat-label">Hiring Companies</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-mortarboard-fill"></i></span>
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Students Placed</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-people-fill"></i></span>
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Active Tutors</div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- Who We Serve — students / tutors / admins                      -->
+        <!-- ============================================================== -->
+        <div class="serve-section">
+            <h2 class="serve-title">Who We Serve</h2>
+            <p class="serve-subtitle">Three connected roles, one seamless platform</p>
+
+            <div class="serve-grid">
+
+                <!-- Students -->
+                <div class="serve-card">
+                    <span class="serve-icon"><i class="bi bi-person-badge"></i></span>
+                    <h5>For Students</h5>
+                    <p>
+                        Launch your career with curated job listings, one-click applications, and complete
+                        visibility into every opportunity you pursue.
+                    </p>
+                    <ul>
+                        <li><i class="bi bi-check-circle-fill"></i> Browse and search active job openings</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Apply directly and track status in real time</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Register for orientation and training sessions</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Maintain a complete academic profile</li>
+                    </ul>
+                </div>
+
+                <!-- Tutors -->
+                <div class="serve-card">
+                    <span class="serve-icon"><i class="bi bi-person-workspace"></i></span>
+                    <h5>For Tutors</h5>
+                    <p>
+                        Guide your students through every stage of the placement journey with tools to monitor,
+                        review, and support them at scale.
+                    </p>
+                    <ul>
+                        <li><i class="bi bi-check-circle-fill"></i> View all students assigned to you</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Review job applications and approve or reject</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Track session registrations and progress</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Export student lists for offline review</li>
+                    </ul>
+                </div>
+
+                <!-- Admins -->
+                <div class="serve-card">
+                    <span class="serve-icon"><i class="bi bi-shield-check"></i></span>
+                    <h5>For Administrators</h5>
+                    <p>
+                        Run the entire platform from one dashboard — from job postings and tutor approvals to
+                        departments and platform-wide reporting.
+                    </p>
+                    <ul>
+                        <li><i class="bi bi-check-circle-fill"></i> Create and manage job postings</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Approve or reject tutor registrations</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Schedule orientation and training sessions</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Manage departments, courses, and exports</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
-        <!-- Spinner End -->
 
-
-        <!-- Navbar Start -->
-        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-            <a href="index.html" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
-                <h1 class="m-0 text-primary">JobEntry</h1>
-            </a>
-            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="about.html" class="nav-item nav-link active">About</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="job-list.html" class="dropdown-item">Job List</a>
-                            <a href="job-detail.html" class="dropdown-item">Job Detail</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="category.html" class="dropdown-item">Job Category</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
-                </div>
-                <a href="" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
-            </div>
-        </nav>
-        <!-- Navbar End -->
-
-
-        <!-- Header End -->
-        <div class="container-xxl py-5 bg-dark page-header mb-5">
-            <div class="container my-5 pt-5 pb-4">
-                <h1 class="display-3 text-white mb-3 animated slideInDown">About Us</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb text-uppercase">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page">About</li>
-                    </ol>
-                </nav>
+        <!-- ============================================================== -->
+        <!-- CTA                                                            -->
+        <!-- ============================================================== -->
+        <div class="about-cta">
+            <div class="about-cta-inner">
+                <h2>Ready to Transform Your Future?</h2>
+                <p>Join thousands of students, tutors, and institutions already using CampusHire.</p>
+                <a class="btn-cta" href="{% url 'login' %}">
+                    <i class="bi bi-arrow-right"></i> Get Started
+                </a>
             </div>
         </div>
-        <!-- Header End -->
 
-
-        <!-- About Start -->
-        <div class="container-xxl py-5">
-            <div class="container">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                        <div class="row g-0 about-bg rounded overflow-hidden">
-                            <div class="col-6 text-start">
-                                <img class="img-fluid w-100" src="img/about-1.jpg">
-                            </div>
-                            <div class="col-6 text-start">
-                                <img class="img-fluid" src="img/about-2.jpg" style="width: 85%; margin-top: 15%;">
-                            </div>
-                            <div class="col-6 text-end">
-                                <img class="img-fluid" src="img/about-3.jpg" style="width: 85%;">
-                            </div>
-                            <div class="col-6 text-end">
-                                <img class="img-fluid w-100" src="img/about-4.jpg">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                        <h1 class="mb-4">We Help To Get The Best Job And Find A Talent</h1>
-                        <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                        <p><i class="fa fa-check text-primary me-3"></i>Tempor erat elitr rebum at clita</p>
-                        <p><i class="fa fa-check text-primary me-3"></i>Aliqu diam amet diam et eos</p>
-                        <p><i class="fa fa-check text-primary me-3"></i>Clita duo justo magna dolore erat amet</p>
-                        <a class="btn btn-primary py-3 px-5 mt-3" href="">Read More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- About End -->
-
-
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5">
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Company</h5>
-                        <a class="btn btn-link text-white-50" href="">About Us</a>
-                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                        <a class="btn btn-link text-white-50" href="">Our Services</a>
-                        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Quick Links</h5>
-                        <a class="btn btn-link text-white-50" href="">About Us</a>
-                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                        <a class="btn btn-link text-white-50" href="">Our Services</a>
-                        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Contact</h5>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Newsletter</h5>
-                        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                        <div class="position-relative mx-auto" style="max-width: 400px;">
-                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved. 
-							
-							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-							Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="">Home</a>
-                                <a href="">Cookies</a>
-                                <a href="">Help</a>
-                                <a href="">FQAs</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
+</section>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-</body>
-
-</html>
+{% endblock %}

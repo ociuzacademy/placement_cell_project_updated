@@ -1,142 +1,380 @@
 {% extends "admin/admin_index.html" %}
+{% load static %}
+
 {% block content %}
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center">
-            <h1 class="mb-5">Rejected Tutors</h1>
-        </div>
-        <div class="row g-4">
-            {% for x in data %}
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 shadow-sm">
-                    <!-- Tutor Image -->
-                    <div class="card-header p-0">
-                        <img src="{{ x.image.url }}" class="card-img-top tutor-image" alt="Tutor Image">
-                    </div>
-                    <!-- Tutor Details -->
-                    <div class="card-body">
-                        <h5 class="card-title text-center">{{ x.name }}</h5>
-                        <p class="card-text">
-                            <strong>Department:</strong> {{ x.departmen.name }}<br>
-                            <strong>Course:</strong> {{ x.course.name }}<br>
-                            <strong>Email:</strong> {{ x.email }}<br>
-                            <strong>Gender:</strong> {{ x.gender }}<br>
-                            <strong>Mobile:</strong> {{ x.mobile_number }}<br>
-                            <strong>Batch:</strong> {{ x.batch }}
-                        </p>
-                    </div>
-                    <!-- Reapprove Button -->
-                    <div class="card-footer bg-white text-center">
-                        <a href="/admin_approved_tutor/?id={{ x.id }}" class="btn btn-reapprove w-100">Reapprove</a>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <p class="text-muted">No rejected tutors found...</p>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="btn-container">
-        <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
-    </div>
-</div>
 
 <style>
-    /* General Card Styles */
-    .card {
-        border: 1px solid #ddd;
-        border-radius: 10px;
+    /* ===== Rejected Tutors Page ===== */
+    .tutors-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
+    }
+
+    .tutors-header {
+        max-width: 1200px;
+        margin: 0 auto 2.5rem;
+        padding: 0 1rem;
+        text-align: center;
+    }
+
+    .tutors-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.5rem;
+        letter-spacing: -0.8px;
+        margin-bottom: 0.5rem;
+    }
+
+    .tutors-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .tutors-header .gold-bar {
+        width: 60px;
+        height: 4px;
+        background: var(--color-gold);
+        border-radius: 2px;
+        margin: 1rem auto 0;
+    }
+
+    /* ===== Tutor card ===== */
+    .tutor-card {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .card-img-top {
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .card-title {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-
-    /* Reapprove Button */
-    .btn-reapprove {
-        padding: 12px 20px;
-        font-size: 14px;
-        border: none;
-        border-radius: 5px;
-        background-color: rgb(83, 130, 7);
-        color: white;
-        transition: background-color 0.3s ease;
-    }
-    .btn-back {
-        background-color: black;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        /*float: right; Moves the button to the right */
-    }
-    
-    .btn-back:hover {
-        background-color: #333;
-    }
-    .btn-container {
-        padding:10px;
+        transition: all 0.3s ease;
+        height: 100%;
         display: flex;
-        justify-content: flex-end; /* Aligns button to the right */
-        margin-bottom: 20px; /* Adds spacing below the button */
-    }
-    .btn-reapprove:hover {
-        background-color: rgb(62, 99, 6);
+        flex-direction: column;
+        position: relative;
     }
 
-    /* Tutor Image Hover */
-    .card-img-top:hover {
+    .tutor-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #dc2626, var(--color-gold));
+        z-index: 2;
+    }
+
+    .tutor-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--color-gold);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .tutor-card-body {
+        padding: 2rem 1.5rem 1.5rem;
+        text-align: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Avatar */
+    .tutor-avatar-wrapper {
+        margin: 0 auto 1.25rem;
+        position: relative;
+        width: 110px;
+        height: 110px;
+    }
+
+    .tutor-avatar {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #dc2626;
+        box-shadow: 0 6px 14px rgba(220, 38, 38, 0.15);
+        transition: all 0.3s ease;
+        background: var(--bg-primary);
+    }
+
+    .tutor-card:hover .tutor-avatar {
         transform: scale(1.05);
+        box-shadow: 0 10px 22px rgba(220, 38, 38, 0.25);
+    }
+
+    /* Rejected status dot */
+    .status-dot {
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+        width: 16px;
+        height: 16px;
+        background: #dc2626;
+        border: 3px solid var(--bg-secondary);
+        border-radius: 50%;
+    }
+
+    /* Name */
+    .tutor-name {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 1rem;
+    }
+
+    /* Info list */
+    .tutor-info {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .tutor-info li {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .tutor-info li:last-child {
+        border-bottom: none;
+    }
+
+    .tutor-info li i {
+        color: var(--color-gold);
+        font-size: 0.95rem;
+        min-width: 18px;
+        flex-shrink: 0;
+    }
+
+    .tutor-info li .info-label {
+        color: var(--text-tertiary);
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        min-width: 70px;
+    }
+
+    .tutor-info li .info-value {
+        color: var(--text-primary);
+        font-weight: 600;
+        word-break: break-word;
+        flex: 1;
+    }
+
+    /* Card footer (Reapprove action) */
+    .tutor-card-footer {
+        padding: 1rem 1.5rem 1.5rem;
+        border-top: 1px solid var(--border-light);
+        background: transparent;
+    }
+
+    .btn-reapprove {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border: 2px solid var(--color-gold);
+        border-radius: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        text-decoration: none;
+    }
+
+    .btn-reapprove:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Empty state */
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 1rem;
+        background: var(--bg-secondary);
+        border: 2px dashed var(--border-light);
+        border-radius: 0.75rem;
+    }
+
+    .empty-state i {
+        font-size: 3.5rem;
+        color: var(--color-gold);
+        opacity: 0.6;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .empty-state h5 {
+        font-family: 'Playfair Display', serif;
+        color: var(--text-primary);
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    /* Back button */
+    .btn-container {
+        max-width: 1200px;
+        margin: 2rem auto 0;
+        padding: 0 1rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 2px solid var(--border-normal);
+        padding: 0.65rem 1.75rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
         transition: all 0.3s ease;
     }
 
-    /* Responsive Styles */
-    @media (max-width: 768px) {
-        .card-img-top {
-            height: 180px;
-        }
-
-        .card-title {
-            font-size: 16px;
-        }
-
-        .btn-reapprove {
-            font-size: 12px;
-            padding: 8px 12px;
-        }
+    .btn-back:hover {
+        background: var(--text-secondary);
+        color: #fff;
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
     }
 
-    @media (max-width: 576px) {
-        .card-img-top {
-            height: 150px;
-        }
-
-        .card-title {
-            font-size: 14px;
-        }
-
-        .btn-reapprove {
-            padding: 6px 10px;
-        }
+    /* Responsive */
+    @media (max-width: 768px) {
+        .tutors-header h1 { font-size: 1.85rem; }
+        .tutor-avatar-wrapper { width: 90px; height: 90px; }
+        .tutor-avatar { width: 90px; height: 90px; }
+        .btn-container { justify-content: center; }
     }
 </style>
+
+
+<!-- ===== Rejected Tutors ===== -->
+<section class="tutors-wrapper">
+
+    <!-- Header -->
+    <div class="tutors-header">
+        <h1>Rejected Tutors</h1>
+        <p class="subtitle">Tutors whose registrations were rejected. You can reapprove them here.</p>
+        <div class="gold-bar"></div>
+    </div>
+
+    <!-- Tutor cards -->
+    <div class="container-lg">
+        <div class="row g-4">
+
+            {% for x in data %}
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="tutor-card">
+
+                    <div class="tutor-card-body">
+
+                        <!-- Avatar -->
+                        <div class="tutor-avatar-wrapper">
+                            <img src="{{ x.image.url }}" alt="{{ x.name }}" class="tutor-avatar">
+                            <span class="status-dot"></span>
+                        </div>
+
+                        <!-- Name -->
+                        <h5 class="tutor-name">{{ x.name }}</h5>
+
+                        <!-- Info -->
+                        <ul class="tutor-info">
+                            <li>
+                                <i class="bi bi-envelope-fill"></i>
+                                <span class="info-label">Email</span>
+                                <span class="info-value">{{ x.email }}</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-gender-ambiguous"></i>
+                                <span class="info-label">Gender</span>
+                                <span class="info-value">{{ x.gender }}</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-telephone-fill"></i>
+                                <span class="info-label">Mobile</span>
+                                <span class="info-value">{{ x.mobile_number }}</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-building"></i>
+                                <span class="info-label">Dept</span>
+                                <span class="info-value">{{ x.department.name }}</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-book"></i>
+                                <span class="info-label">Course</span>
+                                <span class="info-value">{{ x.course.name }}</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-calendar-event"></i>
+                                <span class="info-label">Batch</span>
+                                <span class="info-value">{{ x.batch }}</span>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="tutor-card-footer">
+                        <a href="/admin_approved_tutor/?id={{ x.id }}" class="btn-reapprove"
+                           onclick="return confirm('Reapprove this tutor?');">
+                            <i class="bi bi-check-circle"></i> Reapprove
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            {% empty %}
+            <div class="empty-state">
+                <i class="bi bi-person-check"></i>
+                <h5>No Rejected Tutors</h5>
+                <p>Rejected tutor registrations will appear here.</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <!-- Back button -->
+    <div class="btn-container">
+        <a href="javascript:history.go(-1);" class="btn-back">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+</section>
+
 {% endblock %}

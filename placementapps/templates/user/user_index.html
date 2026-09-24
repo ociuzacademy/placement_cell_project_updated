@@ -1,308 +1,1004 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>CampusHire</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <title>CampusHire - From Campus to Career</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Connect with your dream job. CampusHire bridges the gap between campus and corporate.">
 
     <!-- Favicon -->
     <link href="/static/img/favicon.ico" rel="icon">
-    <!-- SweetAlert CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<!-- FontAwesome for Icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<!-- SweetAlert JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Google Web Fonts -->
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="/static/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="/static/css/style.css" rel="stylesheet">
+    <!-- SweetAlert -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; font-weight: 700; }
+
+        :root {
+            --color-navy: #1E293B;
+            --color-navy-light: #334155;
+            --color-navy-dark: #0F172A;
+            --color-gold: #F59E0B;
+            --color-gold-dark: #D97706;
+            --color-gold-light: #FBBF24;
+
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-tertiary: #E2E8F0;
+
+            --text-primary: #1E293B;
+            --text-secondary: #475569;
+            --text-tertiary: #64748B;
+
+            --border-light: #E2E8F0;
+            --border-normal: #CBD5E1;
+
+            --shadow-sm: 0 1px 2px 0 rgba(30, 41, 59, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(30, 41, 59, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(30, 41, 59, 0.15);
+            --shadow-xl: 0 20px 25px -5px rgba(30, 41, 59, 0.2);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --text-primary: #F1F5F9;
+            --text-secondary: #CBD5E1;
+            --text-tertiary: #94A3B8;
+            --border-light: #334155;
+            --border-normal: #475569;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+            --color-gold: #FBBF24;
+        }
+
+        html { scroll-behavior: smooth; color-scheme: light; }
+        [data-theme="dark"] html { color-scheme: dark; }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== Navbar ===== */
+        .navbar {
+            background: var(--color-navy);
+            padding: 1.1rem 0 !important;
+            box-shadow: var(--shadow-md);
+        }
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: white !important;
+            letter-spacing: -0.5px;
+            padding: 0 !important;
+        }
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin: 0 0.35rem;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--color-gold) !important; }
+
+        .dropdown-menu {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-lg);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .dropdown-item {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            transition: all 0.2s ease;
+        }
+        .dropdown-item:hover {
+            background: var(--color-gold);
+            color: var(--color-navy);
+        }
+
+        .btn-nav-gold {
+            background: var(--color-gold);
+            color: var(--color-navy);
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 0.75rem;
+        }
+        .btn-nav-gold:hover {
+            background: var(--color-gold-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: var(--color-navy);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50px;
+            padding: 0.25rem;
+            display: flex;
+            gap: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+        }
+        .theme-toggle button {
+            background: transparent;
+            border: none;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .theme-toggle button.active {
+            background: var(--color-gold);
+            color: var(--color-navy);
+        }
+
+        /* Notification bell */
+        .notif-bell {
+            position: relative;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-size: 1rem;
+            padding: 0.5rem !important;
+        }
+        .notif-bell:hover { color: var(--color-gold) !important; }
+        .notif-badge {
+            background: var(--color-gold) !important;
+            color: var(--color-navy) !important;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.25em 0.5em;
+        }
+
+        /* ===== Carousel ===== */
+        .header-carousel-item {
+            position: relative;
+            height: 520px;
+            overflow: hidden;
+        }
+        .header-carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.75);
+        }
+        .carousel-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.55) 100%);
+            display: flex;
+            align-items: center;
+        }
+        .carousel-overlay h1 {
+            color: #fff;
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 1.25rem;
+        }
+        .carousel-overlay p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            max-width: 560px;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+        .btn-primary-gold {
+            background: var(--color-gold);
+            border: none;
+            color: var(--color-navy);
+            padding: 0.85rem 2rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+        .btn-primary-gold:hover {
+            background: var(--color-gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.3);
+            color: var(--color-navy);
+        }
+
+        /* ===== Section titles ===== */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        /* ===== About Section ===== */
+        .about-section {
+            padding: 5rem 0;
+            background: var(--bg-primary);
+        }
+        .about-section img {
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-md);
+        }
+        .about-section h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 1.25rem;
+        }
+        .about-section p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+        .about-check {
+            color: var(--color-gold) !important;
+            font-size: 1rem;
+            margin-right: 0.6rem;
+        }
+        .btn-outline-navy {
+            background: transparent;
+            border: 2px solid var(--color-navy);
+            color: var(--color-navy);
+            padding: 0.75rem 2rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+        [data-theme="dark"] .btn-outline-navy {
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+        }
+        .btn-outline-navy:hover {
+            background: var(--color-navy);
+            color: #fff;
+            box-shadow: var(--shadow-md);
+        }
+        [data-theme="dark"] .btn-outline-navy:hover {
+            background: var(--color-gold);
+            color: var(--color-navy);
+        }
+
+        /* ===== Job Listing Tabs ===== */
+        .job-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            border: none;
+        }
+        .job-tabs .nav-link {
+            background: var(--bg-secondary) !important;
+            border: 2px solid var(--border-light) !important;
+            border-radius: 0.5rem !important;
+            padding: 0.7rem 1.5rem !important;
+            color: var(--text-secondary) !important;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            margin: 0 !important;
+        }
+        .job-tabs .nav-link:hover {
+            border-color: var(--color-gold) !important;
+            color: var(--color-gold) !important;
+        }
+        .job-tabs .nav-link.active {
+            background: var(--color-navy) !important;
+            border-color: var(--color-navy) !important;
+            color: #fff !important;
+            box-shadow: var(--shadow-md);
+        }
+        .job-tabs .nav-link h6 { color: inherit !important; font-size: 0.95rem; margin: 0; }
+
+        /* ===== Job Card ===== */
+        .job-item {
+            background: var(--bg-secondary) !important;
+            border: 2px solid var(--border-light) !important;
+            border-radius: 0.75rem !important;
+            padding: 1.5rem !important;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .job-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--color-navy), var(--color-gold));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .job-item:hover {
+            border-color: var(--color-gold) !important;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+        .job-item:hover::before { opacity: 1; }
+        .job-item img {
+            border-radius: 0.5rem !important;
+            border: 1px solid var(--border-light) !important;
+            background: var(--bg-primary);
+            object-fit: contain;
+            padding: 0.25rem;
+        }
+        .job-item h5 {
+            color: var(--text-primary) !important;
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.75rem;
+        }
+        .job-item .text-primary { color: var(--color-gold) !important; }
+        .job-item .text-truncate {
+            color: var(--text-secondary) !important;
+            font-size: 0.85rem;
+        }
+
+        .btn-job-apply {
+            background: var(--color-gold);
+            color: var(--color-navy);
+            border: none;
+            padding: 0.6rem 1.25rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-job-apply:hover {
+            background: var(--color-gold-light);
+            color: var(--color-navy);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.25);
+        }
+        .btn-job-apply:disabled,
+        .btn-job-apply[disabled] {
+            background: var(--border-normal);
+            color: var(--text-tertiary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-job-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-normal);
+            padding: 0.55rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-job-outline:hover {
+            border-color: var(--color-navy);
+            background: var(--color-navy);
+            color: #fff;
+        }
+        [data-theme="dark"] .btn-job-outline:hover {
+            border-color: var(--color-gold);
+            background: var(--color-gold);
+            color: var(--color-navy);
+        }
+
+        /* ===== Browse More ===== */
+        .btn-browse-more {
+            background: var(--color-navy);
+            color: #fff;
+            border: none;
+            padding: 0.85rem 2.5rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-browse-more:hover {
+            background: var(--color-navy-light);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: var(--color-navy);
+            color: rgba(255, 255, 255, 0.85);
+            padding: 3.5rem 0 1.5rem;
+            font-size: 0.9rem;
+            margin-top: 4rem;
+        }
+        .footer h6 {
+            color: white;
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .footer a {
+            color: var(--color-gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .footer a:hover {
+            color: var(--color-gold-light);
+            text-decoration: underline;
+        }
+        .footer .social-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-gold);
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .footer .social-btn:hover {
+            background: var(--color-gold);
+            color: var(--color-navy);
+            border-color: var(--color-gold);
+            transform: translateY(-3px);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            width: 44px;
+            height: 44px;
+            background: var(--color-gold);
+            color: var(--color-navy);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .back-to-top.show { opacity: 1; pointer-events: auto; }
+        .back-to-top:hover {
+            background: var(--color-gold-light);
+            color: var(--color-navy);
+            transform: translateY(-3px);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .carousel-overlay h1 { font-size: 2rem; }
+            .carousel-overlay p { font-size: 1rem; }
+            .header-carousel-item { height: 420px; }
+            .section-title { font-size: 1.85rem; }
+            .about-section h1 { font-size: 1.65rem; }
+            .job-item { padding: 1.25rem !important; }
+            .job-item h5 { font-size: 1rem; }
+            .navbar-brand { font-size: 1.4rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <!-- Spinner End -->
 
-        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-            <a href="{% url 'user_index' %}" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
-                <h1 class="m-0 text-primary">CampusHire</h1>
-            </a>
-            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="{% url 'user_index' %}" class="nav-item nav-link active">Home</a>
-                    <a href="{% url 'user_about' %}" class="nav-item nav-link">About</a>
-        
-                    <!-- Jobs Dropdown -->
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="{% url 'user_job_list' %}" class="dropdown-item">Job List</a>
-                            <a href="{% url 'user_applied_jobs' %}" class="dropdown-item">Applied List</a>
-                        </div>
-                    </div>
-        
-                    <!-- Orientation Session Dropdown -->
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Orientation Session</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="{% url 'user_sessionlist' %}" class="dropdown-item">List Session</a>
-                            <a href="{% url 'user_applied_sessions' %}" class="dropdown-item">Applied List</a>
-                        </div>
-                    </div>
-        
-                    
-                    <a href="{% url 'user_profile' %}" class="nav-item nav-link">Profile</a>
-        
-                    <!-- Notification Bell Icon -->
-   <a href="{% url 'tutor_notifications' %}" class="nav-link position-relative">
-                    <i class="fa fa-bell"></i>
-                    {% if notifications_count > 0 %}
-                        <!-- This shows the count badge -->
-                        <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
-                            {{ notifications_count }}
-                        </span>
-                    {% endif %}
-                </a>
-        
-                    <!-- Logout Button -->
-                    <a href="{% url 'logout' %}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </nav>
-        
-        
-        
+<!-- ===== Navbar ===== -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-lg">
+        <a class="navbar-brand" href="{% url 'user_index' %}">CampusHire</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            style="border-color: rgba(255,255,255,0.5);">
+            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+        </button>
 
-        {% block content %}
-      
-     <!-- Carousel Start -->
-     <div class="container-fluid p-0">
-        <div class="owl-carousel header-carousel position-relative">
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="/static/img/carousel-1.jpg" alt="">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <h1 class="display-3 text-white animated slideInDown mb-4">From campus to corporate, we pave the way</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-2">It’s not what you achieve, it’s what you overcome. That’s what defines your career. – Carlton Fisk</p>
-                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search A Job</a>
-                             
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="/static/img/carousel-2.jpg" alt="">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <h1 class="display-3 text-white animated slideInDown mb-4">Find The Best Startup Job That Fit You</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-2">The journey to your dream job begins here!</p>
-                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search A Job</a>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Carousel End -->
-
-
-
-       <!-- About Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                <div class="row g-0 about-bg rounded overflow-hidden">
-                    <div class="col-6 text-start">
-                        <img class="img-fluid w-100" src="/static/img/about-1.jpg" alt="About Image 1">
-                    </div>
-                    <div class="col-6 text-start">
-                        <img class="img-fluid" src="/static/img/about-2.jpg" style="width: 85%; margin-top: 15%;" alt="About Image 2">
-                    </div>
-                    <div class="col-6 text-end">
-                        <img class="img-fluid" src="/static/img/about-3.jpg" style="width: 85%;" alt="About Image 3">
-                    </div>
-                    <div class="col-6 text-end">
-                        <img class="img-fluid w-100" src="/static/img/about-4.jpg" alt="About Image 4">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                <h1 class="mb-4">We Help To Get The Best Job And Find A Talent</h1>
-                <p class="mb-4">At Vimala College, the Placement Cell is here to support students in finding their ideal job opportunities and help companies find the right talent. We provide personalized career guidance, resume support, interview preparation, and more to ensure students are job-ready.</p>
-               
-
-                <p><i class="fa fa-check text-primary me-3"></i>We connect employers with skilled graduates</p>
-                <p><i class="fa fa-check text-primary me-3"></i> We simplify the hiring process for companies and students</p>
-                <p><i class="fa fa-check text-primary me-3"></i> We create successful career connections</p>
-
-                <a class="btn btn-primary py-3 px-5 mt-3" href="/user_about/">Read More</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container-xxl py-5">
-    <div class="container">
-        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
-
-        <!-- Tab Navigation -->
-        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#featured-jobs">
-                        <h6 class="mt-n1 mb-0">Featured</h6>
-                    </a>
+                    <a class="nav-link active" href="{% url 'user_index' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#full-time-jobs">
-                        <h6 class="mt-n1 mb-0">Full Time</h6>
+                    <a class="nav-link" href="{% url 'user_about' %}">About</a>
+                </li>
+
+                <!-- Jobs Dropdown -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'user_job_list' %}" class="dropdown-item">Job List</a></li>
+                        <li><a href="{% url 'user_applied_jobs' %}" class="dropdown-item">Applied List</a></li>
+                    </ul>
+                </li>
+
+                <!-- Orientation Session Dropdown -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Orientation</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'user_sessionlist' %}" class="dropdown-item">List Session</a></li>
+                        <li><a href="{% url 'user_applied_sessions' %}" class="dropdown-item">Applied List</a></li>
+                    </ul>
+                </li>
+
+                <!-- Profile -->
+                <li class="nav-item">
+                    <a href="{% url 'user_profile' %}" class="nav-link">Profile</a>
+                </li>
+
+                <!-- Notification Bell -->
+                <li class="nav-item">
+                    <a href="{% url 'user_notifications' %}" class="nav-link notif-bell">
+                        <i class="bi bi-bell-fill"></i>
+                        {% if notifications_count > 0 %}
+                            <span class="badge rounded-pill notif-badge position-absolute top-0 start-100 translate-middle">
+                                {{ notifications_count }}
+                            </span>
+                        {% endif %}
                     </a>
                 </li>
+
+                <!-- Theme Toggle -->
                 <li class="nav-item">
-                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#part-time-jobs">
-                        <h6 class="mt-n1 mb-0">Part Time</h6>
-                    </a>
+                    <div class="theme-toggle">
+                        <button class="theme-btn light active" id="lightBtn" title="Light mode" type="button">
+                            <i class="bi bi-sun-fill"></i>
+                        </button>
+                        <button class="theme-btn dark" id="darkBtn" title="Dark mode" type="button">
+                            <i class="bi bi-moon-fill"></i>
+                        </button>
+                    </div>
+                </li>
+
+                <!-- Logout -->
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="btn-nav-gold">Logout</a>
                 </li>
             </ul>
         </div>
+    </div>
+</nav>
 
-        <!-- Tabs for Job Types -->
-        <div class="tab-content">
-            <!-- Featured Jobs Tab -->
-            <div id="featured-jobs" class="tab-pane fade show active">
-                <div id="featuredJobResults">
-                    {% for job in featured_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}</span>
-                                    <span class="text-truncate me-3"><i class="fa fa-building text-primary me-2"></i>{{ job.department.name }}</span>
+{% block content %}
+
+<!-- ===== Carousel Start ===== -->
+<div class="container-fluid p-0">
+    <div id="headerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="header-carousel-item">
+                    <img src="/static/img/carousel-1.jpg" alt="Campus to corporate">
+                    <div class="carousel-overlay">
+                        <div class="container-lg">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h1>From campus to corporate, we pave the way</h1>
+                                    <p>It's not what you achieve, it's what you overcome. That's what defines your career. – Carlton Fisk</p>
+                                    <a href="{% url 'user_job_list' %}" class="btn-primary-gold">
+                                        <i class="bi bi-search"></i> Search A Job
+                                    </a>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-primary mb-2 me-2" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                                    <button class="btn btn-primary mb-2 me-2 apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
-                                </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Posted: {{ job.date }}</small>
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
-
-            <!-- Full-Time Jobs Tab -->
-            <div id="full-time-jobs" class="tab-pane fade">
-                <div id="fullTimeJobResults">
-                    {% for job in full_time_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}</span>
-                                    <span class="text-truncate me-3"><i class="fa fa-building text-primary me-2"></i>{{ job.department.name }}</span>
+            <div class="carousel-item">
+                <div class="header-carousel-item">
+                    <img src="/static/img/carousel-2.jpg" alt="Startup jobs">
+                    <div class="carousel-overlay">
+                        <div class="container-lg">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h1>Find The Best Startup Job That Fits You</h1>
+                                    <p>The journey to your dream job begins here.</p>
+                                    <a href="{% url 'user_job_list' %}" class="btn-primary-gold">
+                                        <i class="bi bi-search"></i> Search A Job
+                                    </a>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-primary mb-2 me-2" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                                    <button class="btn btn-primary mb-2 me-2 apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
-                                </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Posted: {{ job.date }}</small>
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
+        </div>
 
-            <!-- Part-Time Jobs Tab -->
-            <div id="part-time-jobs" class="tab-pane fade">
-                <div id="partTimeJobResults">
-                    {% for job in part_time_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}</span>
-                                    <span class="text-truncate me-3"><i class="fa fa-building text-primary me-2"></i>{{ job.department.name }}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-primary mb-2 me-2" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                                    <button class="btn btn-primary mb-2 me-2 apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
-                                </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Posted: {{ job.date }}</small>
-                            </div>
-                        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#headerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#headerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<!-- Carousel End -->
+
+
+<!-- ===== About Start ===== -->
+<div class="about-section">
+    <div class="container-lg">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <img class="img-fluid w-100" src="/static/img/about-1.jpg" alt="About 1">
                     </div>
-                    {% endfor %}
+                    <div class="col-6">
+                        <img class="img-fluid w-100" src="/static/img/about-2.jpg" alt="About 2" style="margin-top: 15%;">
+                    </div>
+                    <div class="col-6">
+                        <img class="img-fluid w-100" src="/static/img/about-3.jpg" alt="About 3">
+                    </div>
+                    <div class="col-6">
+                        <img class="img-fluid w-100" src="/static/img/about-4.jpg" alt="About 4">
+                    </div>
                 </div>
+            </div>
+            <div class="col-lg-6">
+                <h1>We Help To Get The Best Job And Find A Talent</h1>
+                <p class="mb-4">
+                    At Vimala College, the Placement Cell is here to support students in finding their ideal job
+                    opportunities and help companies find the right talent. We provide personalized career guidance,
+                    resume support, interview preparation, and more to ensure students are job-ready.
+                </p>
+
+                <p><i class="bi bi-check-circle-fill about-check"></i> We connect employers with skilled graduates</p>
+                <p><i class="bi bi-check-circle-fill about-check"></i> We simplify the hiring process for companies and students</p>
+                <p><i class="bi bi-check-circle-fill about-check"></i> We create successful career connections</p>
+
+                <a class="btn-outline-navy mt-3" href="{% url 'user_about' %}">Read More</a>
             </div>
         </div>
     </div>
 </div>
+<!-- About End -->
+
+
+<!-- ===== Job Listing Start ===== -->
+<div class="container-lg py-5">
+    <h2 class="section-title">Job Listing</h2>
+    <p class="section-subtitle">Browse opportunities tailored to your career goals</p>
+
+    <!-- Tab Navigation -->
+    <ul class="nav nav-pills job-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#featured-jobs" type="button" role="tab">
+                Featured
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#full-time-jobs" type="button" role="tab">
+                Full Time
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#part-time-jobs" type="button" role="tab">
+                Part Time
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+
+        <!-- Featured -->
+        <div id="featured-jobs" class="tab-pane fade show active" role="tabpanel">
+            {% for job in featured_jobs %}
+            <div class="job-item mb-4">
+                <div class="row g-4">
+                    <div class="col-12 col-md-8 d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">{{ job.title }}</h5>
+                            <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
+                            <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
+                            <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
+                            <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3 gap-2 flex-wrap">
+                            <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">Read More</a>
+                            <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
+                        </div>
+                        <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Full-Time -->
+        <div id="full-time-jobs" class="tab-pane fade" role="tabpanel">
+            {% for job in full_time_jobs %}
+            <div class="job-item mb-4">
+                <div class="row g-4">
+                    <div class="col-12 col-md-8 d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">{{ job.title }}</h5>
+                            <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
+                            <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
+                            <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
+                            <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3 gap-2 flex-wrap">
+                            <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">Read More</a>
+                            <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
+                        </div>
+                        <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Part-Time -->
+        <div id="part-time-jobs" class="tab-pane fade" role="tabpanel">
+            {% for job in part_time_jobs %}
+            <div class="job-item mb-4">
+                <div class="row g-4">
+                    <div class="col-12 col-md-8 d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">{{ job.title }}</h5>
+                            <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
+                            <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
+                            <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
+                            <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3 gap-2 flex-wrap">
+                            <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">Read More</a>
+                            <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
+                        </div>
+                        <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+<!-- Job Listing End -->
+
+
+<!-- ===== Latest Jobs (all jobs) ===== -->
+<div class="container-lg pb-5">
+    <h2 class="section-title">All Jobs</h2>
+    <p class="section-subtitle">Complete list of opportunities currently available</p>
+
+    <div class="row">
+        {% for job in jobs %}
+        <div class="col-12 mb-3">
+            <div class="job-item">
+                <div class="row g-4">
+                    <div class="col-12 col-md-8 d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="Company Logo" style="width: 80px; height: 80px;">
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">{{ job.title }}</h5>
+                            <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
+                            <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type|title }}</span>
+                            <span class="text-truncate me-0"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3 gap-2 flex-wrap">
+                            <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">Read More</a>
+                            <a class="btn-job-apply" href="{% url 'apply_for_job' job.id %}">Apply Now</a>
+                        </div>
+                        <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Date Line: {{ job.date|date:"d M, Y" }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+        <a class="btn-browse-more" href="/user_job_list/">Browse More Jobs</a>
+    </div>
+</div>
+<!-- Latest Jobs End -->
+
+{% endblock %}
+
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+    <div class="container-lg">
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <h6>CampusHire</h6>
+                <p class="mb-0" style="font-size: 0.85rem; opacity: 0.85;">Premium platform connecting campus talent
+                    with career opportunity.</p>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h6>For Students</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="{% url 'user_job_list' %}">Browse Jobs</a></li>
+                    <li><a href="{% url 'user_applied_jobs' %}">My Applications</a></li>
+                    <li><a href="{% url 'user_profile' %}">Profile</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h6>Quick Links</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="{% url 'user_about' %}">About</a></li>
+                    <li><a href="{% url 'user_sessionlist' %}">Orientation</a></li>
+                    <li><a href="{% url 'user_notifications' %}">Notifications</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h6>Contact</h6>
+                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-geo-alt-fill me-2"></i>Mannuthy</p>
+                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-telephone-fill me-2"></i>9876543210</p>
+                <p class="mb-2" style="font-size: 0.85rem;"><i class="bi bi-envelope-fill me-2"></i>afsasiddique@gmail.com</p>
+                <div class="d-flex pt-2">
+                    <a class="social-btn" href="https://www.twitter.com/login"><i class="bi bi-twitter"></i></a>
+                    <a class="social-btn" href="https://www.facebook.com/login/"><i class="bi bi-facebook"></i></a>
+                    <a class="social-btn" href="https://www.youtube.com/"><i class="bi bi-youtube"></i></a>
+                    <a class="social-btn" href="https://www.linkedin.com/login"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="mb-0">&copy; 2024 CampusHire. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to Top -->
+<a href="#" class="back-to-top" id="backToTop"><i class="bi bi-arrow-up"></i></a>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Function to handle job application
+        // ===== Theme Management =====
+        const htmlElement = document.documentElement;
+        const lightBtn = document.getElementById('lightBtn');
+        const darkBtn = document.getElementById('darkBtn');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeButtons(savedTheme);
+
+        lightBtn.addEventListener('click', () => {
+            htmlElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            updateThemeButtons('light');
+        });
+
+        darkBtn.addEventListener('click', () => {
+            htmlElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            updateThemeButtons('dark');
+        });
+
+        function updateThemeButtons(theme) {
+            if (theme === 'light') {
+                lightBtn.classList.add('active');
+                darkBtn.classList.remove('active');
+            } else {
+                darkBtn.classList.add('active');
+                lightBtn.classList.remove('active');
+            }
+        }
+
+        // ===== Back to Top =====
+        const backToTop = document.getElementById('backToTop');
+        if (backToTop) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) backToTop.classList.add('show');
+                else backToTop.classList.remove('show');
+            });
+            backToTop.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // ===== Apply Now =====
         function handleApplyButtonClick(button) {
             const jobId = button.getAttribute('data-job-id');
             const confirmation = confirm("Are you sure you want to apply for this job?");
 
             if (!confirmation) {
-                // Redirect to the user_index page if the user cancels
                 window.location.href = '/user_index/';
                 return;
             }
@@ -318,14 +1014,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Show pop-up message after successful application
                     alert(data.message || 'Successfully applied for the job!');
-                    
-                    // Disable the button and change its text to "Applied"
                     button.disabled = true;
                     button.textContent = 'Applied';
-
-                    // Redirect to the user_applied_job.html page after the user clicks "OK" on the alert
                     window.location.href = '/user_applied_job/';
                 } else {
                     alert(data.message || 'Error applying for the job. Please try again.');
@@ -337,196 +1028,19 @@
             });
         }
 
-        // Function to attach event listeners to Apply Now buttons
         function attachApplyEventListeners() {
             document.querySelectorAll('.apply-btn').forEach(button => {
+                if (button.dataset.listenerAttached === 'true') return;
+                button.dataset.listenerAttached = 'true';
                 button.addEventListener('click', function () {
                     handleApplyButtonClick(this);
                 });
             });
         }
 
-        // Initial attachment for static buttons
         attachApplyEventListeners();
-
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        const tabContent = document.querySelector('.tab-content');
-
-        +searchInput.addEventListener('input', function () {
-            const query = searchInput.value.trim();
-            tabContent.innerHTML = '<p>Loading...</p>';
-
-            if (query === '') {
-                tabContent.innerHTML = '';
-                return;
-            }
-
-            fetch(`/search-jobs/?search=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    tabContent.innerHTML = '';
-
-                    if (data.jobs.length > 0) {
-                        let jobItemsHTML = '';
-                        data.jobs.forEach(job => {
-                            jobItemsHTML += `
-                            <div class="job-item p-4 mb-4">
-                                <div class="row g-4">
-                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                        <img class="flex-shrink-0 img-fluid border rounded" src="${job.logo}" alt="" style="width: 80px; height: 80px;">
-                                        <div class="text-start ps-4">
-                                            <h5 class="mb-3">${job.title}</h5>
-                                            <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>${job.place}</span>
-                                            <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>${job.job_type}</span>
-                                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>${job.salary}</span>
-                                            <span class="text-truncate me-3"><i class="fa fa-building text-primary me-2"></i>${job.department}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                        <div class="d-flex mb-3">
-                                            <a class="btn btn-primary mb-2 me-2" href="/user_job_detail/${job.id}/">Read More</a>
-                                            <button class="btn btn-primary mb-2 me-2 apply-btn" data-job-id="${job.id}">Apply Now</button>
-                                        </div>
-                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Posted: ${job.date}</small>
-                                    </div>
-                                </div>
-                            </div>
-                            `;
-                        });
-
-                        tabContent.innerHTML = jobItemsHTML;
-
-                        // Reattach Apply Now listeners for dynamically added buttons
-                        attachApplyEventListeners();
-                    } else {
-                        tabContent.innerHTML = '<p>No results found.</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching search results:', error);
-                    tabContent.innerHTML = '<p>There was an error processing your request. Please try again later.</p>';
-                });
-        });
     });
 </script>
-
-
-<!-- About End -->
-
-
-    
-
-        <div class="container">
-           
-            <div class="row">
-                {% for job in jobs %}
-                    <div class="col-12 col-md-12 col-lg-12 mb-4"> <!-- Increased width -->
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-12 col-md-8 d-flex align-items-center">
-                                    <!-- Company Logo -->
-                                    <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="Company Logo" style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <!-- Job Title -->
-                                        <h5 class="mb-3">{{ job.title }}</h5>
-                                        <!-- Job Location -->
-                                        <span class="text-truncate me-3">
-                                            <i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}
-                                        </span>
-                                        <!-- Job Type -->
-                                        <span class="text-truncate me-3">
-                                            <i class="far fa-clock text-primary me-2"></i>{{ job.job_type|title }}
-                                        </span>
-                                        <!-- Salary -->
-                                        <span class="text-truncate me-0">
-                                            <i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-primary mb-3 me-3" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                                        <a class="btn btn-primary mb-3 me-3" href="{% url 'apply_for_job' job.id %}">Apply Now</a>
-
-                                    </div>
-                                    <small class="text-truncate">
-                                        <i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.date|date:"d M, Y" }}
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="d-flex justify-content-center mt-4">
-                <a class="btn btn-primary py-3 px-5" href="/user_job_list/">Browse More Jobs</a>
-            </div>
-        </div>
-        
-        {% endblock %}
-
-          <!-- Footer Start -->
-          <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5">
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Company</h5>
-                        <a class="btn btn-link text-white-50" href="">About Us</a>
-                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                        <a class="btn btn-link text-white-50" href="">Our Services</a>
-                        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Quick Links</h5>
-                        <a class="btn btn-link text-white-50" href="">About Us</a>
-                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                        <a class="btn btn-link text-white-50" href="">Our Services</a>
-                        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Contact</h5>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Mannuthy</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>9876543210</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>afsasiddique@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href="https://www.twitter.com/login"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/login/"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.youtube.com/"><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/login"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Newsletter</h5>
-                        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                        <div class="position-relative mx-auto" style="max-width: 400px;">
-                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-             
-        </div>
-        <!-- Footer End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-    
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/lib/wow/wow.min.js"></script>
-    <script src="/static/lib/easing/easing.min.js"></script>
-    <script src="/static/lib/waypoints/waypoints.min.js"></script>
-    <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="/static/js/main.js"></script>
 </body>
 
-</html> 
+</html>

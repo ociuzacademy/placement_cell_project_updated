@@ -1,93 +1,425 @@
-
 {% extends "admin/admin_index.html" %}
+{% load static %}
+
 {% block content %}
-       
+
+<style>
+    /* ===== Job Detail Page ===== */
+    .job-detail-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
+    }
+
+    /* ===== Job header (logo + title + meta) ===== */
+    .job-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.75rem;
+        margin-bottom: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .job-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+    }
+
+    .job-header img {
+        width: 80px;
+        height: 80px;
+        border-radius: 0.5rem;
+        border: 2px solid var(--border-light);
+        background: var(--bg-primary);
+        object-fit: contain;
+        padding: 0.35rem;
+        flex-shrink: 0;
+    }
+
+    .job-header h3 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 1.65rem;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.6rem;
+    }
+
+    .job-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .job-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .job-meta i {
+        color: var(--color-gold) !important;
+        font-size: 0.95rem;
+    }
+
+    /* ===== Content sections ===== */
+    .content-section {
+        margin-bottom: 2.5rem;
+    }
+
+    .content-section h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 1rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid var(--border-light);
+        position: relative;
+    }
+
+    .content-section h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 40px;
+        height: 2px;
+        background: var(--color-gold);
+    }
+
+    .content-section p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.8;
+        margin-bottom: 1rem;
+    }
+
+    .content-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .content-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        padding: 0.5rem 0;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .content-list li i {
+        color: var(--color-gold) !important;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
+
+    /* ===== Apply form ===== */
+    .apply-form {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .apply-form::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .apply-form h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.35rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .apply-form .form-control {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-light);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        transition: border-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        z-index: 1;
+    }
+
+    .apply-form .form-control:focus {
+        border-color: var(--color-gold);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        outline: none;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .apply-form .form-control::placeholder {
+        color: var(--text-tertiary);
+    }
+
+    .apply-form input[type="file"].form-control {
+        padding: 0.6rem 1rem;
+        cursor: pointer;
+    }
+
+    .apply-form input[type="file"].form-control::file-selector-button {
+        background: var(--color-navy);
+        color: #fff;
+        border: none;
+        padding: 0.4rem 0.9rem;
+        border-radius: 0.375rem;
+        margin-right: 0.75rem;
+        font-weight: 600;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .apply-form input[type="file"].form-control::file-selector-button:hover {
+        background: var(--color-navy-light);
+    }
+
+    .btn-apply {
+        width: 100%;
+        height: 52px;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border: 2px solid var(--color-gold);
+        border-radius: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-apply:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
+    /* ===== Sidebar panels ===== */
+    .sidebar-panel {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.75rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sidebar-panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--color-navy), var(--color-gold));
+    }
+
+    .sidebar-panel h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.15rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 1.25rem;
+    }
+
+    .sidebar-panel p {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+        line-height: 1.6;
+        margin-bottom: 0.85rem;
+    }
+
+    .sidebar-panel p:last-child {
+        margin-bottom: 0;
+    }
+
+    .sidebar-panel p i {
+        color: var(--color-gold) !important;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
+
+    .sidebar-panel p strong {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+        .job-header {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            padding: 1.5rem;
+        }
+        .job-header h3 { font-size: 1.35rem; }
+        .job-meta { gap: 0.9rem; font-size: 0.8rem; }
+        .apply-form { padding: 1.5rem; }
+        .sidebar-panel { padding: 1.5rem; }
+    }
+</style>
 
 
-        <!-- Job Detail Start -->
-        <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="container">
-                <div class="row gy-5 gx-4">
-                    <div class="col-lg-8">
-                        <div class="d-flex align-items-center mb-5">
-                            <img class="flex-shrink-0 img-fluid border rounded" src="/static/img/com-logo-2.jpg" alt="" style="width: 80px; height: 80px;">
-                            <div class="text-start ps-4">
-                                <h3 class="mb-3">Marketing Manager</h3>
-                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                            </div>
-                        </div>
+<!-- ===== Job Detail Section ===== -->
+<section class="job-detail-wrapper">
+    <div class="container-lg">
+        <div class="row gy-4 gx-4">
 
-                        <div class="mb-5">
-                            <h4 class="mb-3">Job description</h4>
-                            <p>Dolor justo tempor duo ipsum accusam rebum gubergren erat. Elitr stet dolor vero clita labore gubergren. Kasd sed ipsum elitr clita rebum ut sea diam tempor. Sadipscing nonumy vero labore invidunt dolor sed, eirmod dolore amet aliquyam consetetur lorem, amet elitr clita et sed consetetur dolore accusam. Vero kasd nonumy justo rebum stet. Ipsum amet sed lorem sea magna. Rebum vero dolores dolores elitr vero dolores magna, stet sea sadipscing stet et. Est voluptua et sanctus at sanctus erat vero sed sed, amet duo no diam clita rebum duo, accusam tempor takimata clita stet nonumy rebum est invidunt stet, dolor.</p>
-                            <h4 class="mb-3">Responsibility</h4>
-                            <p>Magna et elitr diam sed lorem. Diam diam stet erat no est est. Accusam sed lorem stet voluptua sit sit at stet consetetur, takimata at diam kasd gubergren elitr dolor</p>
-                            <ul class="list-unstyled">
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Dolor justo tempor duo ipsum accusam</li>
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Elitr stet dolor vero clita labore gubergren</li>
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Rebum vero dolores dolores elitr</li>
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Est voluptua et sanctus at sanctus erat</li>
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Diam diam stet erat no est est</li>
-                            </ul>
-                            <h4 class="mb-3">Qualifications</h4>
-                            <p>Magna et elitr diam sed lorem. Diam diam stet erat no est est. Accusam sed lorem stet voluptua sit sit at stet consetetur, takimata at diam kasd gubergren elitr dolor</p>
-                            <ul class="list-unstyled">
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Dolor justo tempor duo ipsum accusam</li>
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Elitr stet dolor vero clita labore gubergren</li>
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Rebum vero dolores dolores elitr</li>
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Est voluptua et sanctus at sanctus erat</li>
-                                <li><i class="fa fa-angle-right text-primary me-2"></i>Diam diam stet erat no est est</li>
-                            </ul>
-                        </div>
-        
-                        <div class="">
-                            <h4 class="mb-4">Apply For The Job</h4>
-                            <form>
-                                <div class="row g-3">
-                                    <div class="col-12 col-sm-6">
-                                        <input type="text" class="form-control" placeholder="Your Name">
-                                    </div>
-                                    <div class="col-12 col-sm-6">
-                                        <input type="email" class="form-control" placeholder="Your Email">
-                                    </div>
-                                    <div class="col-12 col-sm-6">
-                                        <input type="text" class="form-control" placeholder="Portfolio Website">
-                                    </div>
-                                    <div class="col-12 col-sm-6">
-                                        <input type="file" class="form-control bg-white">
-                                    </div>
-                                    <div class="col-12">
-                                        <textarea class="form-control" rows="5" placeholder="Coverletter"></textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Apply Now</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-        
-                    <div class="col-lg-4">
-                        <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
-                            <h4 class="mb-4">Job Summery</h4>
-                            <p><i class="fa fa-angle-right text-primary me-2"></i>Published On: 01 Jan, 2045</p>
-                            <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancy: 123 Position</p>
-                            <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: Full Time</p>
-                            <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: $123 - $456</p>
-                            <p><i class="fa fa-angle-right text-primary me-2"></i>Location: New York, USA</p>
-                            <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i>Date Line: 01 Jan, 2045</p>
-                        </div>
-                        <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
-                            <h4 class="mb-4">Company Detail</h4>
-                            <p class="m-0">Ipsum dolor ipsum accusam stet et et diam dolores, sed rebum sadipscing elitr vero dolores. Lorem dolore elitr justo et no gubergren sadipscing, ipsum et takimata aliquyam et rebum est ipsum lorem diam. Et lorem magna eirmod est et et sanctus et, kasd clita labore.</p>
+            <!-- ===== Main Column ===== -->
+            <div class="col-lg-8">
+
+                <!-- Job header -->
+                <div class="job-header">
+                    <img src="/static/img/com-logo-2.jpg" alt="Company logo">
+                    <div>
+                        <h3>Marketing Manager</h3>
+                        <div class="job-meta">
+                            <span><i class="bi bi-geo-alt-fill"></i> New York, USA</span>
+                            <span><i class="bi bi-clock"></i> Full Time</span>
+                            <span><i class="bi bi-cash-stack"></i> $123 - $456</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Job Detail End -->
 
-</body>
+                <!-- Description -->
+                <div class="content-section">
+                    <h4>Job Description</h4>
+                    <p>Dolor justo tempor duo ipsum accusam rebum gubergren erat. Elitr stet dolor vero clita labore gubergren. Kasd sed ipsum elitr clita rebum ut sea diam tempor. Sadipscing nonumy vero labore invidunt dolor sed, eirmod dolore amet aliquyam consetetur lorem, amet elitr clita et sed consetetur dolore accusam. Vero kasd nonumy justo rebum stet. Ipsum amet sed lorem sea magna. Rebum vero dolores dolores elitr vero dolores magna, stet sea sadipscing stet et. Est voluptua et sanctus at sanctus erat vero sed sed, amet duo no diam clita rebum duo, accusam tempor takimata clita stet nonumy rebum est invidunt stet, dolor.</p>
+                </div>
+
+                <!-- Responsibility -->
+                <div class="content-section">
+                    <h4>Responsibilities</h4>
+                    <p>Magna et elitr diam sed lorem. Diam diam stet erat no est est. Accusam sed lorem stet voluptua sit sit at stet consetetur, takimata at diam kasd gubergren elitr dolor.</p>
+                    <ul class="content-list">
+                        <li><i class="bi bi-chevron-right"></i> Dolor justo tempor duo ipsum accusam</li>
+                        <li><i class="bi bi-chevron-right"></i> Elitr stet dolor vero clita labore gubergren</li>
+                        <li><i class="bi bi-chevron-right"></i> Rebum vero dolores dolores elitr</li>
+                        <li><i class="bi bi-chevron-right"></i> Est voluptua et sanctus at sanctus erat</li>
+                        <li><i class="bi bi-chevron-right"></i> Diam diam stet erat no est est</li>
+                    </ul>
+                </div>
+
+                <!-- Qualifications -->
+                <div class="content-section">
+                    <h4>Qualifications</h4>
+                    <p>Magna et elitr diam sed lorem. Diam diam stet erat no est est. Accusam sed lorem stet voluptua sit sit at stet consetetur, takimata at diam kasd gubergren elitr dolor.</p>
+                    <ul class="content-list">
+                        <li><i class="bi bi-chevron-right"></i> Dolor justo tempor duo ipsum accusam</li>
+                        <li><i class="bi bi-chevron-right"></i> Elitr stet dolor vero clita labore gubergren</li>
+                        <li><i class="bi bi-chevron-right"></i> Rebum vero dolores dolores elitr</li>
+                        <li><i class="bi bi-chevron-right"></i> Est voluptua et sanctus at sanctus erat</li>
+                        <li><i class="bi bi-chevron-right"></i> Diam diam stet erat no est est</li>
+                    </ul>
+                </div>
+
+                <!-- Apply form -->
+                <div class="apply-form">
+                    <h4>Apply For The Job</h4>
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-12 col-sm-6">
+                                <input type="text" class="form-control" placeholder="Your Name">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="email" class="form-control" placeholder="Your Email">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="text" class="form-control" placeholder="Portfolio Website">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="file" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control" rows="5" placeholder="Cover letter"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn-apply" type="submit">
+                                    <i class="bi bi-send"></i> Apply Now
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- ===== Sidebar Column ===== -->
+            <div class="col-lg-4">
+
+                <!-- Job Summary -->
+                <div class="sidebar-panel">
+                    <h4>Job Summary</h4>
+                    <p><i class="bi bi-calendar-event"></i> <span><strong>Published On:</strong> 01 Jan, 2045</span></p>
+                    <p><i class="bi bi-people"></i> <span><strong>Vacancy:</strong> 123 Positions</span></p>
+                    <p><i class="bi bi-clock"></i> <span><strong>Job Nature:</strong> Full Time</span></p>
+                    <p><i class="bi bi-cash-stack"></i> <span><strong>Salary:</strong> $123 - $456</span></p>
+                    <p><i class="bi bi-geo-alt-fill"></i> <span><strong>Location:</strong> New York, USA</span></p>
+                    <p><i class="bi bi-calendar-x"></i> <span><strong>Deadline:</strong> 01 Jan, 2045</span></p>
+                </div>
+
+                <!-- Company Detail -->
+                <div class="sidebar-panel">
+                    <h4>Company Detail</h4>
+                    <p>Ipsum dolor ipsum accusam stet et et diam dolores, sed rebum sadipscing elitr vero dolores. Lorem dolore elitr justo et no gubergren sadipscing, ipsum et takimata aliquyam et rebum est ipsum lorem diam. Et lorem magna eirmod est et et sanctus et, kasd clita labore.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
 {% endblock %}

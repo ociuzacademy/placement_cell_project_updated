@@ -1,10 +1,10 @@
-{% extends "tutor/tutor_index.html" %}
+{% extends "admin/admin_index.html" %}
 {% load static %}
 
 {% block content %}
 
 <style>
-    /* ===== Tutor About Page ===== */
+    /* ===== Admin About Page ===== */
     .about-wrapper {
         padding: 5rem 0;
         background: var(--bg-primary);
@@ -62,7 +62,7 @@
         margin-bottom: 2rem;
     }
 
-    .about-text .tutor-badge {
+    .about-text .admin-badge {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
@@ -289,33 +289,32 @@
             <!-- Text column -->
             <div class="col-lg-6">
                 <div class="about-text">
-                    <span class="tutor-badge">
-                        <i class="bi bi-person-workspace"></i> Tutor Portal
+                    <span class="admin-badge">
+                        <i class="bi bi-shield-check"></i> Admin Panel
                     </span>
 
-                    <h1>Guiding Students, <span>Shaping Careers</span></h1>
+                    <h1>Managing CampusHire, <span>One Connection at a Time</span></h1>
 
                     <p>
-                        The CampusHire Tutor Portal is built for faculty and mentors who guide students through
-                        their placement journey. From here, tutors manage their assigned students, review job
-                        applications, track placement progress, and support students in preparing for interviews
-                        and career opportunities.
+                        The CampusHire Admin Panel is the operational heart of the platform. From here,
+                        administrators manage job postings, approve tutor registrations, organize orientation
+                        sessions, and oversee the departments and programs that power the entire placement
+                        ecosystem.
                     </p>
 
                     <p>
-                        Tutors are the bridge between students and the corporate world. Whether it's helping a
-                        student polish their resume, monitoring who has applied where, or coordinating
-                        orientation sessions, this portal gives you the tools to make a real difference in
-                        every student's career.
+                        Our goal is to keep the platform smooth, secure, and useful for both students and
+                        companies. Every approval, every department, and every session published from this
+                        panel brings a student one step closer to their career.
                     </p>
 
                     <p>
-                        Every job posting, every session, and every application managed here is a step toward
-                        ensuring that no student is left behind. CampusHire is committed to supporting tutors
-                        in that mission.
+                        Built on the principles of transparency and efficiency, the Admin Panel gives you
+                        complete visibility into platform activity — from the number of pending tutor
+                        applications to the list of students registered for each orientation session.
                     </p>
 
-                    <a class="btn-back-about" href="{% url 'tutor_index' %}">
+                    <a class="btn-back-about" href="{% url 'admin_index' %}">
                         <i class="bi bi-arrow-left"></i> Back to Dashboard
                     </a>
                 </div>
@@ -327,72 +326,72 @@
         <div class="stats-grid">
 
             <div class="stat-card">
-                <span class="stat-icon"><i class="bi bi-people-fill"></i></span>
-                <div class="stat-number">200+</div>
-                <div class="stat-label">Students Guided</div>
+                <span class="stat-icon"><i class="bi bi-briefcase-fill"></i></span>
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Jobs Managed</div>
             </div>
 
             <div class="stat-card">
-                <span class="stat-icon"><i class="bi bi-briefcase-fill"></i></span>
-                <div class="stat-number">150+</div>
-                <div class="stat-label">Jobs Reviewed</div>
+                <span class="stat-icon"><i class="bi bi-people-fill"></i></span>
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Students Registered</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-person-workspace"></i></span>
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Tutors Approved</div>
             </div>
 
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-calendar-check-fill"></i></span>
-                <div class="stat-number">80+</div>
-                <div class="stat-label">Sessions Supported</div>
-            </div>
-
-            <div class="stat-card">
-                <span class="stat-icon"><i class="bi bi-award-fill"></i></span>
-                <div class="stat-number">75%</div>
-                <div class="stat-label">Placement Rate</div>
+                <div class="stat-number">120+</div>
+                <div class="stat-label">Sessions Hosted</div>
             </div>
 
         </div>
 
         <!-- Capabilities -->
         <div class="capabilities-section">
-            <h2 class="capabilities-title">What You Can Do</h2>
-            <p class="capabilities-subtitle">Your complete toolkit for student placement support</p>
+            <h2 class="capabilities-title">What You Can Manage</h2>
+            <p class="capabilities-subtitle">Everything in the platform, under one dashboard</p>
 
             <div class="capabilities-grid">
 
                 <div class="capability-card">
-                    <span class="cap-icon"><i class="bi bi-people"></i></span>
-                    <h5>View Assigned Students</h5>
-                    <p>Access the full list of students under your guidance with their department, batch, and contact details.</p>
-                </div>
-
-                <div class="capability-card">
                     <span class="cap-icon"><i class="bi bi-briefcase"></i></span>
-                    <h5>Review Job Postings</h5>
-                    <p>Browse all available job opportunities posted on the platform and see which students have applied.</p>
+                    <h5>Job Postings</h5>
+                    <p>Create, edit, and remove job listings. Track applications per posting and export them to Excel.</p>
                 </div>
 
                 <div class="capability-card">
-                    <span class="cap-icon"><i class="bi bi-clipboard-check"></i></span>
-                    <h5>Approve or Reject Applications</h5>
-                    <p>Review student job applications and approve or reject them based on readiness and eligibility.</p>
+                    <span class="cap-icon"><i class="bi bi-person-workspace"></i></span>
+                    <h5>Tutor Registrations</h5>
+                    <p>Review pending tutor sign-ups, approve or reject them, and re-approve previously rejected tutors.</p>
                 </div>
 
                 <div class="capability-card">
                     <span class="cap-icon"><i class="bi bi-calendar-event"></i></span>
                     <h5>Orientation Sessions</h5>
-                    <p>View scheduled orientation and training sessions and track which of your students have registered.</p>
+                    <p>Schedule training sessions, assign resource persons, and track student registrations per session.</p>
                 </div>
 
                 <div class="capability-card">
-                    <span class="cap-icon"><i class="bi bi-file-earmark-excel"></i></span>
-                    <h5>Export Data</h5>
-                    <p>Download student lists and session registrations as Excel files for offline tracking and reporting.</p>
+                    <span class="cap-icon"><i class="bi bi-building"></i></span>
+                    <h5>Departments & Programs</h5>
+                    <p>Add departments, manage their course offerings, and keep the academic structure up to date.</p>
                 </div>
 
                 <div class="capability-card">
-                    <span class="cap-icon"><i class="bi bi-bell-fill"></i></span>
-                    <h5>Notifications</h5>
-                    <p>Stay updated with new applications, pending approvals, and platform activity through the bell icon.</p>
+                    <span class="cap-icon"><i class="bi bi-people"></i></span>
+                    <h5>Student Directory</h5>
+                    <p>View all registered students with their full profile, department, batch, and contact details.</p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="cap-icon"><i class="bi bi-bar-chart-fill"></i></span>
+                    <h5>Exports & Reports</h5>
+                    <p>Download student applications per job or per session as Excel files for offline review.</p>
                 </div>
 
             </div>

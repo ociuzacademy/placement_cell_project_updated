@@ -3,117 +3,1077 @@
 
 <head>
     <meta charset="utf-8">
-    <title>CampusHire</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <title>CampusHire - From Campus to Career</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Connect with your dream job. CampusHire bridges the gap between campus and corporate.">
 
-    <!-- Favicon -->
-    <link href="/static/img/favicon.ico" rel="icon">
-   
-    <!-- Google Web Fonts -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="/static/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="/static/css/style.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        :root {
+            /* Light Mode - Blue & Gold */
+            --color-navy: #1E293B;
+            --color-navy-light: #334155;
+            --color-navy-dark: #0F172A;
+
+            --color-gold: #F59E0B;
+            --color-gold-dark: #D97706;
+            --color-gold-light: #FBBF24;
+
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-tertiary: #E2E8F0;
+
+            --text-primary: #1E293B;
+            --text-secondary: #475569;
+            --text-tertiary: #64748B;
+
+            --border-light: #E2E8F0;
+            --border-normal: #CBD5E1;
+
+            --shadow-sm: 0 1px 2px 0 rgba(30, 41, 59, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(30, 41, 59, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(30, 41, 59, 0.15);
+            --shadow-xl: 0 20px 25px -5px rgba(30, 41, 59, 0.2);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode - Blue & Gold */
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+
+            --text-primary: #F1F5F9;
+            --text-secondary: #CBD5E1;
+            --text-tertiary: #94A3B8;
+
+            --border-light: #334155;
+            --border-normal: #475569;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+
+            --color-gold: #FBBF24;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            color-scheme: light;
+        }
+
+        [data-theme="dark"] html {
+            color-scheme: dark;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== Navbar ===== */
+        .navbar {
+            background: var(--color-navy);
+            padding: 1.25rem 0 !important;
+            box-shadow: var(--shadow-md);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1.75rem;
+            color: white !important;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--color-gold) !important;
+        }
+
+        .nav-link.active {
+            color: var(--color-gold) !important;
+        }
+
+        /* CTA Button in Navbar */
+        .btn-nav-gold {
+            background: var(--color-gold);
+            color: var(--color-navy);
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+
+        .btn-nav-gold:hover {
+            background: var(--color-gold-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: var(--color-navy);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50px;
+            padding: 0.25rem;
+            display: flex;
+            gap: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 1.5rem;
+        }
+
+        .theme-toggle button {
+            background: transparent;
+            border: none;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle button.active {
+            background: var(--color-gold);
+            color: var(--color-navy);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
+            color: white;
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1.5px;
+        }
+
+        .hero h1 span {
+            color: var(--color-gold);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            font-weight: 400;
+            margin-bottom: 2.5rem;
+            opacity: 0.92;
+            max-width: 550px;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-primary-gold {
+            background: var(--color-gold);
+            border: none;
+            color: var(--color-navy);
+            padding: 1rem 2.5rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary-gold:hover {
+            background: var(--color-gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.3);
+            color: var(--color-navy);
+        }
+
+        .btn-secondary-white {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid white;
+            color: white;
+            padding: 0.875rem 2.25rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary-white:hover {
+            background: white;
+            color: var(--color-navy);
+            border-color: white;
+        }
+
+        .hero-image {
+            margin-top: 3rem;
+        }
+
+        .hero-image svg {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+        }
+
+        /* ===== Stats Section ===== */
+        .stats {
+            background: var(--color-navy);
+            color: white;
+            padding: 3.5rem 0;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--color-gold);
+        }
+
+        .stat-number {
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--color-gold);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== How It Works ===== */
+        .how-it-works {
+            padding: 5rem 0;
+            background: var(--bg-primary);
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3.5rem;
+            max-width: 650px;
+            font-weight: 400;
+        }
+
+        .step-card {
+            padding: 2.5rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-light);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, var(--color-navy), var(--color-navy-light));
+            color: var(--color-gold);
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .step-card:hover {
+            border-color: var(--color-gold);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
+        }
+
+        .step-card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ===== Module Navigation ===== */
+        .module-nav {
+            background: var(--bg-secondary);
+            padding: 2.5rem 0;
+            margin: 3rem 0;
+            border-top: 3px solid var(--color-navy);
+            border-bottom: 3px solid var(--color-navy);
+        }
+
+        .module-label {
+            color: var(--color-navy);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .module-tabs {
+            display: flex;
+            gap: 1.25rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .module-tab {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 0.5rem;
+            padding: 0.85rem 1.75rem;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        [data-theme="dark"] .module-tab {
+            background: var(--bg-tertiary);
+        }
+
+        .module-tab:hover {
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+        }
+
+        .module-tab.active {
+            background: var(--color-navy);
+            border-color: var(--color-navy);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .module-tab.active .module-tab-icon {
+            color: var(--color-gold);
+        }
+
+        /* ===== Role Cards ===== */
+        .roles-section {
+            background: var(--bg-primary);
+            padding: 5rem 0;
+        }
+
+        .role-card {
+            background: var(--bg-secondary);
+            padding: 2.75rem;
+            border-radius: 0.75rem;
+            border-top: 5px solid var(--color-navy);
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .role-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-top-width: 6px;
+        }
+
+        .role-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, var(--color-navy), var(--color-navy-light));
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            color: var(--color-gold);
+            box-shadow: var(--shadow-md);
+        }
+
+        .role-card h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .role-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.75rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .role-features {
+            list-style: none;
+            padding: 0;
+            margin: 1.75rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .role-features li {
+            padding: 0.6rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding-left: 2rem;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .role-features li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--color-gold);
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .btn-outline-navy {
+            background: transparent;
+            border: 2px solid var(--color-navy);
+            color: var(--color-navy);
+            padding: 0.85rem 2rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1.5rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-outline-navy:hover {
+            background: var(--color-navy);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== CTA Section ===== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin: 3rem 0;
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cta-section h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            font-size: 1.15rem;
+            margin-bottom: 2rem;
+            opacity: 0.92;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: var(--color-navy);
+            color: rgba(255, 255, 255, 0.85);
+            padding: 3.5rem 0 1.5rem;
+            font-size: 0.9rem;
+            margin-top: 5rem;
+        }
+
+        .footer h6 {
+            color: white;
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .footer a {
+            color: var(--color-gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            color: var(--color-gold-light);
+            text-decoration: underline;
+        }
+
+        .footer hr {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .step-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .role-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .module-tabs {
+                gap: 0.75rem;
+            }
+
+            .module-tab {
+                padding: 0.65rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .btn-primary-gold,
+            .btn-secondary-white {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem;
+            }
+
+            .btn-nav-gold {
+                margin-left: 0.5rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container-xxl bg-white p-0">
-       
-
-     
-        <!-- Navbar Start -->
-        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-            <a href="" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
-                <h1 class="m-0 text-primary">CampusHire</h1>
-            </a>
-            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-lg">
+            <a class="navbar-brand" href="#">CampusHire</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border-color: rgba(255,255,255,0.5);">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="" class="nav-item nav-link active">Home</a>
-        
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Register</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="/register/" class="dropdown-item">Tutor</a>
-                            
-                        </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto align-items-center">
+                    <a class="nav-link active" href="{% url 'index' %}">Home</a>
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                    <a class="nav-link" href="{% url 'tutor_register' %}">Register</a>
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    <div class="theme-toggle">
+                        <button class="theme-btn light active" id="lightBtn" title="Light mode">
+                            <i class="bi bi-sun-fill"></i>
+                        </button>
+                        <button class="theme-btn dark" id="darkBtn" title="Dark mode">
+                            <i class="bi bi-moon-fill"></i>
+                        </button>
                     </div>
-                    <a href="/login/" class="nav-item nav-link">Login</a>
+                    <a href="/register/" class="btn-nav-gold">Register</a>
                 </div>
-               
             </div>
-        </nav>
-        <!-- Navbar End -->
-
-        {% block content %}
-        <!-- Carousel Start -->
-        <div class="container-fluid p-0">
-            <div class="owl-carousel header-carousel position-relative">
-                <div class="owl-carousel-item position-relative">
-                    <img class="img-fluid" src="/static/img/carousel-1.jpg" alt="">
-                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
-                        <div class="container">
-                            <div class="row justify-content-start">
-                                <div class="col-10 col-lg-8">
-                                    <h1 class="display-3 text-white animated slideInDown mb-4">From campus to corporate, we pave the way</h1>
-                                    <p class="fs-5 fw-medium text-white mb-4 pb-2">It’s not what you achieve, it’s what you overcome. That’s what defines your career. – Carlton Fisk</p>
-                                    <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search A Job</a>
-                       
-                                </div>
-                            </div>
+        </div>
+    </nav>
+    {% block content %}
+    <!-- ===== Hero Section ===== -->
+    <section class="hero" id="home">
+        <div class="container-lg">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <p
+                            style="color: var(--color-gold); font-weight: 700; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 1rem; text-transform: uppercase;">
+                            LAUNCH YOUR CAREER</p>
+                        <h1>Connect with Your <span>Future</span>.</h1>
+                        <p>Join thousands of students finding internships and entry-level roles that match their
+                            ambitions. Whether you're a student ready to succeed or a company building talent,
+                            CampusHire makes the connection.</p>
+                        <div class="hero-cta">
+                            <a href="#roles" class="btn-primary-gold">
+                                <i class="bi bi-arrow-right"></i> Get Started
+                            </a>
+                            <a href="#how" class="btn-secondary-white">Learn More</a>
                         </div>
                     </div>
                 </div>
-                <div class="owl-carousel-item position-relative">
-                    <img class="img-fluid" src="/static/img/carousel-2.jpg" alt="">
-                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
-                        <div class="container">
-                            <div class="row justify-content-start">
-                                <div class="col-10 col-lg-8">
-                                    <h1 class="display-3 text-white animated slideInDown mb-4">Find The Best Startup Job That Fit You</h1>
-                                    <p class="fs-5 fw-medium text-white mb-4 pb-2">The journey to your dream job begins here!</p>
-                                    <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search A Job</a>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:0.25" />
+                                    <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:0.05" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="200" cy="200" r="150" fill="url(#blueGrad)" opacity="0.4" />
+                            <circle cx="200" cy="200" r="100" fill="none" stroke="#F59E0B" stroke-width="2"
+                                opacity="0.3" />
+                            <circle cx="200" cy="120" r="30" fill="#F59E0B" opacity="0.9" />
+                            <rect x="170" y="160" width="60" height="80" rx="10" fill="#F59E0B" opacity="0.8" />
+                            <rect x="160" y="160" width="15" height="60" rx="7" fill="#F59E0B" opacity="0.85" />
+                            <rect x="225" y="160" width="15" height="60" rx="7" fill="#F59E0B" opacity="0.85" />
+                            <path d="M 100 280 Q 200 240 300 280" stroke="#F59E0B" stroke-width="3" fill="none"
+                                opacity="0.6" />
+                            <circle cx="100" cy="280" r="8" fill="#F59E0B" opacity="0.9" />
+                            <circle cx="200" cy="240" r="8" fill="#F59E0B" opacity="0.9" />
+                            <circle cx="300" cy="280" r="8" fill="#F59E0B" opacity="0.9" />
+                        </svg>
                     </div>
                 </div>
             </div>
         </div>
-         <!-- Carousel End -->
+    </section>
 
-         {% endblock %}
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
+    <!-- ===== Stats Section ===== -->
+    <section class="stats">
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="bi bi-mortarboard"></i></div>
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">STUDENTS PLACED</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="bi bi-briefcase"></i></div>
+                        <div class="stat-number">5,000+</div>
+                        <div class="stat-label">ACTIVE OPPORTUNITIES</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="bi bi-building"></i></div>
+                        <div class="stat-number">1,000+</div>
+                        <div class="stat-label">HIRING COMPANIES</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/lib/wow/wow.min.js"></script>
-    <script src="/static/lib/easing/easing.min.js"></script>
-    <script src="/static/lib/waypoints/waypoints.min.js"></script>
-    <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- ===== How It Works ===== -->
+    <section class="how-it-works" id="how">
+        <div class="container-lg">
+            <h2 class="section-title">Your Path to Success</h2>
+            <p class="section-subtitle">A straightforward 4-step journey designed to connect you with the perfect role.
+            </p>
 
-    <!-- Template Javascript -->
-    <script src="/static/js/main.js"></script>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Create Profile</h3>
+                        <p>Build your professional profile and showcase your unique skills and experiences.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Browse Roles</h3>
+                        <p>Explore carefully curated internships and entry-level positions matched to your goals.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Apply Now</h3>
+                        <p>Submit your application with confidence and connect directly with recruiters.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3>Land Your Role</h3>
+                        <p>Interview, negotiate, and start your career journey with expert support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Module Navigation ===== -->
+    <section class="module-nav" id="roles">
+        <div class="container-lg">
+            <p class="module-label"><i class="bi bi-person-check"></i> SELECT YOUR ROLE</p>
+            <div class="module-tabs">
+                <button class="module-tab active" data-module="student">
+                    <i class="bi bi-person-badge module-tab-icon"></i> Student
+                </button>
+                <button class="module-tab" data-module="tutor">
+                    <i class="bi bi-person-workspace module-tab-icon"></i>
+                    Tutor
+                </button>
+                <button class="module-tab" data-module="admin">
+                    <i class="bi bi-shield-check module-tab-icon"></i> Admin
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Role Cards ===== -->
+    <section class="roles-section">
+        <div class="container-lg">
+            <div class="row g-4">
+                <!-- Student -->
+                <div class="col-lg-6">
+                    <div class="role-card student">
+                        <div class="role-icon">
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+                        <h3>For Students</h3>
+                        <p>Launch your career with personalized internships and entry-level roles from industry leaders.
+                        </p>
+                        <ul class="role-features">
+                            <li>Personalized job matching algorithm</li>
+                            <li>Professional resume building tools</li>
+                            <li>Interview preparation & coaching</li>
+                            <li>Direct recruiter access</li>
+                            <li>Salary insights & company reviews</li>
+                        </ul>
+                        <a href="{% url 'login' %}" class="btn-outline-navy">Get Started</a>
+                    </div>
+                </div>
+
+                <!-- Tutor -->
+                <div class="col-lg-6">
+                    <div class="role-card tutor">
+                        <div class="role-icon">
+                            <i class="bi bi-person-workspace"></i>
+                        </div>
+
+                        <h3>For Tutors</h3>
+
+                        <p>
+                            Guide students throughout their placement journey,
+                            monitor applications, and support their career development.
+                        </p>
+
+                        <ul class="role-features">
+                            <li>View assigned students</li>
+                            <li>Monitor student applications</li>
+                            <li>Track placement progress</li>
+                            <li>Guide students for interviews</li>
+                            <li>Support student career development</li>
+                        </ul>
+
+                        <a href="{% url 'login' %}" class="btn-outline-navy">
+                            Tutor Access
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Admin -->
+                <div class="col-lg-6">
+                    <div class="role-card admin">
+                        <div class="role-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h3>For Administrators</h3>
+                        <p>Create and manage job postings. Oversee platform operations and maintain quality across all
+                            interactions.</p>
+                        <ul class="role-features">
+                            <li>Create & publish job postings</li>
+                            <li>Manage company profiles</li>
+                            <li>Content moderation & compliance</li>
+                            <li>Advanced analytics & reports</li>
+                            <li>Platform settings & customization</li>
+                        </ul>
+                        <a href="{% url 'login' %}" class="btn-outline-navy">Admin Access</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA Section ===== -->
+    <section class="cta-section">
+        <div class="container-lg">
+            <h2>Ready to Transform Your Future?</h2>
+            <p>Join thousands of successful students and companies on CampusHire today.</p>
+            <a href="{% url 'login' %}" class="btn-primary-gold">
+                <i class="bi bi-arrow-right"></i> Start Your Journey
+            </a>
+        </div>
+    </section>
+    {% endblock %}
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <div class="container-lg">
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <h6>CampusHire</h6>
+                    <p class="mb-0" style="font-size: 0.85rem; opacity: 0.85;">Premium platform connecting campus talent
+                        with career opportunity.</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>For Students</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#">Browse Jobs</a></li>
+                        <li><a href="#">My Applications</a></li>
+                        <li><a href="#">Career Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>For Companies</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#">Register</a></li>
+                        <li><a href="#">Browse Talent</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Company</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CampusHire. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of
+                        Use</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Theme Management
+        const htmlElement = document.documentElement;
+        const lightBtn = document.getElementById('lightBtn');
+        const darkBtn = document.getElementById('darkBtn');
+
+        // Check for saved theme preference or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeButtons(savedTheme);
+
+        lightBtn.addEventListener('click', () => {
+            htmlElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            updateThemeButtons('light');
+        });
+
+        darkBtn.addEventListener('click', () => {
+            htmlElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            updateThemeButtons('dark');
+        });
+
+        function updateThemeButtons(theme) {
+            if (theme === 'light') {
+                lightBtn.classList.add('active');
+                darkBtn.classList.remove('active');
+            } else {
+                darkBtn.classList.add('active');
+                lightBtn.classList.remove('active');
+            }
+        }
+
+        // Module Tab Switching
+        const moduleTabs = document.querySelectorAll('.module-tab');
+        moduleTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                moduleTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const module = tab.getAttribute('data-module');
+                console.log('Switched to module:', module);
+            });
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

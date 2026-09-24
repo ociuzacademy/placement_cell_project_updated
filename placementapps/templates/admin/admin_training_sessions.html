@@ -1,172 +1,328 @@
 {% extends "admin/admin_index.html" %}
+{% load static %}
 
 {% block content %}
-<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <h2 class="mb-5 text-center">Add Orientation Session</h2>
 
-        <!-- Toast Notification -->
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-            <div id="messageToast" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body" id="toastMessage"></div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form Start -->
-        <form method="POST" class="form-container">
-            {% csrf_token %}
-            <div class="row g-3">
-                <div class="col-12">
-                    <label for="id_session_name" class="form-label">Session Name</label>
-                    <input type="text" class="form-control" id="id_session_name" name="session_name" value="{{ form.session_name.value }}" required>
-                </div>
-                <div class="col-12">
-                    <label for="id_description" class="form-label">Description</label>
-                    <textarea class="form-control" id="id_description" name="description" rows="3" required>{{ form.description.value }}</textarea>
-                </div>
-                <div class="col-12">
-                    <label for="id_trainer_name" class="form-label">Resource Person</label>
-                    <input type="text" class="form-control" id="id_trainer_name" name="trainer_name" value="{{ form.trainer_name.value }}" required>
-                </div>
-                <div class="col-12">
-                    <label for="id_venue" class="form-label">Venue</label>
-                    <input type="text" class="form-control" id="id_venue" name="venue" value="{{ form.venue.value }}" required>
-                </div>
-                <div class="col-12">
-                    <label for="id_time" class="form-label">Time</label>
-                    <input type="time" class="form-control" id="id_time" name="time" value="{{ form.time.value }}" required>
-                </div>
-                <div class="col-12">
-                    <label for="id_training_dates" class="form-label">Date</label>
-                    <textarea class="form-control" id="id_training_dates" name="training_dates" rows="3" placeholder="Enter dates as YYYY-MM-DD, separated by commas." required>{{ form.training_dates.value }}</textarea>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary w-100">Add Session</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="btn-container">
-        <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
-    </div>
-    
-</div>
-
-<!-- Custom Styles -->
 <style>
-    .container {
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* ===== Add Session Page ===== */
+    .add-session-wrapper {
+        padding: 4rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-    h2 {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        color: #444444;
+    .form-container {
+        width: 100%;
+        max-width: 720px;
+        padding: 2.5rem;
+        border-radius: 0.75rem;
+        background: var(--bg-secondary);
+        box-shadow: var(--shadow-lg);
+        border-top: 5px solid var(--color-navy);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .form-container h2 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 1.85rem;
+        letter-spacing: -0.5px;
+        margin-bottom: 1.75rem;
+        text-align: center;
+        position: relative;
+        z-index: 1;
     }
 
     .form-label {
-        font-family: 'Poppins', sans-serif;
-        font-size: 14px;
-        font-weight: 500;
-        color: #555555;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.4rem;
+        position: relative;
+        z-index: 1;
     }
 
     .form-control {
-        font-size: 15px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-light);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
         transition: border-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        z-index: 1;
     }
 
     .form-control:focus {
-        border-color: #5e5df0;
-        box-shadow: 0 0 8px rgba(94, 93, 240, 0.4);
+        border-color: var(--color-gold);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        outline: none;
+        background: var(--bg-primary);
+        color: var(--text-primary);
     }
-    .btn-back {
-        background-color: black;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
+
+    .form-control::placeholder {
+        color: var(--text-tertiary);
     }
-    
-    .btn-back:hover {
-        background-color: #333;
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 90px;
     }
+
+    /* Hint text under the dates textarea */
+    .field-hint {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.75rem;
+        color: var(--text-tertiary);
+        margin-top: 0.35rem;
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ===== Submit button (gold) ===== */
+    .btn-submit {
+        width: 100%;
+        height: 52px;
+        padding: 0 1.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        color: var(--color-navy);
+        background: var(--color-gold);
+        border: 2px solid var(--color-gold);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-submit:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Back button */
     .btn-container {
-        padding:10px;
+        width: 100%;
+        max-width: 720px;
+        margin: 1.5rem auto 0;
+        padding: 0 0.5rem;
         display: flex;
-        justify-content: flex-end; /* Aligns button to the right */
-        margin-bottom: 20px; /* Adds spacing below the button */
+        justify-content: flex-end;
     }
-    
-    .btn-primary {
-        background-color: #00B074;
+
+    .btn-back {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 2px solid var(--border-normal);
+        padding: 0.65rem 1.75rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background: var(--text-secondary);
+        color: #fff;
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
+    }
+
+    /* ===== Toast (themed) ===== */
+    .themed-toast {
+        border-radius: 0.5rem;
         border: none;
-        border-radius: 6px;
-        padding: 12px;
-        font-size: 16px;
-        font-weight: 600;
-        color: white;
-        transition: background-color 0.3s;
+        box-shadow: var(--shadow-lg);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
     }
 
-    .btn-primary:hover {
-        background-color: #00895d;
+    .themed-toast.toast-error {
+        background: #dc2626;
+        color: #fff;
     }
 
-    @media (max-width: 768px) {
-        .container {
-            width: 90%;
+    .themed-toast.toast-success {
+        background: var(--color-gold);
+        color: var(--color-navy);
+    }
+
+    .themed-toast .toast-body {
+        padding: 0.85rem 1rem;
+    }
+
+    .themed-toast .btn-close {
+        filter: invert(1);
+        opacity: 0.75;
+    }
+
+    .themed-toast.toast-success .btn-close {
+        filter: none;
+        opacity: 0.55;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .form-container {
+            padding: 1.75rem 1.25rem;
         }
-        .form-control {
-            font-size: 14px;
+        .form-container h2 {
+            font-size: 1.4rem;
         }
-        .btn-primary {
-            font-size: 14px;
+        .btn-container {
+            justify-content: center;
+            padding: 0 1rem;
         }
     }
 </style>
 
-<!-- JavaScript for Toast Messages -->
+
+<!-- ===== Add Session Section ===== -->
+<section class="add-session-wrapper">
+
+    <!-- Toast Notification -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+        <div id="messageToast" class="toast align-items-center themed-toast toast-error border-0"
+             role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage"></div>
+                <button type="button" class="btn-close me-2 m-auto"
+                        data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form card -->
+    <div class="form-container">
+        <h2>Add Orientation Session</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row g-3">
+                <div class="col-12 position-relative" style="z-index: 1;">
+                    <label for="id_session_name" class="form-label">Session Name</label>
+                    <input type="text" class="form-control" id="id_session_name" name="session_name"
+                           value="{{ form.session_name.value }}" required>
+                </div>
+
+                <div class="col-12 position-relative" style="z-index: 1;">
+                    <label for="id_description" class="form-label">Description</label>
+                    <textarea class="form-control" id="id_description" name="description" rows="3"
+                              required>{{ form.description.value }}</textarea>
+                </div>
+
+                <div class="col-12 position-relative" style="z-index: 1;">
+                    <label for="id_trainer_name" class="form-label">Resource Person</label>
+                    <input type="text" class="form-control" id="id_trainer_name" name="trainer_name"
+                           value="{{ form.trainer_name.value }}" required>
+                </div>
+
+                <div class="col-12 position-relative" style="z-index: 1;">
+                    <label for="id_venue" class="form-label">Venue</label>
+                    <input type="text" class="form-control" id="id_venue" name="venue"
+                           value="{{ form.venue.value }}" required>
+                </div>
+
+                <div class="col-12 position-relative" style="z-index: 1;">
+                    <label for="id_time" class="form-label">Time</label>
+                    <input type="time" class="form-control" id="id_time" name="time"
+                           value="{{ form.time.value }}" required>
+                </div>
+
+                <div class="col-12 position-relative" style="z-index: 1;">
+                    <label for="id_training_dates" class="form-label">Training Dates</label>
+                    <textarea class="form-control" id="id_training_dates" name="training_dates" rows="3"
+                              placeholder="YYYY-MM-DD, YYYY-MM-DD, YYYY-MM-DD" required>{{ form.training_dates.value }}</textarea>
+                    <small class="field-hint">
+                        <i class="bi bi-info-circle"></i>
+                        Enter dates in <strong>YYYY-MM-DD</strong> format, separated by commas.
+                    </small>
+                </div>
+
+                <div class="col-12 position-relative" style="z-index: 1;">
+                    <button type="submit" class="btn-submit">
+                        <i class="bi bi-plus-circle"></i> Add Session
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Back button -->
+    <div class="btn-container">
+        <a href="javascript:history.go(-1);" class="btn-back">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+</section>
+
+
+<!-- ===== Toast Script ===== -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const alertMessage = "{{ alert_message|escapejs }}";
         const successMessage = "{{ success_message|escapejs }}";
-        
+
         function showToast(message, isSuccess = false) {
             const toastEl = document.getElementById("messageToast");
             const toastMessage = document.getElementById("toastMessage");
-            
-            if (isSuccess) {
-                toastEl.classList.replace("bg-danger", "bg-success"); // Change to green for success
-            } else {
-                toastEl.classList.replace("bg-success", "bg-danger"); // Keep red for errors
-            }
-            
+
+            // Reset classes, then apply the right variant
+            toastEl.classList.remove("toast-success", "toast-error");
+            toastEl.classList.add(isSuccess ? "toast-success" : "toast-error");
+
             toastMessage.textContent = message;
-            
-            const toast = new bootstrap.Toast(toastEl);
+
+            const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
             toast.show();
         }
 
-        if (alertMessage) {
-            showToast(alertMessage, false);
-        }
-        if (successMessage) {
-            showToast(successMessage, true);
-        }
+        if (alertMessage) showToast(alertMessage, false);
+        if (successMessage) showToast(successMessage, true);
     });
 </script>
 

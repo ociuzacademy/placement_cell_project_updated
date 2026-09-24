@@ -1,156 +1,292 @@
-
-
 {% extends "admin/admin_index.html" %}
+{% load static %}
 
 {% block content %}
-<div class="container-xxl py-5">
-    <h1 class="text-center mb-5">Student Details</h1>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Sl No</th>
-                <th>Name</th>
-                <th>Reg No</th>  <!-- Added Reg No column -->
-                <th>Email</th>
-                <th>Contact</th>
-                <th>Batch</th>
-                <th>Program</th>  <!-- Added Course column -->
-                
-            </tr>
-        </thead>
-        <tbody>
-            {% for student in students %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ student.name }}</td>
-                <td>{{ student.reg_no }}</td>  <!-- Displaying Reg No -->
-                <td>{{ student.student_email }}</td>
-                <td>{{ student.student_phone }}</td>
-                <td>{{ student.batch }}</td>
-                <td>
-                    {% if student.course %}
-                        {{ student.course.name }}
-                    {% else %}
-                        None
-                    {% endif %}
-                </td>
-                 
-            </tr>
-            {% empty %}
-            <tr><td colspan="8" class="text-center">No students found.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
 
 <style>
-    /* General container and layout styles */
-    .container-xxl {
-        margin: 2px;
+    /* ===== Student List Page ===== */
+    .student-list-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
     }
 
-    .text-center h1 {
-        font-family: 'Poppins', sans-serif;
+    .student-header {
+        max-width: 1200px;
+        margin: 0 auto 2.5rem;
+        padding: 0 1rem;
+        text-align: center;
+    }
+
+    .student-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.5rem;
+        letter-spacing: -0.8px;
+        margin-bottom: 0.5rem;
+    }
+
+    .student-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .student-header .gold-bar {
+        width: 60px;
+        height: 4px;
+        background: var(--color-gold);
+        border-radius: 2px;
+        margin: 1rem auto 0;
+    }
+
+    /* Count badge */
+    .count-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
         font-weight: 700;
-        color: #333333;
-        margin: 0px;
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+        margin-top: 1rem;
+    }
+    .count-badge i { font-size: 1rem; }
+
+    /* ===== Table wrapper ===== */
+    .table-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
     }
 
-    .wow {
-        animation-duration: 0.8s;
-        animation-timing-function: ease-in-out;
-    }
-
-    /* Table styles */
-    .table {
-        width: 100%; /* Ensure the table takes full container width */
-        border-collapse: collapse;
-        background-color: #ffffff;
-        border-radius: 10px;
+    .table-responsive-custom {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
         overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-lg);
+        position: relative;
     }
 
-    .table th {
-        background-color: #00B074;
-        color: #ffffff;
-        font-weight: bold;
+    .table-responsive-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        z-index: 2;
+    }
+
+    .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ===== Table ===== */
+    .student-table {
+        width: 100%;
+        min-width: 900px;
+        margin: 0;
+        border-collapse: collapse;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .student-table thead {
+        background: var(--color-navy);
+        position: relative;
+        z-index: 1;
+    }
+
+    .student-table thead th {
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
-        font-family: 'Poppins', sans-serif;
-        font-size: 12px; /* Increased font size for readability */
-        padding: 12px 15px;
-        text-align: center;
-    }
-
-    .table td {
-        padding: 12px 15px;
-        text-align: center;
-        font-family: 'Arial', sans-serif;
-        font-size: 12px; /* Slightly increased font size */
-        color: #555555;
-    }
-
-    .table tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    .table tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Image styles */
-    .img-fluid.rounded-circle {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-    }
-
-    /* Button styles */
-    .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 14px;
-        font-family: 'Poppins', sans-serif;
-        font-weight: 600; /* Slightly increased weight for button text */
+        padding: 1rem 0.85rem;
+        text-align: left;
+        white-space: nowrap;
         border: none;
-        border-radius: 5px;
+        border-bottom: 2px solid var(--color-gold);
+    }
+
+    .student-table thead th:first-child {
         text-align: center;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+        width: 70px;
     }
 
-    .btn-primary {
-        background-color: #00B074;
-        color: #ffffff;
+    .student-table tbody tr {
+        border-bottom: 1px solid var(--border-light);
+        transition: background-color 0.2s ease;
     }
 
-    .btn-primary:hover {
-        background-color: #00895d;
+    .student-table tbody tr:last-child {
+        border-bottom: none;
     }
 
-    .btn-danger {
-        background-color: #ff5e5e;
-        color: #ffffff;
+    .student-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.06);
     }
 
-    .btn-danger:hover {
-        background-color: #d9534f;
+    [data-theme="dark"] .student-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.08);
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 500px) {
-        .table th, .table td {
-            font-size: 12px; /* Ensuring better readability on smaller screens */
+    .student-table tbody td {
+        padding: 0.95rem 0.85rem;
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+        font-weight: 500;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .student-table tbody td:first-child {
+        text-align: center;
+        font-weight: 700;
+        color: var(--color-gold);
+        font-size: 0.95rem;
+    }
+
+    .student-table tbody td .name-cell {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .student-table tbody td .reg-cell {
+        font-family: 'Inter', monospace;
+        font-weight: 600;
+        color: var(--text-primary);
+        letter-spacing: 0.3px;
+        font-size: 0.82rem;
+        background: rgba(245, 158, 11, 0.1);
+        padding: 0.2rem 0.55rem;
+        border-radius: 0.35rem;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .student-table tbody td .email-link {
+        color: var(--color-gold);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    .student-table tbody td .email-link:hover {
+        color: var(--color-gold-light);
+        text-decoration: underline;
+    }
+
+    /* Empty row */
+    .empty-row td {
+        text-align: center !important;
+        padding: 3rem 1rem !important;
+        color: var(--text-tertiary) !important;
+        font-style: italic;
+        font-size: 0.95rem !important;
+    }
+    .empty-row i {
+        display: block;
+        font-size: 2.5rem;
+        color: var(--color-gold);
+        margin-bottom: 0.75rem;
+        opacity: 0.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .student-header h1 { font-size: 1.85rem; }
+        .student-table thead th {
+            padding: 0.85rem 0.65rem;
+            font-size: 0.7rem;
         }
-
-        .img-fluid.rounded-circle {
-            width: 50px;
-            height: 50px;
+        .student-table tbody td {
+            padding: 0.8rem 0.65rem;
+            font-size: 0.82rem;
         }
+    }
+
+    @media (max-width: 450px) {
+        .student-list-wrapper { padding: 1.5rem 0; }
+        .student-header { padding: 0 0.75rem; }
+        .table-wrapper { padding: 0 0.5rem; }
     }
 </style>
+
+
+<!-- ===== Student List Section ===== -->
+<section class="student-list-wrapper">
+
+    <!-- Header -->
+    <div class="student-header">
+        <h1>Student Details</h1>
+        <p class="subtitle">All students registered on the platform</p>
+        <div class="gold-bar"></div>
+        <div class="count-badge">
+            <i class="bi bi-people-fill"></i>
+            Total: {{ students|length }}
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+        <div class="table-responsive-custom">
+            <div class="table-scroll">
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Reg No</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Batch</th>
+                            <th>Program</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><span class="name-cell">{{ student.name }}</span></td>
+                            <td><span class="reg-cell">{{ student.reg_no }}</span></td>
+                            <td>
+                                <a class="email-link" href="mailto:{{ student.student_email }}">
+                                    {{ student.student_email }}
+                                </a>
+                            </td>
+                            <td>{{ student.student_phone }}</td>
+                            <td>{{ student.batch }}</td>
+                            <td>
+                                {% if student.course %}
+                                    {{ student.course.name }}
+                                {% else %}
+                                    <span style="color: var(--text-tertiary); font-style: italic;">None</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr class="empty-row">
+                            <td colspan="7">
+                                <i class="bi bi-inbox"></i>
+                                No students found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

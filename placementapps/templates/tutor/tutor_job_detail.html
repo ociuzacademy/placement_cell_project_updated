@@ -1,65 +1,300 @@
 {% extends "tutor/tutor_index.html" %}
+{% load static %}
+
 {% block content %}
-<!-- Job Detail Start -->
-<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <div class="row gy-5 gx-4">
+
+<style>
+    /* ===== Job Detail Page ===== */
+    .job-detail-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
+    }
+
+    /* ===== Job header (logo + title + meta) ===== */
+    .job-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.75rem;
+        margin-bottom: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .job-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+    }
+
+    .job-header img {
+        width: 80px;
+        height: 80px;
+        border-radius: 0.5rem;
+        border: 2px solid var(--border-light);
+        background: var(--bg-primary);
+        object-fit: contain;
+        padding: 0.35rem;
+        flex-shrink: 0;
+    }
+
+    .job-header h3 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 1.65rem;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.6rem;
+    }
+
+    .job-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .job-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .job-meta i {
+        color: var(--color-gold) !important;
+        font-size: 0.95rem;
+    }
+
+    /* ===== Content sections ===== */
+    .content-section {
+        margin-bottom: 2rem;
+    }
+
+    .content-section h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.2rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 0.85rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-light);
+        position: relative;
+    }
+
+    .content-section h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 40px;
+        height: 2px;
+        background: var(--color-gold);
+    }
+
+    .content-section p {
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.92rem;
+        line-height: 1.8;
+        margin: 0;
+        white-space: pre-line;
+    }
+
+    /* ===== Back button ===== */
+    .back-action-row {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-light);
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: transparent;
+        color: var(--text-secondary);
+        border: 2px solid var(--border-normal);
+        padding: 0.75rem 2rem;
+        border-radius: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .btn-back:hover {
+        background: var(--text-secondary);
+        color: #fff;
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
+    }
+
+    /* ===== Sidebar panels ===== */
+    .sidebar-panel {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.75rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sidebar-panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--color-navy), var(--color-gold));
+    }
+
+    .sidebar-panel h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.15rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 1.25rem;
+    }
+
+    .sidebar-panel p {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.88rem;
+        line-height: 1.6;
+        margin-bottom: 0.85rem;
+    }
+
+    .sidebar-panel p:last-child {
+        margin-bottom: 0;
+    }
+
+    .sidebar-panel p i {
+        color: var(--color-gold) !important;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
+
+    .sidebar-panel p strong {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 991px) {
+        .job-detail-wrapper { padding: 2.5rem 0; }
+        .sidebar-panel { margin-top: 1rem; }
+    }
+
+    @media (max-width: 768px) {
+        .job-header {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            padding: 1.5rem;
+        }
+        .job-header h3 { font-size: 1.35rem; }
+        .job-meta { gap: 0.9rem; font-size: 0.8rem; }
+        .sidebar-panel { padding: 1.5rem; }
+        .btn-back { width: 100%; }
+    }
+</style>
+
+
+<!-- ===== Job Detail Section ===== -->
+<section class="job-detail-wrapper">
+    <div class="container-lg">
+        <div class="row gy-4 gx-4">
+
+            <!-- ===== Main Column ===== -->
             <div class="col-lg-8">
-                <div class="d-flex align-items-center mb-5">
+
+                <!-- Job header -->
+                <div class="job-header">
                     {% if job.logo %}
-                        <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="{{ job.title }}" style="width: 80px; height: 80px;">
+                        <img src="{{ job.logo.url }}" alt="{{ job.title }}">
                     {% else %}
-                        <img class="flex-shrink-0 img-fluid border rounded" src="/static/img/default-logo.jpg" alt="Default Logo" style="width: 80px; height: 80px;">
+                        <img src="{% static 'img/default-logo.jpg' %}" alt="Default Logo">
                     {% endif %}
-                    <div class="text-start ps-4">
-                        <h3 class="mb-3">{{ job.title }}</h3>
-                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}</span>
-                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.get_job_type_display }}</span>
-                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}</span>
+                    <div>
+                        <h3>{{ job.title }}</h3>
+                        <div class="job-meta">
+                            <span><i class="bi bi-geo-alt-fill"></i> {{ job.place }}</span>
+                            <span><i class="bi bi-clock"></i> {{ job.get_job_type_display }}</span>
+                            <span><i class="bi bi-cash-stack"></i> ₹{{ job.salary }}</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mb-5">
-                    <h4 class="mb-3">Job Description</h4>
+                <!-- Job Description -->
+                <div class="content-section">
+                    <h4>Job Description</h4>
                     <p>{{ job.description }}</p>
-                    
-                    <h4 class="mb-3">Responsibility</h4>
+                </div>
+
+                <!-- Responsibilities -->
+                <div class="content-section">
+                    <h4>Responsibilities</h4>
                     <p>{{ job.responsibilities }}</p>
-                    
-                    <h4 class="mb-3">Qualifications</h4>
+                </div>
+
+                <!-- Qualifications -->
+                <div class="content-section">
+                    <h4>Qualifications</h4>
                     <p>{{ job.qualifications }}</p>
-                    
-                    <h4 class="mb-3">Vacancies Available</h4>
-                    <p>{{ job.vacancy }} vacancies available</p> <!-- Display the number of vacancies -->
                 </div>
 
-                <div class="form-buttons">
-                    <form action="{% url 'apply_for_job' job.id %}" method="POST">
-                        {% csrf_token %}
-                        <div class="row g-3">
-                            <div class="col-12" style="display: flex; justify-content: space-between; gap: 10px;">
-                                
-                                <a href="javascript:history.go(-1);" class="btn btn-secondary back-button" style="width: 48%; height: 40px; display: flex; justify-content: center; align-items: center; padding: 10px 15px; text-align: center; font-size: 14px; border-radius: 5px; background-color: black; color: white; text-decoration: none;">
-                                    Back
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+                <!-- Vacancy -->
+                <div class="content-section">
+                    <h4>Vacancies Available</h4>
+                    <p>{{ job.vacancy }} vacancies available</p>
                 </div>
+
+                <!-- Back -->
+                <div class="back-action-row">
+                    <a href="javascript:history.go(-1);" class="btn-back">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+
             </div>
 
+            <!-- ===== Sidebar Column ===== -->
             <div class="col-lg-4">
-                <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
-                    <h4 class="mb-4">Job Summary</h4>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Published On: {{ job.date }}</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: {{ job.get_job_type_display }}</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: ₹{{ job.salary }}</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location: {{ job.place }}</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancies Available: {{ job.vacancy }}</p> <!-- Display the number of vacancies in the summary -->
+
+                <!-- Job Summary -->
+                <div class="sidebar-panel">
+                    <h4>Job Summary</h4>
+                    <p><i class="bi bi-calendar-event"></i> <span><strong>Published:</strong> {{ job.date }}</span></p>
+                    <p><i class="bi bi-briefcase"></i> <span><strong>Nature:</strong> {{ job.get_job_type_display }}</span></p>
+                    <p><i class="bi bi-cash-stack"></i> <span><strong>Salary:</strong> ₹{{ job.salary }}</span></p>
+                    <p><i class="bi bi-geo-alt-fill"></i> <span><strong>Location:</strong> {{ job.place }}</span></p>
+                    <p><i class="bi bi-people"></i> <span><strong>Vacancies:</strong> {{ job.vacancy }}</span></p>
                 </div>
+
             </div>
+
         </div>
     </div>
-</div>
-<!-- Job Detail End -->
+</section>
+
 {% endblock %}

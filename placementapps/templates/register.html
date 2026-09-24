@@ -1,258 +1,313 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutor Registration</title>
-    
-    <!-- Google Font Import -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+{% extends 'index.html' %}
+{% load static %}
 
-    <style>
-        /* Google Font Import */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+{% block content %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+<style>
+    /* ===== Tutor Registration Page ===== */
+    .register-section {
+        padding: 5rem 0;
+        background: var(--bg-primary);
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .register-card {
+        background: var(--bg-secondary);
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-lg);
+        padding: 3rem;
+        border-top: 5px solid var(--color-navy);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .register-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .register-card h1 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        text-align: center;
+        letter-spacing: -0.5px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .register-card .subtitle {
+        text-align: center;
+        color: var(--text-secondary);
+        margin-bottom: 2.5rem;
+        font-size: 0.95rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-row .input-field {
+        flex: 1;
+    }
+
+    .input-field {
+        margin-bottom: 1.25rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .input-field label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.3px;
+    }
+
+    .input-field input,
+    .input-field select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-light);
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        background: var(--bg-primary);
+        transition: all 0.3s ease;
+    }
+
+    .input-field input:focus,
+    .input-field select:focus {
+        border-color: var(--color-gold);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    }
+
+    .input-field input::placeholder {
+        color: var(--text-tertiary);
+        font-size: 0.85rem;
+    }
+
+    .input-field input[type="file"] {
+        padding: 0.6rem 1rem;
+        cursor: pointer;
+    }
+
+    .btn-register {
+        width: 100%;
+        padding: 0.95rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-register:hover {
+        background: var(--color-gold-light);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
+    .messages {
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .alert {
+        padding: 0.85rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .alert-danger {
+        background: rgba(220, 38, 38, 0.1);
+        color: #dc2626;
+        border-left: 4px solid #dc2626;
+    }
+
+    .alert-success {
+        background: rgba(22, 163, 74, 0.1);
+        color: #16a34a;
+        border-left: 4px solid #16a34a;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .register-card {
+            padding: 2rem 1.5rem;
         }
 
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #f9f9fb;
+        .register-card h1 {
+            font-size: 1.75rem;
         }
 
-        .container {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 90%;
-            padding: 25px 30px;
-            margin: 10px;
+        .form-row {
+            flex-direction: column;
+            gap: 0;
         }
+    }
+</style>
 
-        .container header {
-            font-size: 24px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+<!-- ===== Tutor Registration Section ===== -->
+<section class="register-section">
+    <div class="container-lg">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="register-card">
 
-        form .row {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px; /* Space between fields */
-            margin-bottom: 15px; /* Spacing between rows */
-        }
+                    <h1>Tutor Registration</h1>
+                    <p class="subtitle">Join CampusHire and start guiding students toward career success.</p>
 
-        form .row .input-field {
-            flex: 1; /* Allow fields to take equal width */
-        }
+                    <!-- Show success or error messages -->
+                    {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-        form .input-field label {
-            font-size: 14px;
-            margin-bottom: 5px;
-            color: #333;
-            display: block;
-        }
+                    <form action="{% url 'register_tutor' %}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+                        {% csrf_token %}
 
-        form .input-field input,
-        form .input-field select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            color: #555;
-        }
+                        <!-- Name and Email -->
+                        <div class="form-row">
+                            <div class="input-field">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" maxlength="100" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="input-field">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                            </div>
+                        </div>
 
-        form .input-field input:focus,
-        form .input-field select:focus {
-            border-color: #00B074;
-            outline: none;
-        }
+                        <!-- Gender and Mobile Number -->
+                        <div class="form-row">
+                            <div class="input-field">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender" required>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                    <option value="O">Other</option>
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <label for="mobile_number">Mobile Number</label>
+                                <input type="text" id="mobile_number" name="mobile_number" maxlength="15" pattern="[0-9]+" placeholder="Enter your mobile number" required>
+                            </div>
+                        </div>
 
-        button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: #00B074;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
+                        <!-- Password and Confirm Password -->
+                        <div class="form-row">
+                            <div class="input-field">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" maxlength="100" placeholder="Create a password" required
+                                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+                                    title="Password must contain at least one number, one uppercase and lowercase letter, and at least 6 characters">
+                            </div>
+                            <div class="input-field">
+                                <label for="confirm_password">Confirm Password</label>
+                                <input type="password" id="confirm_password" name="confirm_password" maxlength="100" placeholder="Re-enter your password" required>
+                            </div>
+                        </div>
 
-        button:hover {
-            background: #008f5b;
-        }
+                        <!-- Profile Image -->
+                        <div class="input-field">
+                            <label for="image">Profile Image</label>
+                            <input type="file" id="image" name="image" accept="image/*">
+                        </div>
 
-        /* Mobile responsiveness */
-        @media screen and (max-width: 600px) {
-            form .row {
-                flex-direction: column; /* Stack form fields on smaller screens */
-            }
-            form .row .input-field {
-                margin-bottom: 10px;
-            }
-        }
+                        <!-- Department and Course -->
+                        <div class="form-row">
+                            <div class="input-field">
+                                <label for="department">Department</label>
+                                <select id="department" name="department" required>
+                                    {% for department in departments %}
+                                        <option value="{{ department.id }}">{{ department.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <label for="course">Course</label>
+                                <select id="course" name="course" required>
+                                    {% for course in courses %}
+                                        <option value="{{ course.id }}">{{ course.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
 
-        /* Adjust layouts for specific pairs of fields */
-        .two-fields-inline {
-            display: flex;
-            gap: 15px; /* Space between the fields */
-            justify-content: space-between; /* Make sure they are spread apart */
-        }
+                        <!-- Batch -->
+                        <div class="input-field">
+                            <label for="batch">Batch</label>
+                            <input type="text" id="batch" name="batch" maxlength="9" placeholder="e.g., 2020-2024" required>
+                        </div>
 
-        .two-fields-inline .input-field {
-            flex: 0 0 48%; /* Set width of each field to 48% */
-        }
+                        <!-- Status (Hidden Field) -->
+                        <input type="hidden" name="status" value="pending">
 
-        /* Group fields in the same line */
-        .name-email-inline,
-        .gender-mobile-inline,
-        .password-confirm-inline {
-            display: flex;
-            gap: 15px; /* Space between the fields */
-            margin-bottom: 15px;
-        }
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-register">Register as Tutor</button>
+                    </form>
 
-        .name-email-inline .input-field,
-        .gender-mobile-inline .input-field,
-        .password-confirm-inline .input-field {
-            flex: 0 0 48%; /* Set width of each field to 48% */
-        }
-    </style>
-    
-    <script>
-        // JavaScript for additional validation
-        function validateForm() {
-            // Confirm password match
-            var password = document.getElementById("password").value;
-            var confirmPassword = document.getElementById("confirm_password").value;
-            if (password !== confirmPassword) {
-                alert("Passwords do not match.");
-                return false;
-            }
-
-            // Mobile number validation: Allow only digits
-            var mobileNumber = document.getElementById("mobile_number").value;
-            if (!/^\d{10}$/.test(mobileNumber)) {
-                alert("Please enter a valid mobile number with 10 digits.");
-                return false;
-            }
-
-            return true;
-        }
-    </script>
-</head>
-<body>
-    <div class="container">
-        <h1>Tutor Registration</h1>
-
-        <!-- Show success or error messages -->
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+                </div>
             </div>
-        {% endif %}
-        
-        <form action="{% url 'register_tutor' %}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-            {% csrf_token %}
-            
-            <!-- Name and Email -->
-            <div class="name-email-inline">
-                <div class="input-field">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" maxlength="100" placeholder="Enter your full name" required>
-                </div>
-                <div class="input-field">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-                </div>
-            </div>
-
-            <!-- Gender and Mobile Number -->
-            <div class="gender-mobile-inline">
-                <div class="input-field">
-                    <label for="gender">Gender:</label>
-                    <select id="gender" name="gender" required>
-                        <option value="M">Male</option>
-                        <option value="F">Female</option>
-                        <option value="O">Other</option>
-                    </select>
-                </div>
-                <div class="input-field">
-                    <label for="mobile_number">Mobile Number:</label>
-                    <input type="text" id="mobile_number" name="mobile_number" maxlength="15" pattern="[0-9]+" placeholder="Enter your mobile number" required>
-                </div>
-            </div>
-
-            <!-- Password and Confirm Password -->
-            <div class="password-confirm-inline">
-                <div class="input-field">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" maxlength="100" placeholder="Create a password" required 
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" title="Password must contain at least one number, one uppercase and lowercase letter, and at least 6 characters">
-                </div>
-                <div class="input-field">
-                    <label for="confirm_password">Confirm Password:</label>
-                    <input type="password" id="confirm_password" name="confirm_password" maxlength="100" placeholder="Re-enter your password" required>
-                </div>
-            </div>
-
-            <!-- Image -->
-            <div class="input-field">
-                <label for="image">Profile Image:</label>
-                <input type="file" id="image" name="image" accept="image/*">
-            </div>
-
-            <!-- Department and Course in One Row -->
-            <div class="row two-fields-inline">
-                <div class="input-field">
-                    <label for="department">Department:</label>
-                    <select id="department" name="department" required>
-                        {% for department in departments %}
-                        <option value="{{ department.id }}">{{ department.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-field">
-                    <label for="course">Course:</label>
-                    <select id="course" name="course" required>
-                        {% for course in courses %}
-                        <option value="{{ course.id }}">{{ course.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <!-- Batch -->
-            <div class="input-field">
-                <label for="batch">Batch:</label>
-                <input type="text" id="batch" name="batch" maxlength="9" placeholder="e.g., 2020-2024" required>
-            </div>
-
-            <!-- Status (Hidden Field) -->
-            <input type="hidden" name="status" value="pending">
-            
-            <!-- Submit Button -->
-            <button type="submit">Register</button>
-        </form>
+        </div>
     </div>
-</body>
-</html>
+</section>
+
+<script>
+    // JavaScript for additional validation
+    function validateForm() {
+        // Confirm password match
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm_password").value;
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+
+        // Mobile number validation: Allow only 10 digits
+        var mobileNumber = document.getElementById("mobile_number").value;
+        if (!/^\d{10}$/.test(mobileNumber)) {
+            alert("Please enter a valid mobile number with 10 digits.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+{% endblock %}

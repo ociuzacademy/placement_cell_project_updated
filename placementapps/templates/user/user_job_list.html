@@ -1,166 +1,488 @@
 {% extends "user/user_index.html" %}
+{% load static %}
 
 {% block content %}
-<!-- Jobs Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
 
-        <!-- Tab Navigation -->
-        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
-                <li class="nav-item">
-                    <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#featured-jobs">
-                        <h6 class="mt-n1 mb-0">Featured</h6>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#full-time-jobs">
-                        <h6 class="mt-n1 mb-0">Full Time</h6>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#part-time-jobs">
-                        <h6 class="mt-n1 mb-0">Part Time</h6>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Search Bar -->
-        <div class="input-group mb-4">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search for jobs...">
-        </div>
-
-        <!-- Tabs for Job Types -->
-        <div class="tab-content">
-            <!-- Featured Jobs Tab -->
-            <div id="featured-jobs" class="tab-pane fade show active">
-                <div id="featuredJobResults">
-                    {% for job in featured_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}</span>
-                                    <span class="text-truncate me-3"><i class="fa fa-building text-primary me-2"></i>{{ job.department.name }}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-primary mb-2 me-2" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                                    <button class="btn btn-primary mb-2 me-2 apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
-                                </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Posted: {{ job.date }}</small>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Full-Time Jobs Tab -->
-            <div id="full-time-jobs" class="tab-pane fade">
-                <div id="fullTimeJobResults">
-                    {% for job in full_time_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}</span>
-                                    <span class="text-truncate me-3"><i class="fa fa-building text-primary me-2"></i>{{ job.department.name }}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-primary mb-2 me-2" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                                    <button class="btn btn-primary mb-2 me-2 apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
-                                </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Posted: {{ job.date }}</small>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Part-Time Jobs Tab -->
-            <div id="part-time-jobs" class="tab-pane fade">
-                <div id="partTimeJobResults">
-                    {% for job in part_time_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.job_type }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}</span>
-                                    <span class="text-truncate me-3"><i class="fa fa-building text-primary me-2"></i>{{ job.department.name }}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-primary mb-2 me-2" href="/user_job_detail/{{ job.id }}/">Read More</a>
-                                    <button class="btn btn-primary mb-2 me-2 apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
-                                </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Posted: {{ job.date }}</small>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="btn-container">
-        <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
-    </div>
-    
-</div>
 <style>
-  
-    .btn-back {
-        background-color: black;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-       /* float: right; /* Moves the button to the right */
+    /* ===== User Job Listing Page ===== */
+    .job-list-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
     }
-    
-    .btn-back:hover {
-        background-color: #333;
+
+    .job-list-header {
+        max-width: 1200px;
+        margin: 0 auto 2rem;
+        padding: 0 1rem;
+        text-align: center;
     }
-    .btn-container {
-        padding:10px;
+
+    .job-list-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.5rem;
+        letter-spacing: -0.8px;
+        margin-bottom: 0.5rem;
+    }
+
+    .job-list-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .job-list-header .gold-bar {
+        width: 60px;
+        height: 4px;
+        background: var(--color-gold);
+        border-radius: 2px;
+        margin: 1rem auto 0;
+    }
+
+    /* ===== Tabs ===== */
+    .job-tabs {
         display: flex;
-        justify-content: flex-end; /* Aligns button to the right */
-        margin-bottom: 20px; /* Adds spacing below the button */
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        border: none;
+        padding: 0;
+    }
+
+    .job-tabs .nav-item { margin: 0; }
+
+    .job-tabs .nav-link {
+        background: var(--bg-secondary) !important;
+        border: 2px solid var(--border-light) !important;
+        border-radius: 0.5rem !important;
+        padding: 0.7rem 1.5rem !important;
+        color: var(--text-secondary) !important;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        margin: 0 !important;
+    }
+
+    .job-tabs .nav-link:hover {
+        border-color: var(--color-gold) !important;
+        color: var(--color-gold) !important;
+    }
+
+    .job-tabs .nav-link.active {
+        background: var(--color-navy) !important;
+        border-color: var(--color-navy) !important;
+        color: #fff !important;
+        box-shadow: var(--shadow-md);
+    }
+
+    .job-tabs .nav-link h6 {
+        color: inherit !important;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* ===== Search bar ===== */
+    .search-wrapper {
+        max-width: 640px;
+        margin: 0 auto 2.5rem;
+        position: relative;
+    }
+
+    .search-wrapper .form-control {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.92rem;
+        padding: 0.85rem 1rem 0.85rem 2.85rem;
+        border: 2px solid var(--border-light);
+        border-radius: 50px;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        transition: border-color 0.3s, box-shadow 0.3s;
+        width: 100%;
+    }
+
+    .search-wrapper .form-control:focus {
+        border-color: var(--color-gold);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        outline: none;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+
+    .search-wrapper .form-control::placeholder {
+        color: var(--text-tertiary);
+    }
+
+    .search-wrapper::before {
+        content: '\F52A';
+        font-family: 'bootstrap-icons';
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--color-gold);
+        font-size: 1rem;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    /* ===== Job card ===== */
+    .job-item {
+        background: var(--bg-secondary) !important;
+        border: 2px solid var(--border-light) !important;
+        border-radius: 0.75rem !important;
+        padding: 1.5rem !important;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .job-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--color-navy), var(--color-gold));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .job-item:hover {
+        border-color: var(--color-gold) !important;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-4px);
+    }
+
+    .job-item:hover::before { opacity: 1; }
+
+    .job-item img {
+        border-radius: 0.5rem !important;
+        border: 1px solid var(--border-light) !important;
+        background: var(--bg-primary);
+        object-fit: contain;
+        padding: 0.25rem;
+    }
+
+    .job-item h5 {
+        font-family: 'Playfair Display', serif;
+        color: var(--text-primary) !important;
+        font-weight: 700;
+        font-size: 1.15rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 0.75rem;
+    }
+
+    .job-item .text-primary {
+        color: var(--color-gold) !important;
+    }
+
+    .job-item .text-truncate {
+        color: var(--text-secondary) !important;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+    }
+
+    /* ===== Action buttons on job cards ===== */
+    .btn-job-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: transparent;
+        color: var(--color-navy);
+        border: 2px solid var(--color-navy);
+        padding: 0.55rem 1.25rem;
+        border-radius: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.82rem;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+    [data-theme="dark"] .btn-job-outline {
+        color: var(--color-gold);
+        border-color: var(--color-gold);
+    }
+    .btn-job-outline:hover {
+        background: var(--color-navy);
+        color: #fff;
+        border-color: var(--color-navy);
+        transform: translateY(-2px);
+    }
+    [data-theme="dark"] .btn-job-outline:hover {
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border-color: var(--color-gold);
+    }
+
+    .btn-job-apply {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border: 2px solid var(--color-gold);
+        padding: 0.55rem 1.25rem;
+        border-radius: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.82rem;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+    .btn-job-apply:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(245, 158, 11, 0.25);
+    }
+
+    .btn-job-apply:disabled {
+        background: var(--border-normal);
+        border-color: var(--border-normal);
+        color: var(--text-tertiary);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* ===== Back button ===== */
+    .btn-container {
+        max-width: 1200px;
+        margin: 2rem auto 0;
+        padding: 0 1rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 2px solid var(--border-normal);
+        padding: 0.65rem 1.75rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+    }
+    .btn-back:hover {
+        background: var(--text-secondary);
+        color: #fff;
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
+    }
+
+    /* Empty / loading states */
+    .no-results,
+    .loading-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: var(--bg-secondary);
+        border: 2px dashed var(--border-light);
+        border-radius: 0.75rem;
+    }
+    .no-results i,
+    .loading-state i {
+        display: block;
+        font-size: 3rem;
+        color: var(--color-gold);
+        opacity: 0.6;
+        margin-bottom: 0.75rem;
+    }
+    .no-results p,
+    .loading-state p {
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+        .job-list-header h1 { font-size: 1.85rem; }
+        .job-item { padding: 1.25rem !important; }
+        .job-item h5 { font-size: 1rem; }
+        .btn-container { justify-content: center; }
     }
 </style>
 
+
+<!-- ===== User Job Listing Section ===== -->
+<section class="job-list-wrapper">
+
+    <!-- Header -->
+    <div class="job-list-header">
+        <h1>Job Listing</h1>
+        <p class="subtitle">Browse and apply for opportunities that match your goals</p>
+        <div class="gold-bar"></div>
+    </div>
+
+    <div class="container-lg">
+
+        <!-- Tabs -->
+        <ul class="nav nav-pills job-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="pill"
+                        data-bs-target="#featured-jobs" type="button" role="tab">Featured</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="pill"
+                        data-bs-target="#full-time-jobs" type="button" role="tab">Full Time</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="pill"
+                        data-bs-target="#part-time-jobs" type="button" role="tab">Part Time</button>
+            </li>
+        </ul>
+
+        <!-- Search bar -->
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" class="form-control"
+                   placeholder="Search for jobs...">
+        </div>
+
+        <!-- Tabs content -->
+        <div class="tab-content">
+
+            <!-- Featured -->
+            <div id="featured-jobs" class="tab-pane fade show active" role="tabpanel">
+                {% for job in featured_jobs %}
+                <div class="job-item">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded"
+                                 src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">{{ job.title }}</h5>
+                                <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
+                                <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3 gap-2 flex-wrap">
+                                <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">
+                                    <i class="bi bi-eye"></i> Read More
+                                </a>
+                                <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">
+                                    <i class="bi bi-send"></i> Apply Now
+                                </button>
+                            </div>
+                            <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Full-Time -->
+            <div id="full-time-jobs" class="tab-pane fade" role="tabpanel">
+                {% for job in full_time_jobs %}
+                <div class="job-item">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded"
+                                 src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">{{ job.title }}</h5>
+                                <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
+                                <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3 gap-2 flex-wrap">
+                                <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">
+                                    <i class="bi bi-eye"></i> Read More
+                                </a>
+                                <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">
+                                    <i class="bi bi-send"></i> Apply Now
+                                </button>
+                            </div>
+                            <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Part-Time -->
+            <div id="part-time-jobs" class="tab-pane fade" role="tabpanel">
+                {% for job in part_time_jobs %}
+                <div class="job-item">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded"
+                                 src="{{ job.logo.url }}" alt="" style="width: 80px; height: 80px;">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">{{ job.title }}</h5>
+                                <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>{{ job.place }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>{{ job.job_type }}</span>
+                                <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹{{ job.salary }}</span>
+                                <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>{{ job.department.name }}</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3 gap-2 flex-wrap">
+                                <a class="btn-job-outline" href="/user_job_detail/{{ job.id }}/">
+                                    <i class="bi bi-eye"></i> Read More
+                                </a>
+                                <button class="btn-job-apply apply-btn" data-job-id="{{ job.id }}">
+                                    <i class="bi bi-send"></i> Apply Now
+                                </button>
+                            </div>
+                            <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: {{ job.date }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- Back -->
+        <div class="btn-container">
+            <a href="javascript:history.go(-1);" class="btn-back">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Function to handle job application
+        // ===== Apply-Now handler =====
         function handleApplyButtonClick(button) {
             const jobId = button.getAttribute('data-job-id');
             const confirmation = confirm("Are you sure you want to apply for this job?");
 
             if (!confirmation) {
-                // Redirect to the user_index page if the user cancels
                 window.location.href = '/user_index/';
                 return;
             }
@@ -176,14 +498,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Show pop-up message after successful application
                     alert(data.message || 'Successfully applied for the job!');
-                    
-                    // Disable the button and change its text to "Applied"
                     button.disabled = true;
-                    button.textContent = 'Applied';
-
-                    // Redirect to the user_applied_job.html page after the user clicks "OK" on the alert
+                    button.innerHTML = '<i class="bi bi-check-lg"></i> Applied';
                     window.location.href = '/user_applied_job/';
                 } else {
                     alert(data.message || 'Error applying for the job. Please try again.');
@@ -195,32 +512,40 @@
             });
         }
 
-        // Function to attach event listeners to Apply Now buttons
         function attachApplyEventListeners() {
             document.querySelectorAll('.apply-btn').forEach(button => {
+                // Prevent duplicate listeners
+                if (button.dataset.listenerAttached === 'true') return;
+                button.dataset.listenerAttached = 'true';
                 button.addEventListener('click', function () {
                     handleApplyButtonClick(this);
                 });
             });
         }
 
-        // Initial attachment for static buttons
         attachApplyEventListeners();
 
-        // Search functionality
+        // ===== Search functionality =====
         const searchInput = document.getElementById('searchInput');
         const tabContent = document.querySelector('.tab-content');
 
         searchInput.addEventListener('input', function () {
             const query = searchInput.value.trim();
-            tabContent.innerHTML = '<p>Loading...</p>';
 
             if (query === '') {
-                tabContent.innerHTML = '';
+                // Reload page to restore all tabs
+                window.location.reload();
                 return;
             }
 
-            fetch(`/search-jobs/?search=${query}`)
+            tabContent.innerHTML = `
+                <div class="loading-state">
+                    <i class="bi bi-arrow-repeat"></i>
+                    <p>Loading...</p>
+                </div>
+            `;
+
+            fetch(`/search-jobs/?search=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     tabContent.innerHTML = '';
@@ -229,24 +554,28 @@
                         let jobItemsHTML = '';
                         data.jobs.forEach(job => {
                             jobItemsHTML += `
-                            <div class="job-item p-4 mb-4">
+                            <div class="job-item">
                                 <div class="row g-4">
-                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <div class="col-12 col-md-8 d-flex align-items-center">
                                         <img class="flex-shrink-0 img-fluid border rounded" src="${job.logo}" alt="" style="width: 80px; height: 80px;">
                                         <div class="text-start ps-4">
                                             <h5 class="mb-3">${job.title}</h5>
-                                            <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>${job.place}</span>
-                                            <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>${job.job_type}</span>
-                                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>${job.salary}</span>
-                                            <span class="text-truncate me-3"><i class="fa fa-building text-primary me-2"></i>${job.department}</span>
+                                            <span class="text-truncate me-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>${job.place}</span>
+                                            <span class="text-truncate me-3"><i class="bi bi-clock text-primary me-2"></i>${job.job_type}</span>
+                                            <span class="text-truncate me-3"><i class="bi bi-cash-stack text-primary me-2"></i>₹${job.salary}</span>
+                                            <span class="text-truncate me-0"><i class="bi bi-building text-primary me-2"></i>${job.department}</span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                        <div class="d-flex mb-3">
-                                            <a class="btn btn-primary mb-2 me-2" href="/user_job_detail/${job.id}/">Read More</a>
-                                            <button class="btn btn-primary mb-2 me-2 apply-btn" data-job-id="${job.id}">Apply Now</button>
+                                    <div class="col-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                        <div class="d-flex mb-3 gap-2 flex-wrap">
+                                            <a class="btn-job-outline" href="/user_job_detail/${job.id}/">
+                                                <i class="bi bi-eye"></i> Read More
+                                            </a>
+                                            <button class="btn-job-apply apply-btn" data-job-id="${job.id}">
+                                                <i class="bi bi-send"></i> Apply Now
+                                            </button>
                                         </div>
-                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Posted: ${job.date}</small>
+                                        <small class="text-truncate"><i class="bi bi-calendar-event text-primary me-2"></i>Posted: ${job.date}</small>
                                     </div>
                                 </div>
                             </div>
@@ -254,20 +583,27 @@
                         });
 
                         tabContent.innerHTML = jobItemsHTML;
-
-                        // Reattach Apply Now listeners for dynamically added buttons
                         attachApplyEventListeners();
                     } else {
-                        tabContent.innerHTML = '<p>No results found.</p>';
+                        tabContent.innerHTML = `
+                            <div class="no-results">
+                                <i class="bi bi-search"></i>
+                                <p>No jobs found matching "<strong>${query}</strong>".</p>
+                            </div>
+                        `;
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching search results:', error);
-                    tabContent.innerHTML = '<p>There was an error processing your request. Please try again later.</p>';
+                    tabContent.innerHTML = `
+                        <div class="no-results">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <p>There was an error processing your request. Please try again later.</p>
+                        </div>
+                    `;
                 });
         });
     });
 </script>
-
 
 {% endblock %}

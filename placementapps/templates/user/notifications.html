@@ -1,190 +1,288 @@
 {% extends "user/user_index.html" %}
+{% load static %}
 
 {% block content %}
 
-<head>
-    <style>
-        /* General Page Layout */
-        body {
-            background-color: #f1f8ff;
-            /* Light blue background for the body */
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+    /* ===== User Notifications Page ===== */
+    .notifications-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
+    }
 
-        .container_1 {
-            background-color: #ffffff;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
-            max-width: 900px;
-            margin-top: 50px;
-            transition: transform 0.3s ease;
-        }
+    .notifications-header {
+        max-width: 900px;
+        margin: 0 auto 2.5rem;
+        padding: 0 1rem;
+        text-align: center;
+    }
 
-        .container_1:hover {
-            transform: scale(1.02);
-        }
+    .notifications-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.5rem;
+        letter-spacing: -0.8px;
+        margin-bottom: 0.5rem;
+    }
 
-        h1 {
-            font-size: 2.2rem;
-            color: #3b3f4f;
-            /* Darker gray-blue */
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-        }
+    .notifications-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
+    }
 
-        /* Notification List Styles */
-        .list-group-item {
-            padding: 18px;
-            font-size: 1rem;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            /* Makes it clickable */
-        }
+    .notifications-header .gold-bar {
+        width: 60px;
+        height: 4px;
+        background: var(--color-gold);
+        border-radius: 2px;
+        margin: 1rem auto 0;
+    }
 
-        .list-group-item:hover {
-            background-color: #e3f7f0;
-            /* Light green background on hover */
-            transform: translateY(-5px);
-        }
+    /* ===== Notifications list ===== */
+    .notifications-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        max-width: 900px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
 
-        /* Unread Notification Styles */
-        .list-group-item-warning {
-            background-color: #e3f7f0;
-            /* Light green background */
-            border-left: 5px solid #00B074;
-            /* Vibrant green left border */
-            color: #2e7d5e;
-            /* Darker green text */
-            font-weight: bold;
-        }
+    .notification-item {
+        position: relative;
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
 
-        .list-group-item-warning:hover {
-            background-color: #d0f2e4;
-            /* Lighter green on hover */
-            border-color: #007e51;
-            /* Darker green border on hover */
-        }
+    .notification-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        background: var(--color-navy);
+        opacity: 0.35;
+        transition: opacity 0.3s ease;
+    }
 
-        /* Read Notification Styles */
-        .list-group-item {
-            background-color: #ffffff;
-            color: #4f4f4f;
-            /* Slightly darker gray text */
-        }
+    .notification-item:hover {
+        transform: translateY(-3px);
+        border-color: var(--color-gold);
+        box-shadow: var(--shadow-lg);
+    }
 
-        /* Text Styling */
-        .list-group-item strong {
-            font-weight: bold;
-            color: #00B074;
-            /* Vibrant green for highlighted text */
-        }
+    .notification-item:hover::before {
+        opacity: 1;
+        background: var(--color-gold);
+    }
 
-        .list-group-item p {
-            color: #6c757d;
-            /* Muted gray text */
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
+    /* Unread = gold accent + soft background */
+    .new-notification {
+        border-color: rgba(245, 158, 11, 0.4);
+        background: linear-gradient(
+            90deg,
+            rgba(245, 158, 11, 0.06) 0%,
+            var(--bg-secondary) 40%
+        );
+    }
 
-        /* Empty Notification Message */
-        .list-group-item.text-center {
-            font-style: italic;
-            color: #6c757d;
-            /* Light gray for empty state */
-        }
+    .new-notification::before {
+        background: var(--color-gold);
+        opacity: 1;
+    }
 
-        /* Small Timestamp Styling */
-        .timestamp {
-            color: #a5a5a5;
-            /* Light gray color for timestamp */
-            font-size: 0.8rem;
-            display: block;
-            margin-top: 8px;
-        }
+    [data-theme="dark"] .new-notification {
+        background: linear-gradient(
+            90deg,
+            rgba(251, 191, 36, 0.08) 0%,
+            var(--bg-secondary) 40%
+        );
+    }
 
-        /* Subtle Animation for the Container */
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(50px);
-            }
+    /* Link fills the whole card */
+    .notification-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        width: 100%;
+    }
 
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .notification-content {
+        flex: 1;
+        min-width: 0;
+    }
 
-        .container {
-            animation: fadeInUp 0.5s ease-out;
-        }
+    .notification-message {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 0.35rem;
+        line-height: 1.5;
+        word-wrap: break-word;
+    }
 
-        /* Media Query for Mobile */
-        @media (max-width: 767px) {
-            h1 {
-                font-size: 1.8rem;
-            }
+    .notification-time {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.78rem;
+        color: var(--text-tertiary);
+        font-weight: 500;
+    }
 
-            .list-group-item {
-                font-size: 0.9rem;
-            }
+    .notification-time i {
+        color: var(--color-gold);
+        font-size: 0.85rem;
+    }
 
-            .container_1 {
-                padding: 15px;
-                margin-top: 20px;
-            }
-        }
+    /* NEW badge */
+    .notification-new {
+        flex-shrink: 0;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+        padding: 0.35rem 0.7rem;
+        border-radius: 50px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 10px rgba(245, 158, 11, 0.35);
+        animation: pulse-badge 2s ease-in-out infinite;
+    }
 
-        .list-group-item {
-            cursor: pointer;
-        }
-    </style>
-</head>
+    @keyframes pulse-badge {
+        0%, 100% { box-shadow: 0 4px 10px rgba(245, 158, 11, 0.35); }
+        50% { box-shadow: 0 4px 18px rgba(245, 158, 11, 0.55); }
+    }
 
-<center>
-    {% extends "tutor/tutor_index.html" %}
-    {% block content %}
-    <h1>Notifications</h1>
-    <ul class="notifications-list">
-        {% for notification in notifications %}
-        >
-        <!-- Data attribute stores the URL for the JS to read -->
-        <a href="{% url 'tutor_job_list' %}" class="notification-link"
-            data-read-url="{% url 'mark_notification_as_read' notification.id %}">
-            <div class="notification-content">
-                <p class="notification-message">{{ notification.message }}</p>
-                <small class="notification-time">{{ notification.created_at }}</small>
-            </div>
-        </a>
-        </li>
-        {% empty %}
-        <p>No notifications available.</p>
-        {% endfor %}
-    </ul>
+    /* Empty state */
+    .empty-notifications {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem;
+        text-align: center;
+        background: var(--bg-secondary);
+        border: 2px dashed var(--border-light);
+        border-radius: 0.75rem;
+    }
 
-    <script>
+    .empty-notifications i {
+        display: block;
+        font-size: 3.5rem;
+        color: var(--color-gold);
+        opacity: 0.6;
+        margin-bottom: 1rem;
+    }
+
+    .empty-notifications h5 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-notifications p {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .notifications-header h1 { font-size: 1.85rem; }
+        .notification-link { padding: 1rem 1.15rem; }
+        .notification-message { font-size: 0.88rem; }
+        .notification-new { font-size: 0.6rem; padding: 0.3rem 0.6rem; }
+    }
+
+    @media (max-width: 450px) {
+        .notifications-wrapper { padding: 1.5rem 0; }
+        .notification-new { display: none; }
+    }
+</style>
+
+
+<!-- ===== Notifications Section ===== -->
+<section class="notifications-wrapper">
+
+    <!-- Header -->
+    <div class="notifications-header">
+        <h1>Notifications</h1>
+        <p class="subtitle">Stay updated with new activity on CampusHire</p>
+        <div class="gold-bar"></div>
+    </div>
+
+    <!-- Notifications list -->
+    <div class="container-lg px-3">
+        {% if notifications %}
+        <ul class="notifications-list">
+            {% for notification in notifications %}
+            <li class="notification-item {% if not notification.is_read %}new-notification{% endif %}">
+                <a href="{% url 'user_job_list' %}"
+                   class="notification-link"
+                   data-read-url="{% url 'mark_notification_as_read' notification.id %}">
+                    <div class="notification-content">
+                        <p class="notification-message">{{ notification.message }}</p>
+                        <small class="notification-time">
+                            <i class="bi bi-clock"></i> {{ notification.created_at }}
+                        </small>
+                    </div>
+                    {% if not notification.is_read %}
+                        <span class="notification-new">New</span>
+                    {% endif %}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="empty-notifications">
+            <i class="bi bi-bell-slash"></i>
+            <h5>No Notifications Yet</h5>
+            <p>When new jobs or updates are posted, they'll appear here.</p>
+        </div>
+        {% endif %}
+    </div>
+
+</section>
+
+
+<!-- ===== Mark as Read Script ===== -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.notification-link').forEach(link => {
-            link.addEventListener('click', function (e) {
+            link.addEventListener('click', function () {
                 const url = this.getAttribute('data-read-url');
-                // Send request to mark as read
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}',
-                        'Content-Type': 'application/json'
-                    }
-                });
-                // The browser will then follow the standard <a> href link automatically
+                if (url) {
+                    // Fire-and-forget POST to mark as read
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json'
+                        }
+                    }).catch(err => console.error('Mark-as-read failed:', err));
+                }
+                // The browser follows the <a href> automatically after this handler returns
             });
         });
-    </script>
-</center>
+    });
+</script>
+
 {% endblock %}

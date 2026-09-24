@@ -1,56 +1,402 @@
 {% extends "user/user_index.html" %}
+{% load static %}
+
 {% block content %}
 
-<!-- About Start -->
-<div class="container-xxl py-5">
-    <div class="container">
+<style>
+    /* ===== User About Page ===== */
+    .about-wrapper {
+        padding: 5rem 0;
+        background: var(--bg-primary);
+    }
+
+    .about-image-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .about-image-grid img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-md);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        aspect-ratio: 1 / 1;
+    }
+
+    .about-image-grid img:hover {
+        transform: scale(1.03);
+        box-shadow: var(--shadow-xl);
+    }
+
+    /* Second image sits slightly lower for the staggered look */
+    .about-image-grid .staggered {
+        margin-top: 15%;
+    }
+
+    /* ===== Text column ===== */
+    .about-text h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.25rem;
+        letter-spacing: -0.8px;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-text h1 span {
+        color: var(--color-gold);
+    }
+
+    .about-text p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.85;
+        margin-bottom: 1.15rem;
+    }
+
+    .about-text p:last-of-type {
+        margin-bottom: 2rem;
+    }
+
+    .about-text .user-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+
+    /* ===== Stats cards ===== */
+    .stats-grid {
+        max-width: 1200px;
+        margin: 4rem auto 0;
+        padding: 0 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .stat-card {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.75rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+    }
+
+    .stat-card:hover {
+        border-color: var(--color-gold);
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .stat-card .stat-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, var(--color-navy), var(--color-navy-light));
+        color: var(--color-gold);
+        border-radius: 0.75rem;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-card .stat-number {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--color-gold);
+        font-size: 2.25rem;
+        letter-spacing: -1px;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-card .stat-label {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    /* ===== Capabilities grid ===== */
+    .capabilities-section {
+        max-width: 1200px;
+        margin: 4rem auto 0;
+        padding: 0 1rem;
+    }
+
+    .capabilities-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2rem;
+        letter-spacing: -0.5px;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .capabilities-subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .capabilities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .capability-card {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .capability-card:hover {
+        border-color: var(--color-gold);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .capability-card .cap-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--color-navy), var(--color-navy-light));
+        color: var(--color-gold);
+        border-radius: 0.5rem;
+        font-size: 1.15rem;
+        margin-bottom: 1rem;
+    }
+
+    .capability-card h5 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        letter-spacing: -0.3px;
+        margin-bottom: 0.5rem;
+    }
+
+    .capability-card p {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* ===== Back button ===== */
+    .btn-back-about {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border: 2px solid var(--color-gold);
+        padding: 0.85rem 2rem;
+        border-radius: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back-about:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 991px) {
+        .about-wrapper { padding: 3.5rem 0; }
+        .about-text { margin-top: 2.5rem; }
+        .about-text h1 { font-size: 1.85rem; }
+    }
+
+    @media (max-width: 576px) {
+        .about-text h1 { font-size: 1.5rem; }
+        .about-image-grid { gap: 0.75rem; }
+        .btn-back-about {
+            width: 100%;
+            justify-content: center;
+        }
+        .stat-card .stat-number { font-size: 1.85rem; }
+        .capabilities-title { font-size: 1.5rem; }
+    }
+</style>
+
+
+<!-- ===== About Section ===== -->
+<section class="about-wrapper">
+    <div class="container-lg">
+
+        <!-- Top: image grid + intro text -->
         <div class="row g-5 align-items-center">
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                <div class="row g-0 about-bg rounded overflow-hidden">
-                    <div class="col-6 text-start">
-                        <img class="img-fluid w-100" src="/static/img/about-1.jpg">
-                    </div>
-                    <div class="col-6 text-start">
-                        <img class="img-fluid" src="/static/img/about-2.jpg" style="width: 85%; margin-top: 15%;">
-                    </div>
-                    <div class="col-6 text-end">
-                        <img class="img-fluid" src="/static/img/about-3.jpg" style="width: 85%;">
-                    </div>
-                    <div class="col-6 text-end">
-                        <img class="img-fluid w-100" src="/static/img/about-4.jpg">
-                    </div>
+
+            <!-- Image grid -->
+            <div class="col-lg-6">
+                <div class="about-image-grid">
+                    <img src="{% static 'img/about-1.jpg' %}" alt="About 1">
+                    <img src="{% static 'img/about-2.jpg' %}" alt="About 2" class="staggered">
+                    <img src="{% static 'img/about-3.jpg' %}" alt="About 3">
+                    <img src="{% static 'img/about-4.jpg' %}" alt="About 4">
                 </div>
             </div>
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                <h1 class="mb-4">We Help To Get The Best Job And Find A Talent</h1>
-                <p>At Vimala College, our Placement Cell is dedicated to empowering students by connecting them with the best career opportunities while also helping companies discover exceptional talent. We take pride in guiding students through every stage of their job search, from personalized career counseling and skill development workshops to mock interviews and resume building.</p>
 
-                <p>For employers, we offer a pool of highly skilled, motivated, and job-ready candidates across various disciplines. Our Placement Cell facilitates a smooth hiring process, ensuring your organization finds the right fit for its needs.</p>
+            <!-- Text column -->
+            <div class="col-lg-6">
+                <div class="about-text">
+                    <span class="user-badge">
+                        <i class="bi bi-person-badge"></i> Student Portal
+                    </span>
 
-                <p>We believe in nurturing talent and providing the necessary tools for students to succeed in the competitive job market. With our extensive industry connections and commitment to excellence, Vimala College stands as a bridge between aspiring professionals and leading companies.</p>
+                    <h1>From Campus to <span>Your Dream Career</span></h1>
 
-                <a class="btn btn-primary py-3 px-5 mt-3" href="/user_index/">Back</a>
+                    <p>
+                        Welcome to the CampusHire Student Portal — your one-stop platform for finding internships,
+                        entry-level jobs, and orientation sessions that prepare you for the corporate world.
+                        Everything you need to launch your career is right here.
+                    </p>
+
+                    <p>
+                        Browse curated job listings across departments, apply directly to companies, and track
+                        every application from a single dashboard. Register for training sessions, keep your
+                        profile up to date, and never miss an update thanks to in-app notifications.
+                    </p>
+
+                    <p>
+                        Whether you're a first-year student exploring options or a final-year student ready to
+                        interview, CampusHire gives you the tools, guidance, and opportunities to succeed — all
+                        in one place.
+                    </p>
+
+                    <a class="btn-back-about" href="{% url 'user_index' %}">
+                        <i class="bi bi-arrow-left"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-briefcase-fill"></i></span>
+                <div class="stat-number">5,000+</div>
+                <div class="stat-label">Active Jobs</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-building"></i></span>
+                <div class="stat-number">1,000+</div>
+                <div class="stat-label">Hiring Companies</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-mortarboard-fill"></i></span>
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Students Placed</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon"><i class="bi bi-calendar-check-fill"></i></span>
+                <div class="stat-number">300+</div>
+                <div class="stat-label">Orientation Sessions</div>
+            </div>
+
+        </div>
+
+        <!-- Capabilities -->
+        <div class="capabilities-section">
+            <h2 class="capabilities-title">What You Can Do</h2>
+            <p class="capabilities-subtitle">Everything you need to launch your career, in one place</p>
+
+            <div class="capabilities-grid">
+
+                <div class="capability-card">
+                    <span class="cap-icon"><i class="bi bi-search"></i></span>
+                    <h5>Browse & Search Jobs</h5>
+                    <p>Explore curated job listings filtered by job type, department, and salary. Search by keyword to find your match.</p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="cap-icon"><i class="bi bi-send"></i></span>
+                    <h5>Apply in One Click</h5>
+                    <p>Submit job applications directly from the listing page. Track the status of each application from your dashboard.</p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="cap-icon"><i class="bi bi-clipboard-data"></i></span>
+                    <h5>Track Application Status</h5>
+                    <p>See which of your applications are pending, approved, or rejected — all in a single unified view.</p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="cap-icon"><i class="bi bi-calendar-event"></i></span>
+                    <h5>Register for Sessions</h5>
+                    <p>Sign up for orientation and training sessions that prepare you for interviews and corporate life.</p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="cap-icon"><i class="bi bi-person-circle"></i></span>
+                    <h5>Manage Your Profile</h5>
+                    <p>Keep your personal, academic, and resume details up to date so recruiters see the best version of you.</p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="cap-icon"><i class="bi bi-bell-fill"></i></span>
+                    <h5>Stay Notified</h5>
+                    <p>Get real-time notifications whenever a new job matching your interests is posted or your application changes status.</p>
+                </div>
+
             </div>
         </div>
+
     </div>
-</div>
-<!-- About End -->
+</section>
 
 {% endblock %}
-
-<!-- Back to Top -->
-<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/static/lib/wow/wow.min.js"></script>
-<script src="/static/lib/easing/easing.min.js"></script>
-<script src="/static/lib/waypoints/waypoints.min.js"></script>
-<script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
-
-<!-- Template Javascript -->
-<script src="/static/js/main.js"></script>
-
-</body>
-</html>

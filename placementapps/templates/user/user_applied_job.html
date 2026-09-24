@@ -1,125 +1,342 @@
 {% extends "user/user_index.html" %}
+{% load static %}
 
 {% block content %}
-<h2>Applied Jobs</h2>
+
 <style>
-    /* Table styling */
-    .table {
-        margin: 20px auto;  /* Center the table horizontally */
-        width: 80%;
-        padding: 20px;
-        border-collapse: collapse;  /* Remove space between table borders */
-        margin-top: 20px;
+    /* ===== Applied Jobs Page ===== */
+    .applied-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
     }
 
-    .table th, .table td {
-        padding: 12px 15px;  /* Add padding to cells */
-        text-align: left;  /* Left-align text */
-        border: 1px solid #ddd;  /* Light border around cells */
+    .applied-header {
+        max-width: 1100px;
+        margin: 0 auto 2.5rem;
+        padding: 0 1rem;
+        text-align: center;
     }
 
-    .table th {
-        background-color: #00B074;  /* Green background for headers */
-        color: white;  /* White text for header */
+    .applied-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.5rem;
+        letter-spacing: -0.8px;
+        margin-bottom: 0.5rem;
     }
 
-    .table tbody tr:nth-child(even) {
-        background-color: #f9f9f9;  /* Alternate row color */
+    .applied-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
     }
 
-    .table tbody tr:hover {
-        background-color: #f1f1f1;  /* Hover effect */
+    .applied-header .gold-bar {
+        width: 60px;
+        height: 4px;
+        background: var(--color-gold);
+        border-radius: 2px;
+        margin: 1rem auto 0;
     }
 
-    /* Status color styling */
+    .count-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+        margin-top: 1rem;
+    }
+    .count-badge i { font-size: 1rem; }
+
+    /* ===== Table wrapper ===== */
+    .table-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .table-responsive-custom {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+    }
+
+    .table-responsive-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        z-index: 2;
+    }
+
+    .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ===== Table ===== */
+    .applied-table {
+        width: 100%;
+        min-width: 900px;
+        margin: 0;
+        border-collapse: collapse;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .applied-table thead {
+        background: var(--color-navy);
+        position: relative;
+        z-index: 1;
+    }
+
+    .applied-table thead th {
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.72rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        padding: 1rem 0.85rem;
+        text-align: left;
+        white-space: nowrap;
+        border: none;
+        border-bottom: 2px solid var(--color-gold);
+    }
+
+    .applied-table tbody tr {
+        border-bottom: 1px solid var(--border-light);
+        transition: background-color 0.2s ease;
+    }
+
+    .applied-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .applied-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.06);
+    }
+
+    [data-theme="dark"] .applied-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.08);
+    }
+
+    .applied-table tbody td {
+        padding: 0.95rem 0.85rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 500;
+        vertical-align: middle;
+        border: none;
+        word-wrap: break-word;
+    }
+
+    .applied-table tbody td .title-cell {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    /* ===== Status pills ===== */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
     .status-pending {
-        color: orange;  /* Pending status color */
-        font-weight: bold;  /* Make text bold */
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--color-gold-dark);
+        border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+    [data-theme="dark"] .status-pending {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--color-gold);
+        border-color: rgba(251, 191, 36, 0.35);
     }
 
     .status-approved {
-        color: green;  /* Approved status color */
-        font-weight: bold;  /* Make text bold */
+        background: rgba(22, 163, 74, 0.15);
+        color: #16a34a;
+        border: 1px solid rgba(22, 163, 74, 0.35);
     }
 
     .status-rejected {
-        color: red;  /* Rejected status color */
-        font-weight: bold;  /* Make text bold */
+        background: rgba(220, 38, 38, 0.15);
+        color: #dc2626;
+        border: 1px solid rgba(220, 38, 38, 0.35);
     }
 
-    /* Ensure no table layout breaks */
-    .table td {
-        word-wrap: break-word;  /* Handle long text */
+    /* Empty row */
+    .empty-row td {
+        text-align: center !important;
+        padding: 3rem 1rem !important;
+        color: var(--text-tertiary) !important;
+        font-style: italic;
+        font-size: 0.95rem !important;
+        white-space: normal !important;
+    }
+    .empty-row i {
+        display: block;
+        font-size: 2.5rem;
+        color: var(--color-gold);
+        margin-bottom: 0.75rem;
+        opacity: 0.6;
     }
 
-    /* Styling for empty row */
-    .table td[colspan="7"] {
-        text-align: center;
-        color: #999;  /* Light gray text */
+    /* Back button */
+    .btn-container {
+        max-width: 1100px;
+        margin: 2rem auto 0;
+        padding: 0 1rem;
+        display: flex;
+        justify-content: flex-end;
     }
-    
-.btn-back {
-    background-color: black;
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-   /* float: right; /* Moves the button to the right */
-}
 
-.btn-back:hover {
-    background-color: #333;
-}
-.btn-container {
-    padding:10px;
-    display: flex;
-    justify-content: flex-end; /* Aligns button to the right */
-    margin-bottom: 20px; /* Adds spacing below the button */
-}
+    .btn-back {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 2px solid var(--border-normal);
+        padding: 0.65rem 1.75rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+    }
+    .btn-back:hover {
+        background: var(--text-secondary);
+        color: #fff;
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .applied-header h1 { font-size: 1.85rem; }
+        .applied-table thead th {
+            padding: 0.85rem 0.65rem;
+            font-size: 0.7rem;
+        }
+        .applied-table tbody td {
+            padding: 0.8rem 0.65rem;
+            font-size: 0.82rem;
+        }
+        .btn-container { justify-content: center; }
+    }
+
+    @media (max-width: 450px) {
+        .applied-wrapper { padding: 1.5rem 0; }
+        .applied-header { padding: 0 0.75rem; }
+        .table-wrapper { padding: 0 0.5rem; }
+    }
 </style>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Job Title</th>
-            <th>Location</th>
-            <th>Job Type</th>
-            <th>Salary</th>
-            <th>Posted On</th>
-            <th>Applied On</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for job_application in applied_jobs %}
-            <tr>
-                <td>{{ job_application.job.title }}</td>
-                <td>{{ job_application.job.place }}</td>
-                <td>{{ job_application.job.job_type }}</td>
-                <td>₹{{ job_application.job.salary }}</td>
-                <td>{{ job_application.job.date }}</td>
-                <td>{{ job_application.applied_on }}</td>
-                <td>
-                    <span class="{% if job_application.status == 'Pending' %}status-pending{% elif job_application.status == 'Approved' %}status-approved{% elif job_application.status == 'Rejected' %}status-rejected{% endif %}">
-                        {{ job_application.status }}
-                    </span>
-                </td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="7">You have not applied for any jobs yet.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<div class="btn-container">
-    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
-</div>
 
+<!-- ===== Applied Jobs Section ===== -->
+<section class="applied-wrapper">
 
+    <!-- Header -->
+    <div class="applied-header">
+        <h1>Applied Jobs</h1>
+        <p class="subtitle">Track the status of all your job applications</p>
+        <div class="gold-bar"></div>
+        <div class="count-badge">
+            <i class="bi bi-briefcase-fill"></i>
+            Total: {{ applied_jobs|length }}
+        </div>
+    </div>
 
+    <!-- Table -->
+    <div class="table-wrapper">
+        <div class="table-responsive-custom">
+            <div class="table-scroll">
+                <table class="applied-table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Location</th>
+                            <th>Job Type</th>
+                            <th>Salary</th>
+                            <th>Posted On</th>
+                            <th>Applied On</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job_application in applied_jobs %}
+                        <tr>
+                            <td><span class="title-cell">{{ job_application.job.title }}</span></td>
+                            <td>{{ job_application.job.place }}</td>
+                            <td>{{ job_application.job.job_type }}</td>
+                            <td>₹{{ job_application.job.salary }}</td>
+                            <td>{{ job_application.job.date }}</td>
+                            <td>{{ job_application.applied_on }}</td>
+                            <td>
+                                {% if job_application.status == 'Pending' %}
+                                    <span class="status-pill status-pending">
+                                        <i class="bi bi-hourglass-split"></i> Pending
+                                    </span>
+                                {% elif job_application.status == 'Approved' %}
+                                    <span class="status-pill status-approved">
+                                        <i class="bi bi-check-circle-fill"></i> Approved
+                                    </span>
+                                {% elif job_application.status == 'Rejected' %}
+                                    <span class="status-pill status-rejected">
+                                        <i class="bi bi-x-circle-fill"></i> Rejected
+                                    </span>
+                                {% else %}
+                                    <span class="status-pill status-pending">{{ job_application.status }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr class="empty-row">
+                            <td colspan="7">
+                                <i class="bi bi-briefcase"></i>
+                                You have not applied for any jobs yet.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back -->
+    <div class="btn-container">
+        <a href="javascript:history.go(-1);" class="btn-back">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+</section>
 
 {% endblock %}

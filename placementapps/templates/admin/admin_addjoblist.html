@@ -1,27 +1,337 @@
 {% extends "admin/admin_index.html" %}
+{% load static %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    /* ===== Add Job Page ===== */
+    .add-job-wrapper {
+        padding: 3rem 0;
+        background: var(--bg-primary);
+        display: flex;
+        justify-content: center;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 850px;
+        padding: 2.5rem;
+        border-radius: 0.75rem;
+        background: var(--bg-secondary);
+        box-shadow: var(--shadow-lg);
+        border-top: 5px solid var(--color-navy);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .form-container h2 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 1.85rem;
+        letter-spacing: -0.5px;
+        margin-bottom: 1.75rem;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-label {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.4rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-control {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-light);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        transition: border-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-control:focus {
+        border-color: var(--color-gold);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        outline: none;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .form-control::placeholder {
+        color: var(--text-tertiary);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* File input */
+    input[type="file"].form-control {
+        padding: 0.6rem 1rem;
+        cursor: pointer;
+    }
+
+    input[type="file"].form-control::file-selector-button {
+        background: var(--color-navy);
+        color: #fff;
+        border: none;
+        padding: 0.4rem 0.9rem;
+        border-radius: 0.375rem;
+        margin-right: 0.75rem;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    input[type="file"].form-control::file-selector-button:hover {
+        background: var(--color-navy-light);
+    }
+
+    /* Two-column row */
+    .form-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    .form-row .form-control-half {
+        flex: 1;
+    }
+
+    /* Submit button */
+    .btn-submit {
+        background: var(--color-gold);
+        border: 2px solid var(--color-gold);
+        padding: 0.9rem 1.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        color: var(--color-navy);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        position: relative;
+        z-index: 1;
+        margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Back button container */
+    .btn-container {
+        max-width: 850px;
+        margin: 1rem auto 2rem;
+        padding: 0 0.5rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 2px solid var(--border-normal);
+        padding: 0.65rem 1.75rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background: var(--text-secondary);
+        color: #fff;
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
+    }
+
+    /* ===== Modal ===== */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        z-index: 1050;
+    }
+    .modal.show { display: flex; }
+
+    .modal-content {
+        background-color: var(--bg-secondary);
+        padding: 2rem 1.75rem;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-xl);
+        border-top: 5px solid var(--color-navy);
+        text-align: center;
+        width: 90%;
+        max-width: 340px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .modal-content::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .modal-content h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.15rem;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.3px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 0.75rem;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+    .modal-actions button {
+        flex: 1;
+        height: 44px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.3px;
+    }
+
+    /* OK = gold */
+    .btn-success {
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border-color: var(--color-gold);
+    }
+    .btn-success:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+    }
+
+    /* Cancel = muted outline */
+    .btn-danger {
+        background: transparent;
+        color: var(--text-secondary);
+        border-color: var(--border-normal);
+    }
+    .btn-danger:hover {
+        background: var(--text-secondary);
+        color: #fff;
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 1.75rem 1.25rem;
+        }
+        .form-container h2 {
+            font-size: 1.5rem;
+        }
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+        .btn-container {
+            justify-content: center;
+            padding: 0 1rem;
+        }
+    }
+</style>
+
+
+<!-- ===== Add Job Section ===== -->
+<section class="add-job-wrapper">
     <div class="form-container">
-        <h2 class="text-center mb-4">Add Job Details</h2>
+        <h2>Add Job Details</h2>
+
         <form method="post" enctype="multipart/form-data" id="jobForm">
             {% csrf_token %}
-            
+
             <!-- Job Title -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="title" class="form-label">Job Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <input type="text" class="form-control" id="title" name="title"
+                       placeholder="e.g., Software Engineer" required>
             </div>
 
             <!-- Company Logo -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="logo" class="form-label">Company Logo</label>
-                <input type="file" class="form-control" id="logo" name="logo">
+                <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
             </div>
 
             <!-- Job Type and Description -->
-            <div class="form-row mb-3">
+            <div class="form-row position-relative" style="z-index: 1;">
                 <div class="form-control-half">
                     <label for="job_type" class="form-label">Job Type</label>
                     <select class="form-control" id="job_type" name="job_type" required>
@@ -31,24 +341,27 @@
                 </div>
                 <div class="form-control-half">
                     <label for="description" class="form-label">Job Description</label>
-                    <input type="text" class="form-control" id="description" name="description" required>
+                    <input type="text" class="form-control" id="description" name="description"
+                           placeholder="Short description" required>
                 </div>
             </div>
 
             <!-- Job Location -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="place" class="form-label">Job Place</label>
-                <input type="text" class="form-control" id="place" name="place" required>
+                <input type="text" class="form-control" id="place" name="place"
+                       placeholder="e.g., Bengaluru, India" required>
             </div>
 
             <!-- Vacancy -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="vacancy" class="form-label">Vacancy</label>
-                <input type="number" class="form-control" id="vacancy" name="vacancy" min="1" placeholder="Enter number of vacancies" required>
+                <input type="number" class="form-control" id="vacancy" name="vacancy" min="1"
+                       placeholder="Enter number of vacancies" required>
             </div>
 
             <!-- Department -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="department" class="form-label">Department</label>
                 <select class="form-control" id="department" name="department" required>
                     {% for department in departments %}
@@ -58,219 +371,117 @@
             </div>
 
             <!-- Passout Year -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="passout_year" class="form-label">Passout Year</label>
-                <input type="number" class="form-control" id="passout_year" name="passoutyear" placeholder="Enter Passout Year" required>
+                <input type="number" class="form-control" id="passout_year" name="passoutyear"
+                       placeholder="e.g., 2024" required>
             </div>
 
             <!-- Salary -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="salary" class="form-label">Salary</label>
-                <input type="number" class="form-control" id="salary" name="salary" step="0.01" placeholder="Enter salary (e.g., 50000.00)" required>
+                <input type="number" class="form-control" id="salary" name="salary" step="0.01"
+                       placeholder="e.g., 50000.00" required>
             </div>
 
             <!-- Responsibilities -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="responsibilities" class="form-label">Responsibilities</label>
-                <textarea class="form-control" id="responsibilities" name="responsibilities" rows="4" placeholder="Enter job responsibilities"></textarea>
+                <textarea class="form-control" id="responsibilities" name="responsibilities" rows="4"
+                          placeholder="Enter job responsibilities"></textarea>
             </div>
 
             <!-- Qualifications -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative" style="z-index: 1;">
                 <label for="qualifications" class="form-label">Qualifications</label>
-                <textarea class="form-control" id="qualifications" name="qualifications" rows="4" placeholder="Enter job qualifications"></textarea>
+                <textarea class="form-control" id="qualifications" name="qualifications" rows="4"
+                          placeholder="Enter job qualifications"></textarea>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn-submit w-100">Add Job</button>
+            <button type="submit" class="btn-submit w-100">
+                <i class="bi bi-plus-circle"></i> Add Job
+            </button>
         </form>
     </div>
- 
-</div>
+</section>
+
+
+<!-- Back Button -->
 <div class="btn-container">
-    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
+    <a href="javascript:history.go(-1);" class="btn-back">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
 </div>
 
-<!-- Success Modal -->
+
+<!-- ===== Success Modal ===== -->
 <div id="successModal" class="modal">
     <div class="modal-content">
         <h4>Job Added Successfully!</h4>
-        <button id="okBtn" class="btn-success">OK</button>
-        <button id="cancelBtn" class="btn-danger">Cancel</button>
+        <div class="modal-actions">
+            <button id="okBtn" class="btn-success">OK</button>
+            <button id="cancelBtn" class="btn-danger">Cancel</button>
+        </div>
     </div>
 </div>
-<style>
-    /* General container styles */
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 
-    /* Form container */
-    .form-container {
-        width: 100%;
-        max-width: 850px;
-        padding: 30px;
-        border-radius: 10px;
-        background-color: #ffffff;
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    }
 
-    /* Form headings */
-    .form-container h2 {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        color: #444444;
-        margin-bottom: 20px;
-    }
-
-    /* Form labels */
-    .form-label {
-        font-family: 'Poppins', sans-serif;
-        font-size: 14px;
-        font-weight: 500;
-        color: #555555;
-    }
-
-    /* Form inputs */
-    .form-control {
-        font-family: 'Arial', sans-serif;
-        font-size: 15px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        transition: border-color 0.3s, box-shadow 0.3s;
-    }
-
-    .form-control:focus {
-        border-color: #5e5df0;
-        box-shadow: 0 0 8px rgba(94, 93, 240, 0.4);
-    }
-
-    /* Submit button */
-    .btn-submit {
-        background:#00B074;
-        border: none;
-        padding: 12px 20px;
-        font-family: 'Poppins', sans-serif;
-        font-size: 16px;
-        font-weight: 600;
-        color: #ffffff;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .btn-submit:hover {
-        background: #00B074;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 15px rgba(94, 93, 240, 0.2);
-    }
-
-    /* Modal Styles */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
-        justify-content: center;
-        align-items: center;
-    }
-
-    .modal-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 6px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        width: 300px;
-    }
-
-    .modal button {
-        margin-top: 10px;
-        padding: 8px 16px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-    .btn-back {
-        background-color: black;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-    }
-    
-    .btn-back:hover {
-        background-color: #333;
-    }
-    .btn-container {
-        padding:10px;
-        display: flex;
-        justify-content: flex-end; /* Aligns button to the right */
-        margin-bottom: 20px; /* Adds spacing below the button */
-    }
-    
-
-    .btn-success {
-        background-color: #28a745;
-        border: none;
-        color: white;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-        color: white;
-    }
-</style>
 <script>
-    // Show success message on form submission
-    document.getElementById('jobForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        
-        let formData = new FormData(this);
-        
-        fetch("{% url 'admin_addjoblist' %}", {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Show the success modal
-                document.getElementById('successModal').style.display = 'flex';
-            } else {
-                alert('Error: ' + data.error);
+    document.addEventListener('DOMContentLoaded', function () {
+        const jobForm = document.getElementById('jobForm');
+        const successModal = document.getElementById('successModal');
+        const okBtn = document.getElementById('okBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        // ===== Submit form via AJAX =====
+        jobForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch("{% url 'admin_addjoblist' %}", {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    successModal.classList.add('show');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => console.log('Error:', error));
+        });
+
+        // ===== OK → reset form + go to job list =====
+        okBtn.addEventListener('click', function () {
+            successModal.classList.remove('show');
+            jobForm.reset();
+            window.location.href = "{% url 'admin_joblist' %}";
+        });
+
+        // ===== Cancel → back to add-job page =====
+        cancelBtn.addEventListener('click', function () {
+            successModal.classList.remove('show');
+            window.location.href = "{% url 'admin_addjoblist' %}";
+        });
+
+        // ===== Close on backdrop click =====
+        successModal.addEventListener('click', function (e) {
+            if (e.target === successModal) {
+                successModal.classList.remove('show');
             }
-        })
-        .catch(error => console.log('Error:', error));
-    });
+        });
 
-    // Handle OK button click (redirect to admin_joblist)
-    document.getElementById('okBtn').addEventListener('click', function () {
-        // Hide the success modal
-        document.getElementById('successModal').style.display = 'none';
-        // Reset the form
-        document.getElementById('jobForm').reset();
-        // Redirect to admin_joblist
-        window.location.href = "{% url 'admin_joblist' %}";
-    });
-
-    // Handle Cancel button click (redirect to admin_addjoblist)
-    document.getElementById('cancelBtn').addEventListener('click', function () {
-        // Hide the success modal
-        document.getElementById('successModal').style.display = 'none';
-        // Redirect to admin_addjoblist
-        window.location.href = "{% url 'admin_addjoblist' %}";
+        // ===== Close on Escape =====
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && successModal.classList.contains('show')) {
+                successModal.classList.remove('show');
+            }
+        });
     });
 </script>
-
 
 {% endblock %}

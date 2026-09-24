@@ -1,132 +1,311 @@
 {% extends "admin/admin_index.html" %}
+{% load static %}
+
 {% block content %}
-<div class="container my-4">
-    <h1 class="text-center mb-4">Applied List</h1>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Sl. No.</th>
-                <th>Name</th>
-                <th>DOB</th>
-                <th>Gender</th>
-                <th>Email</th>
-                <th>Contact</th>
-                <th>Program</th>
-                <th>Batch</th>
-                <th>Pancard Number</th>
-                <th>Resume</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for JobApplication in data %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ JobApplication.user.name }}</td>  <!-- Display student name -->
-                <td>{{ JobApplication.user.date_of_birth }}</td>  <!-- Display student DOB -->
-                <td>{{ JobApplication.user.gender }}</td>  <!-- Display student gender -->
-                <td>{{ JobApplication.user.student_email }}</td>  <!-- Display student email -->
-                <td>{{ JobApplication.user.student_phone }}</td>  <!-- Display student contact -->
-                <td>{{ JobApplication.user.course }}</td>  <!-- Display student course -->
-                <td>{{ JobApplication.user.batch }}</td>  <!-- Display student batch -->
-                <td>{{ JobApplication.user.pancard_number }}</td>  <!-- Display pancard number -->
-                <td>
-                    {% if JobApplication.user.resume %}
-                        <a href="{{ JobApplication.user.resume.url }}" class="btn btn-success">View</a>
-                    {% else %}
-                        <span>No resume available</span>
-                    {% endif %}
-                </td>  <!-- Resume link -->
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="10" class="text-center">No applications found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
 
 <style>
-    /* General container and layout styles */
-    .container {
-        margin-top: 20px;
+    /* ===== Applied List Page ===== */
+    .applied-list-wrapper {
+        padding: 3rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
     }
 
-    /* Table styles */
-    .table {
-        width: 100%;
-        max-width: 1000px;
-        margin: auto;
-        background-color: #ffffff;
-        border-radius: 10px;
+    .applied-header {
+        max-width: 1200px;
+        margin: 0 auto 2rem;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .applied-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.25rem;
+        letter-spacing: -0.5px;
+        margin: 0;
+    }
+
+    .applied-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .count-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+    }
+    .count-badge i { font-size: 1rem; }
+
+    /* ===== Table wrapper (for horizontal scroll on small screens) ===== */
+    .table-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .table-responsive-custom {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
         overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-lg);
+        position: relative;
     }
 
-    .table th {
-        background-color: #00B074;
-        color: #ffffff;
-        font-weight: bold;
+    .table-responsive-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        z-index: 2;
+    }
+
+    .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ===== Table ===== */
+    .applied-table {
+        width: 100%;
+        min-width: 1000px;
+        margin: 0;
+        border-collapse: collapse;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .applied-table thead {
+        background: var(--color-navy);
+        position: relative;
+        z-index: 1;
+    }
+
+    .applied-table thead th {
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
-        padding: 12px;
-        text-align: center;
-    }
-
-    .table td {
-        padding: 12px 15px;
-        text-align: center;
-        font-size: 12px;
-        color: #555555;
-    }
-
-    .table tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    .table tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Button styles */
-    .btn {
-        display: inline-block;
-        padding: 6px 14px;
-        font-size: 14px;
+        padding: 1rem 0.75rem;
+        text-align: left;
+        white-space: nowrap;
         border: none;
-        border-radius: 5px;
+        border-bottom: 2px solid var(--color-gold);
+    }
+
+    .applied-table thead th:first-child { text-align: center; width: 60px; }
+    .applied-table thead th:last-child { text-align: center; }
+
+    .applied-table tbody tr {
+        border-bottom: 1px solid var(--border-light);
+        transition: background-color 0.2s ease;
+    }
+
+    .applied-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .applied-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.06);
+    }
+
+    [data-theme="dark"] .applied-table tbody tr:hover {
+        background: rgba(245, 158, 11, 0.08);
+    }
+
+    .applied-table tbody td {
+        padding: 0.85rem 0.75rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 500;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .applied-table tbody td:first-child {
+        text-align: center;
+        font-weight: 700;
+        color: var(--color-gold);
+        font-size: 0.9rem;
+    }
+
+    .applied-table tbody td:last-child {
+        text-align: center;
+    }
+
+    .applied-table tbody td .name-cell {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    /* Empty row */
+    .empty-row td {
+        text-align: center !important;
+        padding: 3rem 1rem !important;
+        color: var(--text-tertiary) !important;
+        font-style: italic;
+        font-size: 0.95rem !important;
+    }
+    .empty-row i {
+        display: block;
+        font-size: 2.5rem;
+        color: var(--color-gold);
+        margin-bottom: 0.75rem;
+        opacity: 0.6;
+    }
+
+    /* ===== View Resume button ===== */
+    .btn-view-resume {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        padding: 0.45rem 1rem;
+        border-radius: 0.4rem;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+        border: none;
         cursor: pointer;
         transition: all 0.3s ease;
+        white-space: nowrap;
     }
 
-    .btn-success {
-        background-color: #00B074;
-        color: #ffffff;
+    .btn-view-resume:hover {
+        background: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(245, 158, 11, 0.25);
     }
 
-    .btn-success:hover {
-        background-color: #00895d;
+    .no-resume {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        color: var(--text-tertiary);
+        font-size: 0.78rem;
+        font-style: italic;
+        white-space: nowrap;
     }
 
-    /* Responsive adjustments */
+    /* ===== Responsive ===== */
     @media (max-width: 768px) {
-        .table th, .table td {
-            font-size: 12px;
+        .applied-header h1 {
+            font-size: 1.65rem;
+        }
+        .applied-table thead th {
+            padding: 0.85rem 0.6rem;
+            font-size: 0.7rem;
+        }
+        .applied-table tbody td {
+            padding: 0.75rem 0.6rem;
+            font-size: 0.8rem;
         }
     }
 
     @media (max-width: 450px) {
-        .table {
-            width: 100%;
-        }
-
-        .btn {
-            font-size: 12px;
-            padding: 5px 10px;
-        }
+        .applied-list-wrapper { padding: 1.5rem 0; }
+        .applied-header { padding: 0 0.75rem; }
+        .table-wrapper { padding: 0 0.5rem; }
     }
 </style>
+
+
+<!-- ===== Applied List Section ===== -->
+<section class="applied-list-wrapper">
+
+    <!-- Header -->
+    <div class="applied-header">
+        <div>
+            <h1>Applied List</h1>
+            <p class="subtitle">Students who have applied for this job</p>
+        </div>
+        <div class="count-badge">
+            <i class="bi bi-people-fill"></i>
+            Total: {{ data|length }}
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+        <div class="table-responsive-custom">
+            <div class="table-scroll">
+                <table class="applied-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>DOB</th>
+                            <th>Gender</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Program</th>
+                            <th>Batch</th>
+                            <th>Pancard</th>
+                            <th>Resume</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for JobApplication in data %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><span class="name-cell">{{ JobApplication.user.name }}</span></td>
+                            <td>{{ JobApplication.user.date_of_birth }}</td>
+                            <td>{{ JobApplication.user.gender }}</td>
+                            <td>{{ JobApplication.user.student_email }}</td>
+                            <td>{{ JobApplication.user.student_phone }}</td>
+                            <td>{{ JobApplication.user.course }}</td>
+                            <td>{{ JobApplication.user.batch }}</td>
+                            <td>{{ JobApplication.user.pancard_number }}</td>
+                            <td>
+                                {% if JobApplication.user.resume %}
+                                    <a href="{{ JobApplication.user.resume.url }}"
+                                       target="_blank"
+                                       class="btn-view-resume">
+                                        <i class="bi bi-file-earmark-pdf"></i> View
+                                    </a>
+                                {% else %}
+                                    <span class="no-resume">
+                                        <i class="bi bi-x-circle"></i> No resume
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr class="empty-row">
+                            <td colspan="10">
+                                <i class="bi bi-inbox"></i>
+                                No applications found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
 {% endblock %}

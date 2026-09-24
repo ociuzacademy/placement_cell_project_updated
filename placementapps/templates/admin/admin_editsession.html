@@ -1,103 +1,177 @@
 {% extends "admin/admin_index.html" %}
+{% load static %}
 
 {% block content %}
-<div class="container my-4">
-    <h1 class="text-center mb-4">Edit Orientation Session</h1>
-    <form method="post" action="{% url 'admin_editsession' TrainingSession.id %}" class="form-container">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="session_name" class="form-label">Session Name</label>
-            <input type="text" class="form-control" id="session_name" name="session_name" value="{{ TrainingSession.session_name }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <input type="text" class="form-control" id="description" name="description" value="{{ TrainingSession.description }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="trainer_name" class="form-label">Trainer Name</label>
-            <input type="text" class="form-control" id="trainer_name" name="trainer_name" value="{{ TrainingSession.trainer_name }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="venue" class="form-label">Venue</label>
-            <input type="text" class="form-control" id="venue" name="venue" value="{{ TrainingSession.venue }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="time" class="form-label">Time</label>
-            <input type="text" class="form-control" id="time" name="time" value="{{ TrainingSession.time|date:'h:i A' }}" required>
-        </div>
-        <button type="submit" class="btn btn-warning w-100">Update Session</button>
-    </form>
-</div>
+
 <style>
-    
-
-    /* General container styles */
-    .container {
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    /* ===== Edit Session Page ===== */
+    .edit-session-wrapper {
+        padding: 4rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    /* Form headings */
-    h1 {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        color: #444444;
+    .form-container {
+        width: 100%;
+        max-width: 520px;
+        padding: 2.5rem;
+        border-radius: 0.75rem;
+        background: var(--bg-secondary);
+        box-shadow: var(--shadow-lg);
+        border-top: 5px solid var(--color-navy);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .form-container h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 1.85rem;
+        letter-spacing: -0.5px;
+        margin-bottom: 1.75rem;
         text-align: center;
+        position: relative;
+        z-index: 1;
     }
 
-    /* Form labels */
-    .form-label {
-        font-family: 'Poppins', sans-serif;
-        font-size: 14px;
-        font-weight: 500;
-        color: #555555;
+    .form-container .form-label {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.4rem;
     }
 
-    /* Form inputs */
-    .form-control {
-        font-family: 'Arial', sans-serif;
-        font-size: 15px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
+    .form-container .form-control {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-light);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
         transition: border-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        z-index: 1;
     }
 
-    .form-control:focus {
-        border-color: #5e5df0; /* Change border color on focus */
-        box-shadow: 0 0 8px rgba(94, 93, 240, 0.4); /* Glow effect on focus */
+    .form-container .form-control:focus {
+        border-color: var(--color-gold);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        outline: none;
+        background: var(--bg-primary);
+        color: var(--text-primary);
     }
 
-    /* Button styles */
-    .btn-warning {
-        background-color: #28a745; /* Bootstrap success color (green) */
-        border: none; /* Remove border */
-        border-radius: 6px; /* Rounded corners */
-        padding: 12px; /* Padding for the button */
-        font-size: 16px; /* Font size */
-        font-weight: 600; /* Font weight */
-        color: white; /* Text color */
-       
+    .form-container .form-control::placeholder {
+        color: var(--text-tertiary);
     }
 
-    .btn-warning:hover {
-        background-color: #218838; /* Darker green on hover */
+    /* ===== Update Button (gold) ===== */
+    .btn-update {
+        width: 100%;
+        height: 52px;
+        padding: 0 1.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        color: var(--color-navy);
+        background: var(--color-gold);
+        border: 2px solid var(--color-gold);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        position: relative;
+        z-index: 1;
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .container {
-            width: 90%; /* Make the form responsive */
+    .btn-update:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .form-container {
+            padding: 1.75rem 1.25rem;
         }
-
-        .form-control {
-            font-size: 14px; /* Adjust font size for smaller screens */
-        }
-
-        .btn-warning {
-            font-size: 14px; /* Adjust button font size */
+        .form-container h1 {
+            font-size: 1.4rem;
         }
     }
 </style>
+
+
+<!-- ===== Edit Session Section ===== -->
+<section class="edit-session-wrapper">
+    <div class="form-container">
+        <h1>Edit Orientation Session</h1>
+
+        <form method="post" action="{% url 'admin_editsession' TrainingSession.id %}">
+            {% csrf_token %}
+
+            <div class="mb-3 position-relative" style="z-index: 1;">
+                <label for="session_name" class="form-label">Session Name</label>
+                <input type="text" class="form-control" id="session_name" name="session_name"
+                       value="{{ TrainingSession.session_name }}" required>
+            </div>
+
+            <div class="mb-3 position-relative" style="z-index: 1;">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="description" name="description"
+                       value="{{ TrainingSession.description }}" required>
+            </div>
+
+            <div class="mb-3 position-relative" style="z-index: 1;">
+                <label for="trainer_name" class="form-label">Trainer Name</label>
+                <input type="text" class="form-control" id="trainer_name" name="trainer_name"
+                       value="{{ TrainingSession.trainer_name }}" required>
+            </div>
+
+            <div class="mb-3 position-relative" style="z-index: 1;">
+                <label for="venue" class="form-label">Venue</label>
+                <input type="text" class="form-control" id="venue" name="venue"
+                       value="{{ TrainingSession.venue }}" required>
+            </div>
+
+            <div class="mb-3 position-relative" style="z-index: 1;">
+                <label for="time" class="form-label">Time</label>
+                <input type="text" class="form-control" id="time" name="time"
+                       value="{{ TrainingSession.time|date:'h:i A' }}" required>
+            </div>
+
+            <button type="submit" class="btn-update">
+                <i class="bi bi-check-circle"></i> Update Session
+            </button>
+        </form>
+    </div>
+</section>
 
 {% endblock %}

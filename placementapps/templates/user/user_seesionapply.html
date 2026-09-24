@@ -1,141 +1,344 @@
 {% extends "user/user_index.html" %}
+{% load static %}
 
 {% block content %}
+
 <style>
-    h2 {
-        text-align: center;
-        margin-top: 50px;
-    }
-    .apply-container {
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .apply-container label {
-        display: block;
-        font-size: 14px;
-        margin-bottom: 8px;
-        color: #333;
-    }
-    .apply-container input,
-    .apply-container select,
-    .apply-container textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 14px;
-    }
-    .apply-container button {
-        width: 100%;
-        padding: 10px;
-        background-color:#00B074;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
+    /* ===== Apply Session Page ===== */
+    .apply-session-wrapper {
+        padding: 3.5rem 0;
+        background: var(--bg-primary);
+        min-height: 70vh;
     }
 
-    /* Footer Styling */
-    .footer {
-        background-color: #333;
-        color: white;
-        padding: 20px;
+    .apply-session-header {
+        max-width: 800px;
+        margin: 0 auto 2.5rem;
+        padding: 0 1rem;
         text-align: center;
-       
-        bottom: 0;
+    }
+
+    .apply-session-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-size: 2.25rem;
+        letter-spacing: -0.8px;
+        margin-bottom: 0.5rem;
+    }
+
+    .apply-session-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .apply-session-header .gold-bar {
+        width: 60px;
+        height: 4px;
+        background: var(--color-gold);
+        border-radius: 2px;
+        margin: 1rem auto 0;
+    }
+
+    /* ===== Form card ===== */
+    .apply-form-card {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2.5rem;
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .apply-form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        z-index: 1;
+    }
+
+    /* ===== Section headings ===== */
+    .form-section-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 1.2rem;
+        letter-spacing: -0.3px;
+        margin: 1.75rem 0 1.25rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid var(--border-light);
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        z-index: 2;
+    }
+
+    .form-section-title:first-of-type {
+        margin-top: 0;
+    }
+
+    .form-section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 40px;
+        height: 2px;
+        background: var(--color-gold);
+    }
+
+    .form-section-title i {
+        color: var(--color-gold);
+        font-size: 1.1rem;
+    }
+
+    /* ===== Form labels ===== */
+    .form-label {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 0.4rem;
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ===== Form inputs ===== */
+    .form-control,
+    .form-select {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.92rem;
+        padding: 0.7rem 1rem;
+        border: 2px solid var(--border-light);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        transition: border-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--color-gold);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        outline: none;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .form-control::placeholder {
+        color: var(--text-tertiary);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* Optional marker */
+    .optional-marker {
+        font-size: 0.7rem;
+        color: var(--text-tertiary);
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: 0;
+        margin-left: 0.35rem;
+    }
+
+    /* ===== Submit button ===== */
+    .btn-submit {
+        width: 100%;
+        height: 52px;
+        padding: 0 1.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        color: var(--color-navy);
+        background: var(--color-gold);
+        border: 2px solid var(--color-gold);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-submit:hover {
+        background: var(--color-gold-light);
+        border-color: var(--color-gold-light);
+        color: var(--color-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 158, 11, 0.25);
+    }
+
+    /* ===== Back button ===== */
+    .btn-container {
+        max-width: 800px;
+        margin: 1.5rem auto 0;
+        padding: 0 1rem;
+        display: flex;
+        justify-content: flex-end;
     }
 
     .btn-back {
-        background-color: black;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
+        background: transparent;
+        color: var(--text-secondary);
+        border: 2px solid var(--border-normal);
+        padding: 0.65rem 1.75rem;
+        border-radius: 0.5rem;
         text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-       /* float: right; /* Moves the button to the right */
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
     }
-    
     .btn-back:hover {
-        background-color: #333;
-    }
-    .btn-container {
-        padding:10px;
-        display: flex;
-        justify-content: flex-end; /* Aligns button to the right */
-        margin-bottom: 20px; /* Adds spacing below the button */
-    }
-
-
-    .footer a {
+        background: var(--text-secondary);
         color: #fff;
-        text-decoration: none;
-        margin: 0 10px;
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
     }
-    .footer a:hover {
-        text-decoration: underline;
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+        .apply-session-header h1 { font-size: 1.65rem; }
+        .apply-form-card { padding: 1.75rem 1.25rem; }
+        .btn-container { justify-content: center; }
+    }
+
+    @media (max-width: 450px) {
+        .apply-session-wrapper { padding: 1.5rem 0; }
     }
 </style>
 
-<!-- Student Apply Form Start -->
-<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <h2 class="mb-5">Apply for Orientation Session</h2>
-        <div class="apply-container">
-            <form method="post" id="applyForm">
-                {% csrf_token %}
-                <label for="session">Select Training Session:</label>
-                <select name="session" id="session" required>
+
+<!-- ===== Apply Session Section ===== -->
+<section class="apply-session-wrapper">
+
+    <!-- Header -->
+    <div class="apply-session-header">
+        <h1>Apply for Orientation Session</h1>
+        <p class="subtitle">Register your interest for an upcoming training session</p>
+        <div class="gold-bar"></div>
+    </div>
+
+    <!-- Form card -->
+    <div class="apply-form-card">
+        <form method="post" id="applyForm">
+            {% csrf_token %}
+
+            <!-- ===== Session ===== -->
+            <h3 class="form-section-title">
+                <i class="bi bi-calendar-check-fill"></i> Session Details
+            </h3>
+
+            <div class="mb-3 position-relative" style="z-index: 1;">
+                <label for="session" class="form-label">Select Training Session</label>
+                <select class="form-select" name="session" id="session" required>
                     {% for session in training_sessions %}
                         <option value="{{ session.id }}">{{ session.session_name }}</option>
+                    {% empty %}
+                        <option value="" disabled>No sessions available</option>
                     {% endfor %}
                 </select>
-            
-                <label for="name">Student Name:</label>
-                <input type="text" name="name" id="name" placeholder="Enter your name" required>
-            
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" placeholder="Enter your email" required>
-            
-                <label for="phone">Phone Number:</label>
-                <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" required>
-            
-                <label for="comments">Additional Comments (Optional):</label>
-                <textarea name="comments" id="comments" rows="4" placeholder="Enter any additional comments"></textarea>
-            
-                <button type="submit">Submit Application</button>
-            </form>
-            
-            <script>
-                // Get the form element and the selected session
-                var form = document.getElementById('applyForm');
-                var sessionSelect = document.getElementById('session');
-                
-                // Get the current URL from Django and replace the ID dynamically
-                var baseUrl = "{% url 'user_seesionapply' id='2' %}";  // This is the base URL with placeholder for id
-                
-                // Update form action before submission
-                form.onsubmit = function() {
-                    var sessionId = sessionSelect.value;  // Get the selected session id
-                    form.action = baseUrl.replace('2', sessionId);  // Replace '2' with the selected session ID
-                };
-            </script>
-            
-        </div>
-    </div>
-   
-</div>
-<div class="btn-container">
-    <a href="javascript:history.go(-1);" class="btn btn-back">Back</a>
-</div>
+            </div>
 
-  
+            <!-- ===== Personal Info ===== -->
+            <h3 class="form-section-title">
+                <i class="bi bi-person-fill"></i> Your Details
+            </h3>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Student Name</label>
+                    <input type="text" class="form-control" name="name" id="name"
+                           placeholder="Enter your name" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" id="email"
+                           placeholder="Enter your email" required>
+                </div>
+                <div class="col-12">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" name="phone" id="phone"
+                           placeholder="Enter your phone number" required>
+                </div>
+            </div>
+
+            <!-- ===== Comments ===== -->
+            <h3 class="form-section-title">
+                <i class="bi bi-chat-left-text-fill"></i> Additional Info
+            </h3>
+
+            <div>
+                <label for="comments" class="form-label">
+                    Additional Comments
+                    <span class="optional-marker">(Optional)</span>
+                </label>
+                <textarea class="form-control" name="comments" id="comments" rows="4"
+                          placeholder="Enter any additional comments"></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-submit">
+                <i class="bi bi-send"></i> Submit Application
+            </button>
+        </form>
+    </div>
+
+    <!-- Back -->
+    <div class="btn-container">
+        <a href="javascript:history.go(-1);" class="btn-back">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+</section>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('applyForm');
+        const sessionSelect = document.getElementById('session');
+
+        // Base URL with a placeholder ID — will be replaced at submit time
+        const baseUrl = "{% url 'user_seesionapply' id='2' %}";
+
+        form.addEventListener('submit', function (e) {
+            const sessionId = sessionSelect.value;
+            if (!sessionId) {
+                e.preventDefault();
+                alert('Please select a session before submitting.');
+                return;
+            }
+            form.action = baseUrl.replace('/2/', '/' + sessionId + '/');
+        });
+    });
+</script>
 
 {% endblock %}
