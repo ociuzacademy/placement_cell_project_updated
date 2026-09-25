@@ -14,7 +14,7 @@
                     <div class="text-start ps-4">
                         <h3 class="mb-3">{{ job.title }}</h3>
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.place }}</span>
-                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.get_job_type_display }}</span>
+                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.job_type }}</span>
                         <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>₹{{ job.salary }}</span>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                 <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
                     <h4 class="mb-4">Job Summary</h4>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Published On: {{ job.date }}</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: {{ job.get_job_type_display }}</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: {{ job.job_type }}</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: ₹{{ job.salary }}</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Location: {{ job.place }}</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancies Available: {{ job.vacancy }}</p> <!-- Display the number of vacancies in the summary -->
