@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -76,6 +77,11 @@ urlpatterns = [
     path('reject/<int:application_id>/', views.reject_application, name='reject_application'),
     path('notifications/', views.student_notifications, name='student_notifications'),
     path('delete_job/<int:job_id>/', views.delete_job, name='delete_job'),
+    path('ai_screen_resume/<int:application_id>/',views.ai_screen_resume,name='ai_screen_resume'),
+    path('admin_approve_application/<int:application_id>/',views.admin_approve_application,name='admin_approve_application'),
+    path('admin_reject_application/<int:application_id>/',views.admin_reject_application,name='admin_reject_application'),
+    path('admin_reapprove_application/<int:application_id>/',views.admin_reapprove_application,name='admin_reapprove_application'),
+    path('admin_re_reject_application/<int:application_id>/',views.admin_re_reject_application,name='admin_re_reject_application'),
 ]
 
 

@@ -1,48 +1,48 @@
-from django.http import FileResponse, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import get_user_model
-from django.contrib.auth import login,authenticate
-from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
+from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
+from django.core.files.storage import FileSystemStorage
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.http import FileResponse, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.timezone import now
 from django.views import View
-from openpyxl import Workbook
-from django.shortcuts import render
-from .models import Job
-from django.db.models import Q
-from .models import JobApplication, Job
-from django.http import JsonResponse
-from .models import Course, tbl_department
-import os
-from django.shortcuts import redirect
-from openpyxl.worksheet.hyperlink import Hyperlink
-from .models import tbl_department
-from .models import*
-from datetime import datetime, timezone
-from .models import SessionApplication, TrainingSession
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import tbl_tutor
-from django.shortcuts import render, HttpResponse
-from django.db.models import Q
-from .models import Job, tbl_student, tbl_tutor, tbl_department
+from django.views.decorators.http import require_POST
 
+from datetime import datetime, timezone
+from io import BytesIO
+import logging
+import os
+import traceback
+
+import fitz
+import openpyxl
+from openpyxl.drawing.image import Image
+from openpyxl.worksheet.hyperlink import Hyperlink
+import pandas as pd
+from PIL import Image as PILImage
+
+from .models import (
+    AIResumeScreening,
+    Course,
+    Job,
+    JobApplication,
+    SessionApplication,
+    StudentNotification,
+    TrainingSession,
+    TutorNotification,
+    tbl_admin,
+    tbl_department,
+    tbl_student,
+    tbl_tutor,
+)
+from ai_resume.ai_screening import screen_resume
 
 def index(request):
     return render(request, 'index.html')
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib import messages
-from django.db.models import Q
-
-from .models import (
-    Job,
-    tbl_student,
-    tbl_tutor,
-    tbl_admin,
-    tbl_department
-)
-
 
 def login(request):
 
@@ -271,7 +271,6 @@ def logout(request):
         logout(request)
     return render(request,'index.html')
 
-#admin
 
 def add_department(request):
     if request.method == "POST":
@@ -289,7 +288,6 @@ def add_department(request):
             return redirect('add_department')
     return render(request, 'admin/add_department.html')
 
-
 def list_department(request):
     if 'id' not in request.session:
         return redirect('/login/') 
@@ -300,9 +298,6 @@ def admin_index(request):
     departments = tbl_department.objects.all() 
     return render(request, 'admin/admin_index.html', {'departments': departments})
 
-
-from django.shortcuts import render
-from .models import tbl_tutor
 def tutor_index(request):
     tutor_id = request.session.get('id')
     if tutor_id:
@@ -330,9 +325,6 @@ def tutor_index(request):
         context = {'error': 'Please log in to access this page.'}
 
     return render(request, 'tutor/tutor_index.html', context)
-
-from django.shortcuts import render
-from .models import Job
 
 def user_index(request):
     student_id = request.session.get('id')
@@ -422,30 +414,23 @@ def user_profile(request):
         return redirect('/user_profile/')  
     return render(request, 'user/user_profile.html', {'data': user, 'departments': departments})
 
-
-
-
 def admin_view_tutor(request):
     data = tbl_tutor.objects.filter(status='pending')
     return render(request, 'admin/admin_view_tutor.html', {'data': data})
-
 
 def admin_approved_tutor(request):
     id=request.GET['id']
     tbl_tutor.objects.all().filter(id=id).update(status='approved') 
     return HttpResponseRedirect('/admin_view_tutor/')
 
-
 def admin_view_approved_tutor(request):
     data=tbl_tutor.objects.all().filter(status='approved')
     return render(request,'admin/admin_approved_tutor.html',{'data':data})
-
 
 def admin_rejected_tutor(request):
     id=request.GET['id']
     tbl_tutor.objects.all().filter(id=id).update(status='rejected') 
     return render(request,'admin/admin_rejected_tutor.html')
-
 
 def admin_view_rejected_tutor(request):
     data=tbl_tutor.objects.all().filter(status='Rejected')
@@ -462,31 +447,39 @@ def session_applylist(request, session_id):
         'data': applied_students,
         'session': session
     })
-    
 
 def list_student(request):
+
     tutor_id = request.session.get('id')
+
     if not tutor_id:
-        messages.error(request, "Session expired or tutor not logged in.")
+        messages.error(
+            request,
+            "Session expired or tutor not logged in."
+        )
         return redirect('login')
 
-    tutor = tbl_tutor.objects.get(id=tutor_id)
+    tutor = get_object_or_404(
+        tbl_tutor,
+        id=tutor_id
+    )
+
+    data = tbl_student.objects.filter(
+        department_id=tutor.department_id,
+        course_id=tutor.course_id
+    ).select_related(
+        'department',
+        'course'
+    )
+
+    return render(
+        request,
+        'tutor/list_student.html',
+        {
+            'data': data
+        }
+    )
     
-    # Check if course_id filter is the issue
-    data = tbl_student.objects.filter(course_id=tutor.course_id)
-
-    # Debugging print to ensure data is loaded
-    print(f"Filtered Data: {data}")
-    
-    if not data.exists():  # Display all data for testing
-        data = tbl_student.objects.all()  
-        print(f"All Data: {data}")
-
-    return render(request, 'tutor/list_student.html', {'data': data})
-
-
-
-
 def tutor_jobapplylist(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     tutor_id = request.session.get('id')
@@ -507,11 +500,6 @@ def tutor_jobapplylist(request, job_id):
         'data': applications  # Only applications from students in the tutor's course
     })
     
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Job, JobApplication, tbl_student, tbl_tutor
-
-
-
 def delete_student(request):
     if 'id' in request.GET:
         student_id = request.GET['id']
@@ -523,8 +511,7 @@ def delete_student(request):
             return render(request, 'tutor/add_student.html', {'error': 'Student not found'})
     else:
         return redirect('list_student')  
- 
-    
+   
 def delete_department(request):
     if 'id' in request.GET:
         department_id = request.GET['id']
@@ -537,20 +524,10 @@ def delete_department(request):
     else:
         return redirect('list_department') 
 
-
 def view_department(request):
     departments = tbl_department.objects.all()  
     return render(request, 'admin/view_department.html', {'data': departments})
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from .models import Job, tbl_department
-from django.http import JsonResponse
-import traceback
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
-from .models import Job, tbl_department
-from django.shortcuts import render, get_object_or_404
-from .models import tbl_student, tbl_department, Course
+
 def edit_profile(request, student_id):
     student = get_object_or_404(tbl_student, id=student_id)
     departments = tbl_department.objects.all()
@@ -626,7 +603,6 @@ def edit_profile(request, student_id):
         'courses': courses
     })
 
-    
 def edit_department(request, department_id):
     if 'id' not in request.session:
         return redirect('/login/')  
@@ -643,19 +619,12 @@ def edit_department(request, department_id):
         return redirect('list_department')  
     return render(request, 'admin/edit_department.html', {'department': department})
 
-
 def admin_joblist(request):
     jobs = Job.objects.all()  
     return render(request, 'admin/admin_joblist.html', {'data': jobs})
 
-
 def admin_jobdetail(request):
     return render(request, 'admin/admin_jobdetail.html')
-
-
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from .models import Job  # Make sure to import your Job model
 
 def user_job_list(request):
     student_id = request.session.get('id')
@@ -668,8 +637,6 @@ def user_job_list(request):
         'part_time_jobs': part_time_jobs,
         'featured_jobs': featured_jobs
     })
-
-
 
 def search_jobs(request):
     search_query = request.GET.get('search', '')
@@ -693,7 +660,6 @@ def search_jobs(request):
 
     return JsonResponse({'jobs': job_list})
 
-
 def user_job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     return render(request, 'user/user_job_detail.html', {'job': job})
@@ -713,15 +679,6 @@ def tutor_job_list(request):
 def tutor_job_detail(request, id):
     job = get_object_or_404(Job, id=id)  
     return render(request, 'tutor/tutor_job_detail.html', {'job': job})
-
-from django.shortcuts import get_object_or_404, render
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.http import JsonResponse
-from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
-
 
 def apply_for_job(request, job_id):
 
@@ -792,11 +749,6 @@ def apply_for_job(request, job_id):
         job_id=job.id
     )
 
-
-from django.contrib import messages
-from django.shortcuts import redirect, render
-from datetime import datetime
-
 def admin_training_sessions(request):
     if request.method == 'POST':
         session_name = request.POST.get('session_name')
@@ -855,8 +807,6 @@ def admin_sessionlist(request):
     training_sessions = TrainingSession.objects.all()
     return render(request, 'admin/admin_sessionlist.html', {'training_sessions': training_sessions})
 
-
-
 def delete_TrainingSession(request, session_id):
     try:
         training_session = TrainingSession.objects.get(id=session_id)
@@ -864,7 +814,6 @@ def delete_TrainingSession(request, session_id):
         return redirect('admin_sessionlist') 
     except TrainingSession.DoesNotExist:
         return render(request, 'admin/admin_training_sessions.html', {'error': 'Training session not found'})
-
 
 def admin_editsession(request, session_id):
     if 'id' not in request.session:
@@ -888,9 +837,116 @@ def admin_editsession(request, session_id):
         return redirect('admin_sessionlist')  
 
     return render(request, 'admin/admin_editsession.html', {'TrainingSession': training_session})
+
 def admin_applylist(request, job_id):
-    job_applications = JobApplication.objects.filter(job_id=job_id).select_related('user')
-    return render(request, 'admin/admin_applylist.html', {'data': job_applications})
+    job = get_object_or_404(Job, id=job_id)
+
+    job_applications = (
+        JobApplication.objects
+        .filter(
+            job=job,
+            status='Approved'
+        )
+        .select_related(
+            'user',
+            'job',
+            'user__course',
+            'user__department',
+            'ai_screening'
+        )
+    )
+
+    return render(
+        request,
+        'admin/admin_applylist.html',
+        {
+            'data': job_applications,
+            'job': job
+        }
+    )
+
+def admin_approve_application(request, application_id):
+
+    application = get_object_or_404(
+        JobApplication,
+        id=application_id
+    )
+
+    application.admin_status = 'Admin_Approved'
+    application.save(update_fields=['admin_status'])
+
+    messages.success(
+        request,
+        f'{application.user.name}\'s application has been approved by admin.'
+    )
+
+    return redirect(
+        'admin_applylist',
+        job_id=application.job.id
+    )
+
+def admin_reject_application(request, application_id):
+
+    application = get_object_or_404(
+        JobApplication,
+        id=application_id
+    )
+
+    application.admin_status = 'Admin_Rejected'
+    application.save(update_fields=['admin_status'])
+
+    messages.warning(
+        request,
+        f'{application.user.name}\'s application has been rejected by admin.'
+    )
+
+    return redirect(
+        'admin_applylist',
+        job_id=application.job.id
+    )
+
+def admin_reapprove_application(request, application_id):
+
+    application = get_object_or_404(
+        JobApplication,
+        id=application_id
+    )
+
+    application.admin_status = 'Admin_Approved'
+
+    application.save(
+        update_fields=['admin_status']
+    )
+
+    messages.success(
+        request,
+        f"{application.user.name}'s application has been reapproved by admin."
+    )
+
+    return redirect(
+        'admin_applylist',
+        job_id=application.job.id
+    )
+
+def admin_re_reject_application(request, application_id):
+    application = get_object_or_404(
+        JobApplication,
+        id=application_id
+    )
+
+    application.admin_status = 'Admin_Rejected'
+    application.save(update_fields=['admin_status'])
+
+    messages.warning(
+        request,
+        f"{application.user.name}'s application has been rejected by admin."
+    )
+
+    return redirect(
+        'admin_applylist',
+        job_id=application.job.id
+    )
+
 def delete_job(request, job_id):
     try:
         job = Job.objects.get(id=job_id)
@@ -898,6 +954,7 @@ def delete_job(request, job_id):
         return redirect('admin_joblist')  # Change to the correct job list view name
     except Job.DoesNotExist:
         return render(request, 'admin/admin_joblist.html', {'error': 'Job not found'})
+    
 def tutor_applylist(request):
     if 'id' not in request.session:
         return redirect('/tutor_applylist.html/')  
@@ -918,7 +975,6 @@ def tutor_about(request):
 
 def contact_view(request):
     return render(request, 'user/contact.html')
-
 
 def add_course(request, department_id=None):
     if request.method == "POST":
@@ -956,10 +1012,6 @@ def add_course(request, department_id=None):
     else:
         return redirect('list_department')  
 
-
-
-from django.shortcuts import render
-
 def courses_listing(request, department_id):
     try:
         department = tbl_department.objects.get(id=department_id)
@@ -994,19 +1046,13 @@ def delete_course(request, id):
     except Course.DoesNotExist:
         return render(request, 'admin/list_course.html', {'error': 'Course not found'})
 
-
-
 def tutor_sessionlist(request):
     training_sessions = TrainingSession.objects.all()
     return render(request, 'tutor/tutor_sessionlist.html', {'training_sessions': training_sessions})
 
-
 def user_sessionlist(request):
     training_sessions = TrainingSession.objects.all()
     return render(request, 'user/user_sessionlist.html', {'training_sessions': training_sessions})
-from django.shortcuts import get_object_or_404, redirect
-from django.http import JsonResponse
-from .models import TrainingSession, SessionApplication
 
 def apply_for_session(request):
     if request.method == 'POST':
@@ -1028,7 +1074,6 @@ def apply_for_session(request):
 
         return JsonResponse({'success': True, 'message': 'Successfully applied for the session!'})
 
-
 def user_applied_sessions(request):
     # Get the user_id from the session
     user_id = request.session.get('id')
@@ -1044,35 +1089,6 @@ def user_applied_sessions(request):
 
     return render(request, 'user/user_applied_sessions.html', {'applied_sessions': applied_sessions})
 
-# def apply_for_job(request, job_id):
-#     # Get the user_id from the session
-#     user_id = request.session.get('id')
-
-#     # Check if user_id is available in the session
-#     if not user_id:
-#         return JsonResponse({'success': False, 'message': 'You must be logged in to apply for a job.'})
-
-#     try:
-#         # Retrieve the student object using the session user_id
-#         student = get_object_or_404(tbl_student, id=user_id)
-#     except tbl_student.DoesNotExist:
-#         return JsonResponse({'success': False, 'message': 'Student information not found for this user.'})
-
-#     # Get the job object based on job_id
-#     job = get_object_or_404(Job, id=job_id)
-
-#     # Check if the student has already applied for the job
-#     existing_application = JobApplication.objects.filter(user=student, job=job).exists()
-#     if existing_application:
-#         return JsonResponse({'success': False, 'message': 'You have already applied for this job.'})
-
-#     # Create a new application
-#     JobApplication.objects.create(user=student, job=job)
-#     return JsonResponse({'success': True, 'message': 'Successfully applied for the job!'})
-
-
-from django.shortcuts import render, redirect
-from .models import JobApplication
 def user_applied_jobs(request):
     # Get the user_id from the session
     user_id = request.session.get('id')
@@ -1091,6 +1107,7 @@ def user_applied_jobs(request):
 
     # Return the jobs and the applications to the template
     return render(request, 'user/user_applied_job.html', {'applied_jobs': applied_jobs})
+
 def admin_applysessionlist(request, session_id):
     # Fetch applications for the selected session
     applications = SessionApplication.objects.select_related('user', 'session').filter(session_id=session_id)
@@ -1176,7 +1193,6 @@ def tutor_editprofile(request):
     }
     return render(request, 'tutor/tutor_editprofile.html', context)
 
-
 def download_excel(request):
     # Extract `session_id` from the request
     session_id = request.GET.get('session_id')
@@ -1193,7 +1209,7 @@ def download_excel(request):
     applications = SessionApplication.objects.filter(session=session)
     
     # Initialize Excel workbook and worksheet
-    wb = Workbook()
+    wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = f"Applications for {session.session_name}"
     
@@ -1231,16 +1247,10 @@ def download_resume(request, student_id):
     response = FileResponse(open(resume_path, 'rb'), as_attachment=True, filename=student.resume.name)
 
     return response
+
 def admin_studentslist(request):
       departments = tbl_department.objects.all() 
       return render(request, 'admin/admin_studentslist.html', {'departments': departments})
-
-import openpyxl
-from django.http import HttpResponse
-from openpyxl.drawing.image import Image
-from io import BytesIO
-from PIL import Image as PILImage
-import fitz  
 
 def download_applications_excel(request, job_id):
     try:
@@ -1325,13 +1335,6 @@ def download_applications_excel(request, job_id):
     wb.save(response)
     return response
 
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse
-from .models import tbl_tutor, tbl_department, Course
-import logging
-
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -1407,89 +1410,202 @@ def register_tutor(request):
             logger.error(f"Error occurred: {e}")
             return HttpResponse(f"An error occurred: {e}", status=400)
         
-from django.shortcuts import redirect, render
-from django.contrib import messages
-import pandas as pd  # Install pandas if not already installed
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-import pandas as pd
-from .models import tbl_student  # Update this with your actual model import
-
-
-import pandas as pd
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import tbl_student # Replace with your actual models
 def upload_excel(request):
     if request.method == 'POST' and 'excel_file' in request.FILES:
+
         excel_file = request.FILES['excel_file']
 
         try:
-            df = pd.read_excel(excel_file, engine='openpyxl')
-            print(df.head())  # Debugging: Check file content
+            df = pd.read_excel(
+                excel_file,
+                engine='openpyxl'
+            )
+
+            print("Excel Columns:")
+            print(df.columns.tolist())
+
+            print("Excel Data:")
+            print(df.head())
 
             required_columns = [
-                'Student ID', 'Roll No', 'Reg No', 'Student Name', 'Gender',
-                'Student Email', 'Student phone', 'Parent phone', 'Address', 'Course'
+                'Student ID',
+                'Roll No',
+                'Reg No',
+                'Student Name',
+                'Gender',
+                'Student Email',
+                'Student phone',
+                'Parent phone',
+                'Address',
+                'Department',
+                'Course',
+                'Batch',
+                'Year',
+                'Supply'
             ]
-            missing_columns = [col for col in required_columns if col not in df.columns]
+
+            missing_columns = [
+                col for col in required_columns
+                if col not in df.columns
+            ]
+
             if missing_columns:
-                raise ValueError(f"Missing columns: {', '.join(missing_columns)}")
+                raise ValueError(
+                    f"Missing columns: {', '.join(missing_columns)}"
+                )
 
             inserted_count = 0
             updated_count = 0
 
             for _, row in df.iterrows():
-                try:
-                    student_id = row['Student ID']
 
-                    # Get course object
-                    course = Course.objects.get(name=row['Course'])
+                try:
+
+                    # ---------------------------------
+                    # Student ID
+                    # ---------------------------------
+
+                    student_id = str(
+                        row['Student ID']
+                    ).strip()
+
+                    # ---------------------------------
+                    # Get Department
+                    # ---------------------------------
+
+                    department = tbl_department.objects.get(
+                        name=str(row['Department']).strip()
+                    )
+
+                    # ---------------------------------
+                    # Get Course
+                    # ---------------------------------
+
+                    course = Course.objects.get(
+                        name=str(row['Course']).strip()
+                    )
+
+                    # ---------------------------------
+                    # Prepare Student Data
+                    # ---------------------------------
 
                     defaults = {
-                        'roll_no': row['Roll No'],
-                        'reg_no': row['Reg No'],
-                        'name': row['Student Name'],
-                        'gender': row['Gender'],
-                        'student_email': row['Student Email'],
-                        'student_phone': row['Student phone'],
-                        'parent_phone': row['Parent phone'],
-                        'address': row['Address'],
-                        'course': course  # Correcting course assignment
+
+                        'roll_no': str(
+                            row['Roll No']
+                        ).strip(),
+
+                        'reg_no': str(
+                            row['Reg No']
+                        ).strip(),
+
+                        'name': str(
+                            row['Student Name']
+                        ).strip(),
+
+                        'gender': str(
+                            row['Gender']
+                        ).strip(),
+
+                        'student_email': str(
+                            row['Student Email']
+                        ).strip(),
+
+                        'student_phone': str(
+                            row['Student phone']
+                        ).strip(),
+
+                        'parent_phone': str(
+                            row['Parent phone']
+                        ).strip(),
+
+                        'address': str(
+                            row['Address']
+                        ).strip(),
+
+                        # Foreign Keys
+                        'department': department,
+                        'course': course,
+
+                        # Other fields
+                        'batch': str(
+                            row['Batch']
+                        ).strip(),
+
+                        'year': int(
+                            row['Year']
+                        ),
+
+                        'supply': int(
+                            row['Supply']
+                        ),
                     }
+
+                    # ---------------------------------
+                    # Create / Update Student
+                    # ---------------------------------
+
                     student, created = tbl_student.objects.update_or_create(
+
                         student_id=student_id,
+
                         defaults=defaults
                     )
+
                     if created:
-                        print(f"Inserted: {student}")  # Debugging
+
+                        print(
+                            f"Inserted: {student.name}"
+                        )
+
                         inserted_count += 1
+
                     else:
-                        print(f"Updated: {student}")  # Debugging
+
+                        print(
+                            f"Updated: {student.name}"
+                        )
+
                         updated_count += 1
 
                 except Exception as e:
-                    print(f"Error processing row: {row}, Error: {e}")
+
+                    print(
+                        f"Error processing row: {row}"
+                    )
+
+                    print(
+                        f"Error: {e}"
+                    )
+
                     continue
 
             messages.success(
                 request,
-                f"File uploaded successfully! {inserted_count} new records added and {updated_count} records updated."
+                f"File uploaded successfully! "
+                f"{inserted_count} new records added and "
+                f"{updated_count} records updated."
             )
+
             return redirect('list_student')
 
         except Exception as e:
-            messages.error(request, f"An error occurred: {e}")
-            print(f"Error: {e}")  # Debugging
 
-        return redirect('list_student')
+            messages.error(
+                request,
+                f"An error occurred: {e}"
+            )
 
-    return render(request, 'tutor/list_student.html')
+            print(
+                f"Upload Error: {e}"
+            )
 
+            return redirect('list_student')
 
-from django.shortcuts import render
-from .models import tbl_student, Course
+    return render(
+        request,
+        'tutor/list_student.html'
+    )
 
 def view_final_year_student(request):
     # Get the course_id and batch from query parameters
@@ -1518,29 +1634,20 @@ def view_final_year_student(request):
         'students': students,
     })
 
-
-from django.utils.timezone import now
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.timezone import now
-from .models import JobApplication, StudentNotification, Job
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.timezone import now
-from .models import JobApplication, StudentNotification
-from django.utils.timezone import now
-from django.shortcuts import get_object_or_404, redirect
-
 def approve_application(request, application_id):
-    job_application = get_object_or_404(JobApplication, id=application_id)
+    job_application = get_object_or_404(
+        JobApplication,
+        id=application_id
+    )
+
     job_application.status = 'Approved'
     job_application.save()
 
     student = job_application.user
     job = job_application.job
 
-    # Store student ID in session
-    request.session['student_id'] = student.id  
+    request.session['student_id'] = student.id
 
-    # Create a notification for the student
     StudentNotification.objects.create(
         student=student,
         job=job,
@@ -1548,20 +1655,25 @@ def approve_application(request, application_id):
         created_at=now()
     )
 
-    return redirect('tutor_jobapplylist', job_id=job.id)
+    return redirect(
+        'tutor_jobapplylist',
+        job_id=job.id
+    )
 
 def reject_application(request, application_id):
-    job_application = get_object_or_404(JobApplication, id=application_id)
+    job_application = get_object_or_404(
+        JobApplication,
+        id=application_id
+    )
+
     job_application.status = 'Rejected'
     job_application.save()
 
     student = job_application.user
     job = job_application.job
 
-    # Store student ID in session
-    request.session['student_id'] = student.id  
+    request.session['student_id'] = student.id
 
-    # Create a notification for the student
     StudentNotification.objects.create(
         student=student,
         job=job,
@@ -1569,18 +1681,30 @@ def reject_application(request, application_id):
         created_at=now()
     )
 
-    return redirect('tutor_jobapplylist', job_id=job.id)
+    return redirect(
+        'tutor_jobapplylist',
+        job_id=job.id
+    )
 
 def reapprove_application(request, application_id):
-    application = get_object_or_404(JobApplication, id=application_id)
-    application.status = "Approved"
+    application = get_object_or_404(
+        JobApplication,
+        id=application_id
+    )
+
+    application.status = 'Approved'
     application.save()
-    messages.success(request, "Application has been reapproved.")
-    return redirect('tutor_jobapplylist', job_id=application.job.id)
 
+    messages.success(
+        request,
+        "Application has been reapproved."
+    )
 
-from django.shortcuts import render
-from placementapps.models import StudentNotification
+    return redirect(
+        'tutor_jobapplylist',
+        job_id=application.job.id
+    )
+
 def student_notifications(request):
     student_id = request.session.get('id')
 
@@ -1599,14 +1723,6 @@ def student_notifications(request):
     return render(request, 'user/user_notifications.html', {
         'notifications': notifications
     })
-
-
-
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
-
 
 def admin_addjoblist(request):
     if request.method == 'POST':
@@ -1654,9 +1770,6 @@ def admin_addjoblist(request):
         departments = tbl_department.objects.all()
         return render(request, 'admin/admin_addjoblist.html', {'departments': departments})
 
-from django.shortcuts import render, redirect
-from .models import TutorNotification
-
 def tutor_notifications(request):
     tutor_id = request.session.get('id')
     if not tutor_id:
@@ -1674,9 +1787,6 @@ def tutor_notifications(request):
         'notifications': notifications,
     }
     return render(request, 'tutor/notifications.html', context)
-
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
 
 @require_POST
 def mark_notification_as_read(request, notification_id):
@@ -1696,3 +1806,167 @@ def notifications_count(request):
         count = TutorNotification.objects.filter(tutor_id=tutor_id, is_read=False).count()
         return {'notifications_count': count}
     return {'notifications_count': 0}
+
+from ai_resume.ai_screening import screen_resume
+
+
+def ai_screen_resume(request, application_id):
+
+    application = get_object_or_404(
+        JobApplication.objects.select_related(
+            'user',
+            'job',
+            'job__department'
+        ),
+        id=application_id
+    )
+
+    student = application.user
+    job = application.job
+
+
+    # =====================================================
+    # CHECK RESUME
+    # =====================================================
+
+    if not student.resume:
+
+        messages.error(
+            request,
+            f"{student.name} has not uploaded a resume."
+        )
+
+        return redirect(
+            'admin_applylist',
+            job_id=job.id
+        )
+
+
+    # =====================================================
+    # RESUME PATH
+    # =====================================================
+
+    resume_path = student.resume.path
+
+
+    # =====================================================
+    # JOB DESCRIPTION FOR AI
+    # =====================================================
+
+    job_description = f"""
+
+    Job Title:
+    {job.title}
+
+    Job Description:
+    {job.description}
+
+    Responsibilities:
+    {job.responsibilities}
+
+    Qualifications:
+    {job.qualifications}
+
+    Department:
+    {job.department.name}
+
+    Job Type:
+    {job.get_job_type_display()}
+
+    Location:
+    {job.place}
+
+    """
+
+
+    try:
+
+        # =================================================
+        # RUN AI SCREENING
+        # =================================================
+
+        result = screen_resume(
+            resume_path,
+            job_description
+        )
+
+
+        # =================================================
+        # SAVE AI RESULT
+        # =================================================
+
+        screening, created = AIResumeScreening.objects.update_or_create(
+
+            application=application,
+
+            defaults={
+
+                'match_score':
+                    result['final_score'],
+
+                'semantic_score':
+                    result['semantic_score'],
+
+                'skill_score':
+                    result['skill_score'],
+
+                'matched_skills':
+                    ', '.join(
+                        result['matched_skills']
+                    ),
+
+                'missing_skills':
+                    ', '.join(
+                        result['missing_skills']
+                    ),
+
+                'recommendation':
+                    result['recommendation'],
+
+            }
+
+        )
+
+
+        # =================================================
+        # DISPLAY RESULT
+        # =================================================
+
+        return render(
+
+            request,
+
+            'admin/ai_screening_result.html',
+
+            {
+                'application': application,
+
+                'student': student,
+
+                'job': job,
+
+                'screening': screening,
+
+                'result': result,
+            }
+
+        )
+
+
+    except Exception as e:
+
+        messages.error(
+
+            request,
+
+            f"AI Resume Screening failed: {str(e)}"
+
+        )
+
+        return redirect(
+
+            'admin_applylist',
+
+            job_id=job.id
+
+        )

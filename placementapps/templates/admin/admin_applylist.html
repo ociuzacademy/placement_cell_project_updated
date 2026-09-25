@@ -4,20 +4,29 @@
 {% block content %}
 
 <style>
-    /* ===== Applied List Page ===== */
+    /* =========================================================
+       APPLIED LIST PAGE
+    ========================================================= */
+
     .applied-list-wrapper {
         padding: 3rem 0;
         background: var(--bg-primary);
         min-height: 70vh;
     }
 
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
     .applied-header {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto 2rem;
         padding: 0 1rem;
+
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         flex-wrap: wrap;
         gap: 1rem;
     }
@@ -34,8 +43,30 @@
     .applied-header .subtitle {
         color: var(--text-secondary);
         font-size: 0.9rem;
-        margin: 0;
+        margin: 0.3rem 0 0;
     }
+
+    /* =========================================================
+       JOB TITLE
+    ========================================================= */
+
+    .job-title-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.6rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .job-title-badge i {
+        color: var(--color-gold);
+    }
+
+    /* =========================================================
+       COUNT BADGE
+    ========================================================= */
 
     .count-badge {
         display: inline-flex;
@@ -49,11 +80,17 @@
         font-size: 0.85rem;
         letter-spacing: 0.3px;
     }
-    .count-badge i { font-size: 1rem; }
 
-    /* ===== Table wrapper (for horizontal scroll on small screens) ===== */
+    .count-badge i {
+        font-size: 1rem;
+    }
+
+    /* =========================================================
+       TABLE WRAPPER
+    ========================================================= */
+
     .table-wrapper {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
         padding: 0 1rem;
     }
@@ -74,7 +111,11 @@
         left: 0;
         width: 100%;
         height: 4px;
-        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        background: linear-gradient(
+            90deg,
+            var(--color-navy),
+            var(--color-gold)
+        );
         z-index: 2;
     }
 
@@ -83,14 +124,21 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    /* ===== Table ===== */
+    /* =========================================================
+       TABLE
+    ========================================================= */
+
     .applied-table {
         width: 100%;
-        min-width: 1000px;
+        min-width: 1400px;
         margin: 0;
         border-collapse: collapse;
         font-family: 'Inter', sans-serif;
     }
+
+    /* =========================================================
+       TABLE HEADER
+    ========================================================= */
 
     .applied-table thead {
         background: var(--color-navy);
@@ -112,8 +160,18 @@
         border-bottom: 2px solid var(--color-gold);
     }
 
-    .applied-table thead th:first-child { text-align: center; width: 60px; }
-    .applied-table thead th:last-child { text-align: center; }
+    .applied-table thead th:first-child {
+        text-align: center;
+        width: 60px;
+    }
+
+    .applied-table thead th:last-child {
+        text-align: center;
+    }
+
+    /* =========================================================
+       TABLE BODY
+    ========================================================= */
 
     .applied-table tbody tr {
         border-bottom: 1px solid var(--border-light);
@@ -157,30 +215,18 @@
         font-weight: 600;
     }
 
-    /* Empty row */
-    .empty-row td {
-        text-align: center !important;
-        padding: 3rem 1rem !important;
-        color: var(--text-tertiary) !important;
-        font-style: italic;
-        font-size: 0.95rem !important;
-    }
-    .empty-row i {
-        display: block;
-        font-size: 2.5rem;
-        color: var(--color-gold);
-        margin-bottom: 0.75rem;
-        opacity: 0.6;
-    }
+    /* =========================================================
+       VIEW RESUME BUTTON
+    ========================================================= */
 
-    /* ===== View Resume button ===== */
     .btn-view-resume {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.35rem;
         background: var(--color-gold);
         color: var(--color-navy);
-        padding: 0.45rem 1rem;
+        padding: 0.45rem 0.9rem;
         border-radius: 0.4rem;
         font-weight: 700;
         font-size: 0.78rem;
@@ -199,6 +245,87 @@
         box-shadow: 0 6px 12px rgba(245, 158, 11, 0.25);
     }
 
+    /* =========================================================
+       AI SCREENING BUTTON
+    ========================================================= */
+
+    .btn-ai-screening {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        background: var(--color-navy);
+        color: #fff;
+        padding: 0.45rem 0.85rem;
+        border-radius: 0.4rem;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+        border: 1px solid var(--color-navy);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .btn-ai-screening:hover {
+        background: var(--color-gold);
+        color: var(--color-navy);
+        border-color: var(--color-gold);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(245, 158, 11, 0.25);
+    }
+
+    /* =========================================================
+       AI SCORE
+    ========================================================= */
+
+    .ai-score {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 70px;
+        padding: 0.4rem 0.7rem;
+        border-radius: 50px;
+        background: rgba(245, 158, 11, 0.12);
+        color: var(--color-gold);
+        font-size: 0.85rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    /* =========================================================
+       AI RECOMMENDATION
+    ========================================================= */
+
+    .ai-recommendation {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.4rem 0.75rem;
+        border-radius: 50px;
+        background: rgba(245, 158, 11, 0.12);
+        color: var(--color-gold);
+        font-size: 0.75rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    /* =========================================================
+       NOT SCREENED
+    ========================================================= */
+
+    .not-screened {
+        color: var(--text-tertiary);
+        font-size: 0.78rem;
+        font-style: italic;
+        white-space: nowrap;
+    }
+
+    /* =========================================================
+       NO RESUME
+    ========================================================= */
+
     .no-resume {
         display: inline-flex;
         align-items: center;
@@ -209,15 +336,123 @@
         white-space: nowrap;
     }
 
-    /* ===== Responsive ===== */
+    /* =========================================================
+       ADMIN STATUS
+    ========================================================= */
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .status-approved {
+        background: rgba(34, 197, 94, 0.12);
+        color: #16a34a;
+    }
+
+    .status-rejected {
+        background: rgba(239, 68, 68, 0.12);
+        color: #dc2626;
+    }
+
+    .status-pending {
+        background: rgba(245, 158, 11, 0.12);
+        color: var(--color-gold);
+    }
+
+    /* =========================================================
+       ADMIN ACTIONS
+    ========================================================= */
+
+    .admin-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-admin-approve,
+    .btn-admin-reject {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3rem;
+        padding: 0.42rem 0.7rem;
+        border-radius: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+    }
+
+    .btn-admin-approve {
+        background: #16a34a;
+        color: #fff;
+        border: 1px solid #16a34a;
+    }
+
+    .btn-admin-approve:hover {
+        background: #15803d;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-admin-reject {
+        background: #dc2626;
+        color: #fff;
+        border: 1px solid #dc2626;
+    }
+
+    .btn-admin-reject:hover {
+        background: #b91c1c;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    /* =========================================================
+       EMPTY ROW
+    ========================================================= */
+
+    .empty-row td {
+        text-align: center !important;
+        padding: 3rem 1rem !important;
+        color: var(--text-tertiary) !important;
+        font-style: italic;
+        font-size: 0.95rem !important;
+    }
+
+    .empty-row i {
+        display: block;
+        font-size: 2.5rem;
+        color: var(--color-gold);
+        margin-bottom: 0.75rem;
+        opacity: 0.6;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
     @media (max-width: 768px) {
+
         .applied-header h1 {
             font-size: 1.65rem;
         }
+
         .applied-table thead th {
             padding: 0.85rem 0.6rem;
             font-size: 0.7rem;
         }
+
         .applied-table tbody td {
             padding: 0.75rem 0.6rem;
             font-size: 0.8rem;
@@ -225,87 +460,533 @@
     }
 
     @media (max-width: 450px) {
-        .applied-list-wrapper { padding: 1.5rem 0; }
-        .applied-header { padding: 0 0.75rem; }
-        .table-wrapper { padding: 0 0.5rem; }
+
+        .applied-list-wrapper {
+            padding: 1.5rem 0;
+        }
+
+        .applied-header {
+            padding: 0 0.75rem;
+        }
+
+        .table-wrapper {
+            padding: 0 0.5rem;
+        }
     }
 </style>
 
 
-<!-- ===== Applied List Section ===== -->
+<!-- =========================================================
+     APPLIED LIST SECTION
+========================================================= -->
+
 <section class="applied-list-wrapper">
 
-    <!-- Header -->
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
     <div class="applied-header">
+
         <div>
-            <h1>Applied List</h1>
-            <p class="subtitle">Students who have applied for this job</p>
+
+            <h1>
+                Applied List
+            </h1>
+
+            <p class="subtitle">
+                Students approved by tutor for this job
+            </p>
+
+            {% if job %}
+
+            <div class="job-title-badge">
+
+                <i class="bi bi-briefcase-fill"></i>
+
+                {{ job.title }}
+
+            </div>
+
+            {% endif %}
+
         </div>
+
+
+        <!-- Count -->
+
         <div class="count-badge">
+
             <i class="bi bi-people-fill"></i>
+
             Total: {{ data|length }}
+
         </div>
+
     </div>
 
-    <!-- Table -->
+
+    <!-- =====================================================
+         TABLE
+    ====================================================== -->
+
     <div class="table-wrapper">
+
         <div class="table-responsive-custom">
+
             <div class="table-scroll">
+
                 <table class="applied-table">
+
+
+                    <!-- =================================================
+                         TABLE HEADER
+                    ================================================== -->
+
                     <thead>
+
                         <tr>
+
                             <th>#</th>
+
                             <th>Name</th>
+
                             <th>DOB</th>
+
                             <th>Gender</th>
+
                             <th>Email</th>
+
                             <th>Contact</th>
+
                             <th>Program</th>
+
                             <th>Batch</th>
+
                             <th>Pancard</th>
+
                             <th>Resume</th>
+
+                            <th>AI Score</th>
+
+                            <th>Recommendation</th>
+
+                            <th>AI Action</th>
+
+                            <th>Admin Status</th>
+
+                            <th>Admin Action</th>
+
                         </tr>
+
                     </thead>
+
+
+                    <!-- =================================================
+                         TABLE BODY
+                    ================================================== -->
+
                     <tbody>
+
                         {% for JobApplication in data %}
+
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td><span class="name-cell">{{ JobApplication.user.name }}</span></td>
-                            <td>{{ JobApplication.user.date_of_birth }}</td>
-                            <td>{{ JobApplication.user.gender }}</td>
-                            <td>{{ JobApplication.user.student_email }}</td>
-                            <td>{{ JobApplication.user.student_phone }}</td>
-                            <td>{{ JobApplication.user.course }}</td>
-                            <td>{{ JobApplication.user.batch }}</td>
-                            <td>{{ JobApplication.user.pancard_number }}</td>
+
+                            <!-- Number -->
+
                             <td>
+                                {{ forloop.counter }}
+                            </td>
+
+
+                            <!-- Name -->
+
+                            <td>
+
+                                <span class="name-cell">
+
+                                    {{ JobApplication.user.name }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- DOB -->
+
+                            <td>
+                                {{ JobApplication.user.date_of_birth }}
+                            </td>
+
+
+                            <!-- Gender -->
+
+                            <td>
+                                {{ JobApplication.user.gender }}
+                            </td>
+
+
+                            <!-- Email -->
+
+                            <td>
+                                {{ JobApplication.user.student_email }}
+                            </td>
+
+
+                            <!-- Contact -->
+
+                            <td>
+                                {{ JobApplication.user.student_phone }}
+                            </td>
+
+
+                            <!-- Program -->
+
+                            <td>
+                                {{ JobApplication.user.course }}
+                            </td>
+
+
+                            <!-- Batch -->
+
+                            <td>
+                                {{ JobApplication.user.batch }}
+                            </td>
+
+
+                            <!-- Pancard -->
+
+                            <td>
+                                {{ JobApplication.user.pancard_number }}
+                            </td>
+
+
+                            <!-- =================================================
+                                 RESUME
+                            ================================================== -->
+
+                            <td>
+
                                 {% if JobApplication.user.resume %}
-                                    <a href="{{ JobApplication.user.resume.url }}"
-                                       target="_blank"
-                                       class="btn-view-resume">
-                                        <i class="bi bi-file-earmark-pdf"></i> View
-                                    </a>
+
+                                <a
+                                    href="{{ JobApplication.user.resume.url }}"
+                                    target="_blank"
+                                    class="btn-view-resume"
+                                >
+
+                                    <i class="bi bi-file-earmark-pdf"></i>
+
+                                    View
+
+                                </a>
+
                                 {% else %}
-                                    <span class="no-resume">
-                                        <i class="bi bi-x-circle"></i> No resume
-                                    </span>
+
+                                <span class="no-resume">
+
+                                    <i class="bi bi-x-circle"></i>
+
+                                    No resume
+
+                                </span>
+
                                 {% endif %}
+
                             </td>
+
+
+                            <!-- =================================================
+                                 AI SCORE
+                            ================================================== -->
+
+                            <td>
+
+                                {% if JobApplication.ai_screening %}
+
+                                <span class="ai-score">
+
+                                    {{ JobApplication.ai_screening.match_score }}%
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="not-screened">
+
+                                    Not screened
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- =================================================
+                                 RECOMMENDATION
+                            ================================================== -->
+
+                            <td>
+
+                                {% if JobApplication.ai_screening %}
+
+                                <span class="ai-recommendation">
+
+                                    {{ JobApplication.ai_screening.recommendation }}
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="not-screened">
+
+                                    —
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- =================================================
+                                 AI ACTION
+                            ================================================== -->
+
+                            <td>
+
+                                {% if JobApplication.user.resume %}
+
+                                <a
+                                    href="{% url 'ai_screen_resume' JobApplication.id %}"
+                                    class="btn-ai-screening"
+                                >
+
+                                    <i class="bi bi-robot"></i>
+
+                                    {% if JobApplication.ai_screening %}
+
+                                        Re-screen
+
+                                    {% else %}
+
+                                        AI Screening
+
+                                    {% endif %}
+
+                                </a>
+
+                                {% else %}
+
+                                <span class="no-resume">
+
+                                    No resume
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- =================================================
+                                 ADMIN STATUS
+                            ================================================== -->
+
+                            <td>
+
+                                {% if JobApplication.admin_status == "Admin_Approved" %}
+
+                                <span class="status-badge status-approved">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Admin Approved
+
+                                </span>
+
+                                {% elif JobApplication.admin_status == "Admin_Rejected" %}
+
+                                <span class="status-badge status-rejected">
+
+                                    <i class="bi bi-x-circle-fill"></i>
+
+                                    Admin Rejected
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="status-badge status-pending">
+
+                                    <i class="bi bi-clock-fill"></i>
+
+                                    Admin Pending
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- =================================================
+                                 ADMIN ACTION
+                            ================================================== -->
+
+                            <td>
+
+                                <div class="admin-actions">
+
+
+                                    <!-- ================================
+                                         ADMIN PENDING
+                                    ================================= -->
+
+                                    {% if JobApplication.admin_status == "Admin_Pending" %}
+
+                                    <a
+                                        href="{% url 'admin_approve_application' JobApplication.id %}"
+                                        class="btn-admin-approve"
+                                        onclick="return confirmAdminApproval()"
+                                    >
+
+                                        <i class="bi bi-check-lg"></i>
+
+                                        Approve
+
+                                    </a>
+
+
+                                    <a
+                                        href="{% url 'admin_reject_application' JobApplication.id %}"
+                                        class="btn-admin-reject"
+                                        onclick="return confirmAdminRejection()"
+                                    >
+
+                                        <i class="bi bi-x-lg"></i>
+
+                                        Reject
+
+                                    </a>
+
+
+                                    <!-- ================================
+                                         ADMIN APPROVED
+                                    ================================= -->
+
+                                    {% elif JobApplication.admin_status == "Admin_Approved" %}
+
+                                    <a
+                                        href="{% url 'admin_re_reject_application' JobApplication.id %}"
+                                        class="btn-admin-reject"
+                                        onclick="return confirmAdminRejection()"
+                                    >
+
+                                        <i class="bi bi-x-lg"></i>
+
+                                        Re-reject
+
+                                    </a>
+
+
+                                    <!-- ================================
+                                         ADMIN REJECTED
+                                    ================================= -->
+
+                                    {% elif JobApplication.admin_status == "Admin_Rejected" %}
+
+                                    <a
+                                        href="{% url 'admin_reapprove_application' JobApplication.id %}"
+                                        class="btn-admin-approve"
+                                        onclick="return confirmAdminReapproval()"
+                                    >
+
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+
+                                        Reapprove
+
+                                    </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
                         </tr>
+
+
                         {% empty %}
+
+
+                        <!-- =================================================
+                             EMPTY
+                        ================================================== -->
+
                         <tr class="empty-row">
-                            <td colspan="10">
+
+                            <td colspan="15">
+
                                 <i class="bi bi-inbox"></i>
-                                No applications found.
+
+                                No tutor-approved applications found.
+
                             </td>
+
                         </tr>
+
+
                         {% endfor %}
+
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
+
     </div>
 
 </section>
+
+
+<!-- =========================================================
+     CONFIRMATION FUNCTIONS
+========================================================= -->
+
+<script>
+
+    function confirmAdminApproval() {
+
+        return confirm(
+            "Are you sure you want to approve this application?"
+        );
+
+    }
+
+
+    function confirmAdminRejection() {
+
+        return confirm(
+            "Are you sure you want to reject this application?"
+        );
+
+    }
+
+
+    function confirmAdminReapproval() {
+
+        return confirm(
+            "Are you sure you want to reapprove this application?"
+        );
+
+    }
+
+</script>
+
 
 {% endblock %}

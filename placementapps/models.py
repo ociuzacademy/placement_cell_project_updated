@@ -109,18 +109,54 @@ class Job(models.Model):
 
 from datetime import date
 class JobApplication(models.Model):
+
+    # Tutor status
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
         ('Approved', 'Approved'),
         ('Rejected', 'Rejected'),
     ]
-    user = models.ForeignKey('tbl_student', on_delete=models.CASCADE)  # User is the student
-    job = models.ForeignKey('Job', on_delete=models.CASCADE)  # The job that the student is applying for
-    applied_on = models.DateField(default=date.today)  # Date of application
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+
+    # Admin status
+    ADMIN_STATUS_CHOICES = [
+        ('Admin_Pending', 'Admin_Pending'),
+        ('Admin_Approved', 'Admin Approved'),
+        ('Admin_Rejected', 'Admin Rejected'),
+    ]
+
+    user = models.ForeignKey(
+        'tbl_student',
+        on_delete=models.CASCADE
+    )
+
+    job = models.ForeignKey(
+        'Job',
+        on_delete=models.CASCADE
+    )
+
+    applied_on = models.DateField(
+        default=date.today
+    )
+
+    # Tutor controls this
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='Pending'
+    )
+
+    # Admin controls this
+    admin_status = models.CharField(
+        max_length=50,
+        choices=ADMIN_STATUS_CHOICES,
+        default='Admin_Pending'
+    )
 
     def __str__(self):
-        return f"{self.user.name} applied for {self.job.title} on {self.applied_on}"
+        return (
+            f"{self.user.name} applied for "
+            f"{self.job.title} on {self.applied_on}"
+        )
     
 class TrainingSession(models.Model):
     session_name = models.CharField(max_length=255)
@@ -213,3 +249,44 @@ class TutorNotification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.tutor.name} - Job: {self.job.title}"
+
+class AIResumeScreening(models.Model):
+
+    application = models.OneToOneField(
+        JobApplication,
+        on_delete=models.CASCADE,
+        related_name='ai_screening'
+    )
+
+    match_score = models.FloatField(default=0)
+
+    semantic_score = models.FloatField(default=0)
+
+    skill_score = models.FloatField(default=0)
+
+    matched_skills = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    missing_skills = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    recommendation = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return (
+            f"{self.application.user.name} - "
+            f"{self.application.job.title} - "
+            f"{self.match_score}%"
+        )

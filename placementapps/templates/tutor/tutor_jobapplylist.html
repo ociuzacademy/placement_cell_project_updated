@@ -60,7 +60,10 @@
         letter-spacing: 0.3px;
         margin-top: 1rem;
     }
-    .count-badge i { font-size: 1rem; }
+
+    .count-badge i {
+        font-size: 1rem;
+    }
 
     /* ===== Table wrapper ===== */
     .table-wrapper {
@@ -85,7 +88,11 @@
         left: 0;
         width: 100%;
         height: 4px;
-        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        background: linear-gradient(
+            90deg,
+            var(--color-navy),
+            var(--color-gold)
+        );
         z-index: 2;
     }
 
@@ -97,7 +104,7 @@
     /* ===== Table ===== */
     .applied-table {
         width: 100%;
-        min-width: 1150px;
+        min-width: 1250px;
         margin: 0;
         border-collapse: collapse;
         font-family: 'Inter', sans-serif;
@@ -181,6 +188,7 @@
         font-weight: 500;
         transition: color 0.2s ease;
     }
+
     .applied-table tbody td .email-link:hover {
         color: var(--color-gold-light);
         text-decoration: underline;
@@ -206,6 +214,7 @@
         color: var(--color-gold-dark);
         border: 1px solid rgba(245, 158, 11, 0.35);
     }
+
     [data-theme="dark"] .status-pending {
         background: rgba(251, 191, 36, 0.15);
         color: var(--color-gold);
@@ -286,12 +295,13 @@
         white-space: nowrap;
     }
 
-    /* Approve = gold filled (primary positive) */
+    /* Approve */
     .btn-approve {
         background: var(--color-gold);
         color: var(--color-navy);
         border-color: var(--color-gold);
     }
+
     .btn-approve:hover {
         background: var(--color-gold-light);
         border-color: var(--color-gold-light);
@@ -300,12 +310,13 @@
         box-shadow: 0 6px 12px rgba(245, 158, 11, 0.25);
     }
 
-    /* Reject = red outline */
+    /* Reject */
     .btn-reject {
         background: transparent;
         color: #dc2626;
         border-color: rgba(220, 38, 38, 0.35);
     }
+
     .btn-reject:hover {
         background: #dc2626;
         color: #fff;
@@ -313,29 +324,32 @@
         transform: translateY(-2px);
     }
 
-    /* Reapprove = navy outline */
+    /* Reapprove */
     .btn-reapprove {
         background: transparent;
         color: var(--color-navy);
         border-color: var(--color-navy);
     }
+
     [data-theme="dark"] .btn-reapprove {
         color: var(--color-gold);
         border-color: var(--color-gold);
     }
+
     .btn-reapprove:hover {
         background: var(--color-navy);
         color: #fff;
         border-color: var(--color-navy);
         transform: translateY(-2px);
     }
+
     [data-theme="dark"] .btn-reapprove:hover {
         background: var(--color-gold);
         color: var(--color-navy);
         border-color: var(--color-gold);
     }
 
-    /* Already approved message */
+    /* Already approved */
     .already-approved {
         display: inline-flex;
         align-items: center;
@@ -357,6 +371,7 @@
         font-size: 0.95rem !important;
         white-space: normal !important;
     }
+
     .empty-row i {
         display: block;
         font-size: 2.5rem;
@@ -390,6 +405,7 @@
         letter-spacing: 0.3px;
         transition: all 0.3s ease;
     }
+
     .btn-back:hover {
         background: var(--text-secondary);
         color: #fff;
@@ -399,22 +415,37 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-        .applied-list-header h1 { font-size: 1.75rem; }
+        .applied-list-header h1 {
+            font-size: 1.75rem;
+        }
+
         .applied-table thead th {
             padding: 0.85rem 0.6rem;
             font-size: 0.68rem;
         }
+
         .applied-table tbody td {
             padding: 0.75rem 0.6rem;
             font-size: 0.78rem;
         }
-        .btn-container { justify-content: center; }
+
+        .btn-container {
+            justify-content: center;
+        }
     }
 
     @media (max-width: 450px) {
-        .applied-list-wrapper { padding: 1.5rem 0; }
-        .applied-list-header { padding: 0 0.75rem; }
-        .table-wrapper { padding: 0 0.5rem; }
+        .applied-list-wrapper {
+            padding: 1.5rem 0;
+        }
+
+        .applied-list-header {
+            padding: 0 0.75rem;
+        }
+
+        .table-wrapper {
+            padding: 0 0.5rem;
+        }
     }
 </style>
 
@@ -425,19 +456,29 @@
     <!-- Header -->
     <div class="applied-list-header">
         <h1>Applied List for <span>{{ job.title }}</span></h1>
-        <p class="subtitle">Review, approve, or reject student applications for this job</p>
+
+        <p class="subtitle">
+            Review, approve, or reject student applications for this job
+        </p>
+
         <div class="gold-bar"></div>
+
         <div class="count-badge">
             <i class="bi bi-people-fill"></i>
             Total: {{ data|length }}
         </div>
     </div>
 
+
     <!-- Table -->
     <div class="table-wrapper">
+
         <div class="table-responsive-custom">
+
             <div class="table-scroll">
+
                 <table class="applied-table">
+
                     <thead>
                         <tr>
                             <th>#</th>
@@ -449,97 +490,265 @@
                             <th>Program</th>
                             <th>Batch</th>
                             <th>Resume</th>
+
+                            <!-- Tutor Status -->
                             <th>Status</th>
+
+                            <!-- Admin Status -->
+                            <th>Admin Status</th>
+
+                            <!-- Tutor Actions -->
                             <th>Actions</th>
                         </tr>
                     </thead>
+
+
                     <tbody>
+
                         {% for JobApplication in data %}
+
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td><span class="name-cell">{{ JobApplication.user.name }}</span></td>
-                            <td>{{ JobApplication.user.date_of_birth }}</td>
-                            <td>{{ JobApplication.user.gender }}</td>
+
+                            <!-- Number -->
                             <td>
-                                <a class="email-link" href="mailto:{{ JobApplication.user.student_email }}">
+                                {{ forloop.counter }}
+                            </td>
+
+
+                            <!-- Name -->
+                            <td>
+                                <span class="name-cell">
+                                    {{ JobApplication.user.name }}
+                                </span>
+                            </td>
+
+
+                            <!-- DOB -->
+                            <td>
+                                {{ JobApplication.user.date_of_birth }}
+                            </td>
+
+
+                            <!-- Gender -->
+                            <td>
+                                {{ JobApplication.user.gender }}
+                            </td>
+
+
+                            <!-- Email -->
+                            <td>
+                                <a
+                                    class="email-link"
+                                    href="mailto:{{ JobApplication.user.student_email }}"
+                                >
                                     {{ JobApplication.user.student_email }}
                                 </a>
                             </td>
-                            <td>{{ JobApplication.user.student_phone }}</td>
-                            <td>{{ JobApplication.user.course }}</td>
-                            <td>{{ JobApplication.user.batch }}</td>
+
+
+                            <!-- Contact -->
+                            <td>
+                                {{ JobApplication.user.student_phone }}
+                            </td>
+
+
+                            <!-- Program -->
+                            <td>
+                                {{ JobApplication.user.course }}
+                            </td>
+
+
+                            <!-- Batch -->
+                            <td>
+                                {{ JobApplication.user.batch }}
+                            </td>
+
+
+                            <!-- Resume -->
                             <td>
                                 {% if JobApplication.user.resume %}
-                                    <a href="{{ JobApplication.user.resume.url }}" target="_blank" class="btn-view-resume">
-                                        <i class="bi bi-file-earmark-pdf"></i> View
+
+                                    <a
+                                        href="{{ JobApplication.user.resume.url }}"
+                                        target="_blank"
+                                        class="btn-view-resume"
+                                    >
+                                        <i class="bi bi-file-earmark-pdf"></i>
+                                        View
                                     </a>
+
                                 {% else %}
+
                                     <span class="no-resume">
-                                        <i class="bi bi-x-circle"></i> None
+                                        <i class="bi bi-x-circle"></i>
+                                        None
                                     </span>
+
                                 {% endif %}
                             </td>
+
+
+                            <!-- ========================= -->
+                            <!-- TUTOR STATUS -->
+                            <!-- ========================= -->
                             <td>
-                                {% if JobApplication.status|lower == 'approved' %}
+
+                                {% if JobApplication.status == "Approved" %}
+
                                     <span class="status-pill status-approved">
-                                        <i class="bi bi-check-circle-fill"></i> Approved
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Approved
                                     </span>
-                                {% elif JobApplication.status|lower == 'rejected' %}
+
+                                {% elif JobApplication.status == "Rejected" %}
+
                                     <span class="status-pill status-rejected">
-                                        <i class="bi bi-x-circle-fill"></i> Rejected
+                                        <i class="bi bi-x-circle-fill"></i>
+                                        Rejected
                                     </span>
+
                                 {% else %}
+
                                     <span class="status-pill status-pending">
-                                        <i class="bi bi-hourglass-split"></i> {{ JobApplication.status }}
+                                        <i class="bi bi-hourglass-split"></i>
+                                        Pending
                                     </span>
+
                                 {% endif %}
+
                             </td>
+
+
+                            <!-- ========================= -->
+                            <!-- ADMIN STATUS -->
+                            <!-- ========================= -->
                             <td>
+
+                                {% if JobApplication.admin_status == "Admin_Approved" %}
+
+                                    <span class="status-pill status-approved">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Admin Approved
+                                    </span>
+
+                                {% elif JobApplication.admin_status == "Admin_Rejected" %}
+
+                                    <span class="status-pill status-rejected">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                        Admin Rejected
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-pill status-pending">
+                                        <i class="bi bi-hourglass-split"></i>
+                                        Admin Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ========================= -->
+                            <!-- TUTOR ACTIONS -->
+                            <!-- ========================= -->
+                            <td>
+
                                 <div class="action-buttons">
-                                    {% if JobApplication.status|lower == 'rejected' %}
-                                        <a href="{% url 'reapprove_application' JobApplication.id %}"
-                                           class="btn-action btn-reapprove"
-                                           onclick="return confirmReapproval()">
-                                            <i class="bi bi-arrow-counterclockwise"></i> Reapprove
+
+                                    {% if JobApplication.status == "Rejected" %}
+
+                                        <!-- Reapprove -->
+                                        <a
+                                            href="{% url 'reapprove_application' JobApplication.id %}"
+                                            class="btn-action btn-reapprove"
+                                            onclick="return confirmReapproval()"
+                                        >
+                                            <i class="bi bi-arrow-counterclockwise"></i>
+                                            Reapprove
                                         </a>
-                                    {% elif JobApplication.status|lower == 'approved' %}
+
+
+                                    {% elif JobApplication.status == "Approved" %}
+
+                                        <!-- Already Approved -->
                                         <span class="already-approved">
-                                            <i class="bi bi-check-circle"></i> Already Approved
+                                            <i class="bi bi-check-circle"></i>
+                                            Already Approved
                                         </span>
+
+
                                     {% else %}
-                                        <a href="{% url 'approve_application' JobApplication.id %}"
-                                           class="btn-action btn-approve"
-                                           onclick="return confirmApproval()">
-                                            <i class="bi bi-check-lg"></i> Approve
+
+                                        <!-- Approve -->
+                                        <a
+                                            href="{% url 'approve_application' JobApplication.id %}"
+                                            class="btn-action btn-approve"
+                                            onclick="return confirmApproval()"
+                                        >
+                                            <i class="bi bi-check-lg"></i>
+                                            Approve
                                         </a>
-                                        <a href="{% url 'reject_application' JobApplication.id %}"
-                                           class="btn-action btn-reject"
-                                           onclick="return confirmRejection()">
-                                            <i class="bi bi-x-lg"></i> Reject
+
+
+                                        <!-- Reject -->
+                                        <a
+                                            href="{% url 'reject_application' JobApplication.id %}"
+                                            class="btn-action btn-reject"
+                                            onclick="return confirmRejection()"
+                                        >
+                                            <i class="bi bi-x-lg"></i>
+                                            Reject
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </td>
+
                         </tr>
+
+
                         {% empty %}
+
                         <tr class="empty-row">
-                            <td colspan="11">
+
+                            <td colspan="12">
+
                                 <i class="bi bi-inbox"></i>
+
                                 No applications found for your department.
+
                             </td>
+
                         </tr>
+
                         {% endfor %}
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
+
     </div>
+
 
     <!-- Back -->
     <div class="btn-container">
-        <a href="javascript:history.go(-1);" class="btn-back">
-            <i class="bi bi-arrow-left"></i> Back
+
+        <a
+            href="javascript:history.go(-1);"
+            class="btn-back"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back
         </a>
+
     </div>
 
 </section>
@@ -547,17 +756,27 @@
 
 <!-- ===== Confirm Dialogs ===== -->
 <script>
+
     function confirmApproval() {
-        return confirm("Are you sure you want to approve this application?");
+        return confirm(
+            "Are you sure you want to approve this application?"
+        );
     }
+
 
     function confirmRejection() {
-        return confirm("Are you sure you want to reject this application?");
+        return confirm(
+            "Are you sure you want to reject this application?"
+        );
     }
 
+
     function confirmReapproval() {
-        return confirm("Are you sure you want to reapprove this application?");
+        return confirm(
+            "Are you sure you want to reapprove this application?"
+        );
     }
+
 </script>
 
 {% endblock %}

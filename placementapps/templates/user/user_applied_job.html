@@ -55,9 +55,14 @@
         letter-spacing: 0.3px;
         margin-top: 1rem;
     }
-    .count-badge i { font-size: 1rem; }
+
+    .count-badge i {
+        font-size: 1rem;
+    }
+
 
     /* ===== Table wrapper ===== */
+
     .table-wrapper {
         max-width: 1100px;
         margin: 0 auto;
@@ -80,7 +85,11 @@
         left: 0;
         width: 100%;
         height: 4px;
-        background: linear-gradient(90deg, var(--color-navy), var(--color-gold));
+        background: linear-gradient(
+            90deg,
+            var(--color-navy),
+            var(--color-gold)
+        );
         z-index: 2;
     }
 
@@ -89,10 +98,12 @@
         -webkit-overflow-scrolling: touch;
     }
 
+
     /* ===== Table ===== */
+
     .applied-table {
         width: 100%;
-        min-width: 900px;
+        min-width: 1100px;
         margin: 0;
         border-collapse: collapse;
         font-family: 'Inter', sans-serif;
@@ -150,7 +161,9 @@
         font-weight: 600;
     }
 
+
     /* ===== Status pills ===== */
+
     .status-pill {
         display: inline-flex;
         align-items: center;
@@ -170,6 +183,7 @@
         color: var(--color-gold-dark);
         border: 1px solid rgba(245, 158, 11, 0.35);
     }
+
     [data-theme="dark"] .status-pending {
         background: rgba(251, 191, 36, 0.15);
         color: var(--color-gold);
@@ -188,7 +202,9 @@
         border: 1px solid rgba(220, 38, 38, 0.35);
     }
 
-    /* Empty row */
+
+    /* ===== Empty row ===== */
+
     .empty-row td {
         text-align: center !important;
         padding: 3rem 1rem !important;
@@ -197,6 +213,7 @@
         font-size: 0.95rem !important;
         white-space: normal !important;
     }
+
     .empty-row i {
         display: block;
         font-size: 2.5rem;
@@ -205,7 +222,9 @@
         opacity: 0.6;
     }
 
-    /* Back button */
+
+    /* ===== Back button ===== */
+
     .btn-container {
         max-width: 1100px;
         margin: 2rem auto 0;
@@ -230,6 +249,7 @@
         letter-spacing: 0.3px;
         transition: all 0.3s ease;
     }
+
     .btn-back:hover {
         background: var(--text-secondary);
         color: #fff;
@@ -237,104 +257,320 @@
         transform: translateY(-2px);
     }
 
-    /* Responsive */
+
+    /* ===== Responsive ===== */
+
     @media (max-width: 768px) {
-        .applied-header h1 { font-size: 1.85rem; }
+
+        .applied-header h1 {
+            font-size: 1.85rem;
+        }
+
         .applied-table thead th {
             padding: 0.85rem 0.65rem;
             font-size: 0.7rem;
         }
+
         .applied-table tbody td {
             padding: 0.8rem 0.65rem;
             font-size: 0.82rem;
         }
-        .btn-container { justify-content: center; }
+
+        .btn-container {
+            justify-content: center;
+        }
     }
 
+
     @media (max-width: 450px) {
-        .applied-wrapper { padding: 1.5rem 0; }
-        .applied-header { padding: 0 0.75rem; }
-        .table-wrapper { padding: 0 0.5rem; }
+
+        .applied-wrapper {
+            padding: 1.5rem 0;
+        }
+
+        .applied-header {
+            padding: 0 0.75rem;
+        }
+
+        .table-wrapper {
+            padding: 0 0.5rem;
+        }
     }
 </style>
 
 
 <!-- ===== Applied Jobs Section ===== -->
+
 <section class="applied-wrapper">
 
     <!-- Header -->
+
     <div class="applied-header">
-        <h1>Applied Jobs</h1>
-        <p class="subtitle">Track the status of all your job applications</p>
+
+        <h1>
+            Applied Jobs
+        </h1>
+
+        <p class="subtitle">
+            Track the status of all your job applications
+        </p>
+
         <div class="gold-bar"></div>
+
         <div class="count-badge">
+
             <i class="bi bi-briefcase-fill"></i>
+
             Total: {{ applied_jobs|length }}
+
         </div>
+
     </div>
 
-    <!-- Table -->
+
+    <!-- ===== Table ===== -->
+
     <div class="table-wrapper">
+
         <div class="table-responsive-custom">
+
             <div class="table-scroll">
+
                 <table class="applied-table">
+
                     <thead>
+
                         <tr>
+
                             <th>Job Title</th>
+
                             <th>Location</th>
+
                             <th>Job Type</th>
+
                             <th>Salary</th>
+
                             <th>Posted On</th>
+
                             <th>Applied On</th>
-                            <th>Status</th>
+
+                            <!-- Tutor Status -->
+                            <th>Tutor Status</th>
+
+                            <!-- Admin Status -->
+                            <th>Admin Status</th>
+
                         </tr>
+
                     </thead>
+
+
                     <tbody>
+
                         {% for job_application in applied_jobs %}
+
                         <tr>
-                            <td><span class="title-cell">{{ job_application.job.title }}</span></td>
-                            <td>{{ job_application.job.place }}</td>
-                            <td>{{ job_application.job.job_type }}</td>
-                            <td>₹{{ job_application.job.salary }}</td>
-                            <td>{{ job_application.job.date }}</td>
-                            <td>{{ job_application.applied_on }}</td>
+
+                            <!-- Job Title -->
+
                             <td>
+
+                                <span class="title-cell">
+
+                                    {{ job_application.job.title }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- Location -->
+
+                            <td>
+
+                                {{ job_application.job.place }}
+
+                            </td>
+
+
+                            <!-- Job Type -->
+
+                            <td>
+
+                                {{ job_application.job.job_type }}
+
+                            </td>
+
+
+                            <!-- Salary -->
+
+                            <td>
+
+                                ₹{{ job_application.job.salary }}
+
+                            </td>
+
+
+                            <!-- Posted On -->
+
+                            <td>
+
+                                {{ job_application.job.date }}
+
+                            </td>
+
+
+                            <!-- Applied On -->
+
+                            <td>
+
+                                {{ job_application.applied_on }}
+
+                            </td>
+
+
+                            <!-- ======================================
+                                 TUTOR STATUS
+                            ======================================= -->
+
+                            <td>
+
                                 {% if job_application.status == 'Pending' %}
+
                                     <span class="status-pill status-pending">
-                                        <i class="bi bi-hourglass-split"></i> Pending
+
+                                        <i class="bi bi-hourglass-split"></i>
+
+                                        Pending
+
                                     </span>
+
                                 {% elif job_application.status == 'Approved' %}
+
                                     <span class="status-pill status-approved">
-                                        <i class="bi bi-check-circle-fill"></i> Approved
+
+                                        <i class="bi bi-check-circle-fill"></i>
+
+                                        Approved
+
                                     </span>
+
                                 {% elif job_application.status == 'Rejected' %}
+
                                     <span class="status-pill status-rejected">
-                                        <i class="bi bi-x-circle-fill"></i> Rejected
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        Rejected
+
                                     </span>
+
                                 {% else %}
-                                    <span class="status-pill status-pending">{{ job_application.status }}</span>
+
+                                    <span class="status-pill status-pending">
+
+                                        {{ job_application.status }}
+
+                                    </span>
+
                                 {% endif %}
+
                             </td>
+
+
+                            <!-- ======================================
+                                 ADMIN STATUS
+                            ======================================= -->
+
+                            <td>
+
+                                {% if job_application.admin_status == 'Admin_Pending' %}
+
+                                    <span class="status-pill status-pending">
+
+                                        <i class="bi bi-hourglass-split"></i>
+
+                                        Admin Pending
+
+                                    </span>
+
+                                {% elif job_application.admin_status == 'Admin_Approved' %}
+
+                                    <span class="status-pill status-approved">
+
+                                        <i class="bi bi-check-circle-fill"></i>
+
+                                        Admin Approved
+
+                                    </span>
+
+                                {% elif job_application.admin_status == 'Admin_Rejected' %}
+
+                                    <span class="status-pill status-rejected">
+
+                                        <i class="bi bi-x-circle-fill"></i>
+
+                                        Admin Rejected
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-pill status-pending">
+
+                                        {{ job_application.admin_status }}
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
                         </tr>
+
+
                         {% empty %}
+
                         <tr class="empty-row">
-                            <td colspan="7">
+
+                            <td colspan="8">
+
                                 <i class="bi bi-briefcase"></i>
+
                                 You have not applied for any jobs yet.
+
                             </td>
+
                         </tr>
+
                         {% endfor %}
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- Back -->
+
+    <!-- ===== Back ===== -->
+
     <div class="btn-container">
-        <a href="javascript:history.go(-1);" class="btn-back">
-            <i class="bi bi-arrow-left"></i> Back
+
+        <a
+            href="javascript:history.go(-1);"
+            class="btn-back"
+        >
+
+            <i class="bi bi-arrow-left"></i>
+
+            Back
+
         </a>
+
     </div>
 
 </section>

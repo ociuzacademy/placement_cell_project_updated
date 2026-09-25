@@ -1,0 +1,704 @@
+{% extends "admin/admin_index.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+
+    /* ===== AI Result Page ===== */
+
+    .ai-result-wrapper {
+        padding: 3rem 1rem;
+        background: var(--bg-primary);
+        min-height: 80vh;
+    }
+
+    .ai-result-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+
+    /* ===== Header ===== */
+
+    .ai-header {
+        margin-bottom: 2rem;
+    }
+
+    .ai-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.3rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin-bottom: 0.4rem;
+    }
+
+    .ai-header p {
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+
+    /* ===== Candidate Card ===== */
+
+    .candidate-card {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .candidate-card h3 {
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .candidate-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .info-item {
+        padding: 0.75rem;
+        background: var(--bg-primary);
+        border-radius: 0.5rem;
+    }
+
+    .info-label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--text-tertiary);
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+    }
+
+    .info-value {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+
+    /* ===== Score Section ===== */
+
+    .score-card {
+        background: var(--color-navy);
+        color: #fff;
+        border-radius: 0.75rem;
+        padding: 2.5rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .score-title {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.8;
+        margin-bottom: 0.5rem;
+    }
+
+    .main-score {
+        font-size: 4rem;
+        font-weight: 800;
+        color: var(--color-gold);
+        line-height: 1;
+        margin: 1rem 0;
+    }
+
+    .recommendation {
+        display: inline-block;
+        background: var(--color-gold);
+        color: var(--color-navy);
+        padding: 0.55rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 0.9rem;
+    }
+
+
+    /* ===== Score Grid ===== */
+
+    .score-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .score-box {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .score-box i {
+        font-size: 1.8rem;
+        color: var(--color-gold);
+        margin-bottom: 0.5rem;
+    }
+
+    .score-box h4 {
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .score-value {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--color-navy);
+    }
+
+    [data-theme="dark"] .score-value {
+        color: var(--color-gold);
+    }
+
+
+    /* ===== Skills ===== */
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .skills-card {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .skills-card h3 {
+        color: var(--text-primary);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .skill-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .skill-badge {
+        display: inline-block;
+        padding: 0.4rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+    .matched {
+        background: rgba(34, 197, 94, 0.12);
+        color: #16a34a;
+    }
+
+    .missing {
+        background: rgba(239, 68, 68, 0.12);
+        color: #dc2626;
+    }
+
+    .no-skills {
+        color: var(--text-tertiary);
+        font-size: 0.85rem;
+        font-style: italic;
+    }
+
+
+    /* ===== Screening Insights ===== */
+
+    .formula-card {
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .formula-card h3 {
+        color: var(--text-primary);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .insight-item {
+        padding: 0.9rem 1rem;
+        background: var(--bg-primary);
+        border-radius: 0.5rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .insight-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .insight-item strong {
+        color: var(--text-primary);
+    }
+
+
+    /* ===== Actions ===== */
+
+    .action-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.65rem 1.2rem;
+        border-radius: 0.45rem;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-light);
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background: var(--color-navy);
+        color: #fff;
+    }
+
+
+    /* ===== Responsive ===== */
+
+    @media (max-width: 768px) {
+
+        .candidate-info,
+        .score-grid,
+        .skills-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .main-score {
+            font-size: 3rem;
+        }
+
+        .ai-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .action-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-back {
+            justify-content: center;
+        }
+    }
+
+</style>
+
+
+<!-- =========================================================
+     AI RESULT SECTION
+========================================================= -->
+
+<section class="ai-result-wrapper">
+
+    <div class="ai-result-container">
+
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <div class="ai-header">
+
+            <h1>
+
+                <i class="bi bi-robot"></i>
+
+                AI Resume Screening
+
+            </h1>
+
+            <p>
+
+                AI-powered analysis of the candidate's resume
+                against the job requirements.
+
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             CANDIDATE INFORMATION
+        ====================================================== -->
+
+        <div class="candidate-card">
+
+            <h3>
+
+                <i class="bi bi-person-circle"></i>
+
+                Candidate Information
+
+            </h3>
+
+
+            <div class="candidate-info">
+
+
+                <!-- Candidate -->
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Candidate
+                    </span>
+
+                    <span class="info-value">
+                        {{ student.name }}
+                    </span>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Email
+                    </span>
+
+                    <span class="info-value">
+                        {{ student.student_email }}
+                    </span>
+
+                </div>
+
+
+                <!-- Job -->
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Job
+                    </span>
+
+                    <span class="info-value">
+                        {{ job.title }}
+                    </span>
+
+                </div>
+
+
+                <!-- Department -->
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Department
+                    </span>
+
+                    <span class="info-value">
+                        {{ job.department.name }}
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             OVERALL MATCH SCORE
+        ====================================================== -->
+
+        <div class="score-card">
+
+            <div class="score-title">
+
+                Overall Match Score
+
+            </div>
+
+
+            <div class="main-score">
+
+                {{ result.final_score }}%
+
+            </div>
+
+
+            <div class="recommendation">
+
+                {{ result.recommendation }}
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             SCORE BREAKDOWN
+        ====================================================== -->
+
+        <div class="score-grid">
+
+
+            <!-- Semantic Score -->
+
+            <div class="score-box">
+
+                <i class="bi bi-diagram-3"></i>
+
+                <h4>
+
+                    Semantic Score
+
+                </h4>
+
+
+                <div class="score-value">
+
+                    {{ result.semantic_score }}%
+
+                </div>
+
+
+                <small>
+
+                    Resume and job description similarity
+
+                </small>
+
+            </div>
+
+
+            <!-- Skill Score -->
+
+            <div class="score-box">
+
+                <i class="bi bi-tools"></i>
+
+                <h4>
+
+                    Skill Score
+
+                </h4>
+
+
+                <div class="score-value">
+
+                    {{ result.skill_score }}%
+
+                </div>
+
+
+                <small>
+
+                    Required skills matched
+
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================================
+             MATCHED & MISSING SKILLS
+        ====================================================== -->
+
+        <div class="skills-grid">
+
+
+            <!-- Matched Skills -->
+
+            <div class="skills-card">
+
+                <h3>
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Matched Skills
+
+                </h3>
+
+
+                <div class="skill-list">
+
+
+                    {% if result.matched_skills %}
+
+                        {% for skill in result.matched_skills %}
+
+                            <span class="skill-badge matched">
+
+                                {{ skill }}
+
+                            </span>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <span class="no-skills">
+
+                            No matching skills found.
+
+                        </span>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Missing Skills -->
+
+            <div class="skills-card">
+
+                <h3>
+
+                    <i class="bi bi-exclamation-circle"></i>
+
+                    Missing Skills
+
+                </h3>
+
+
+                <div class="skill-list">
+
+
+                    {% if result.missing_skills %}
+
+                        {% for skill in result.missing_skills %}
+
+                            <span class="skill-badge missing">
+
+                                {{ skill }}
+
+                            </span>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <span class="no-skills">
+
+                            No missing skills.
+
+                        </span>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================================
+             SCREENING INSIGHTS
+        ====================================================== -->
+
+        <div class="formula-card">
+
+            <h3>
+
+                <i class="bi bi-lightbulb"></i>
+
+                Screening Insights
+
+            </h3>
+
+
+            <!-- Resume Relevance -->
+
+            <div class="insight-item">
+
+                <strong>
+                    Resume Relevance:
+                </strong>
+
+                {{ result.semantic_score }}%
+                similarity with the job requirements.
+
+            </div>
+
+
+            <!-- Skill Coverage -->
+
+            <div class="insight-item">
+
+                <strong>
+                    Skill Coverage:
+                </strong>
+
+                {{ result.skill_score }}%
+                of the detected required skills are present
+                in the resume.
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================================
+             ACTIONS
+        ====================================================== -->
+
+        <div class="action-row">
+
+
+            <a
+                href="{% url 'admin_applylist' job.id %}"
+                class="btn-back"
+            >
+
+                <i class="bi bi-arrow-left"></i>
+
+                Back to Applicants
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+{% endblock %}

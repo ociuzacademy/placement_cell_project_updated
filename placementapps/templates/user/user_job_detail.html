@@ -303,7 +303,7 @@
                         <h3>{{ job.title }}</h3>
                         <div class="job-meta">
                             <span><i class="bi bi-geo-alt-fill"></i> {{ job.place }}</span>
-                            <span><i class="bi bi-clock"></i> {{ job.get_job_type_display }}</span>
+                            <span><i class="bi bi-clock"></i> {{ job.job_type }}</span>
                             <span><i class="bi bi-cash-stack"></i> ₹{{ job.salary }}</span>
                         </div>
                     </div>
@@ -356,8 +356,7 @@
                 <div class="sidebar-panel">
                     <h4>Job Summary</h4>
                     <p><i class="bi bi-calendar-event"></i> <span><strong>Published:</strong> {{ job.date }}</span></p>
-                    <p><i class="bi bi-briefcase"></i> <span><strong>Nature:</strong> {{ job.get_job_type_display
-                            }}</span></p>
+                    <p><i class="bi bi-briefcase"></i> <span><strong>Nature:</strong> {{ job.job_type }}</span></p>
                     <p><i class="bi bi-cash-stack"></i> <span><strong>Salary:</strong> ₹{{ job.salary }}</span></p>
                     <p><i class="bi bi-geo-alt-fill"></i> <span><strong>Location:</strong> {{ job.place }}</span></p>
                     <p><i class="bi bi-people"></i> <span><strong>Vacancies:</strong> {{ job.vacancy }}</span></p>
