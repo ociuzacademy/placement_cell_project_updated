@@ -281,24 +281,37 @@ def session_applylist(request, session_id):
     
 
 def list_student(request):
+
     tutor_id = request.session.get('id')
+
     if not tutor_id:
-        messages.error(request, "Session expired or tutor not logged in.")
+        messages.error(
+            request,
+            "Session expired or tutor not logged in."
+        )
         return redirect('login')
 
-    tutor = tbl_tutor.objects.get(id=tutor_id)
-    
-    # Check if course_id filter is the issue
-    data = tbl_student.objects.filter(course_id=tutor.course_id)
+    tutor = get_object_or_404(
+        tbl_tutor,
+        id=tutor_id
+    )
 
-    # Debugging print to ensure data is loaded
-    print(f"Filtered Data: {data}")
-    
-    if not data.exists():  # Display all data for testing
-        data = tbl_student.objects.all()  
-        print(f"All Data: {data}")
+    data = tbl_student.objects.filter(
+        department_id=tutor.department_id,
+        course_id=tutor.course_id
+    ).select_related(
+        'department',
+        'course'
+    )
 
-    return render(request, 'tutor/list_student.html', {'data': data})
+    return render(
+        request,
+        'tutor/list_student.html',
+        {
+            'data': data
+        }
+    )
+    
 
 
 
@@ -1190,69 +1203,202 @@ from django.contrib import messages
 from .models import tbl_student # Replace with your actual models
 def upload_excel(request):
     if request.method == 'POST' and 'excel_file' in request.FILES:
+
         excel_file = request.FILES['excel_file']
 
         try:
-            df = pd.read_excel(excel_file, engine='openpyxl')
-            print(df.head())  # Debugging: Check file content
+            df = pd.read_excel(
+                excel_file,
+                engine='openpyxl'
+            )
+
+            print("Excel Columns:")
+            print(df.columns.tolist())
+
+            print("Excel Data:")
+            print(df.head())
 
             required_columns = [
-                'Student ID', 'Roll No', 'Reg No', 'Student Name', 'Gender',
-                'Student Email', 'Student phone', 'Parent phone', 'Address', 'Course'
+                'Student ID',
+                'Roll No',
+                'Reg No',
+                'Student Name',
+                'Gender',
+                'Student Email',
+                'Student phone',
+                'Parent phone',
+                'Address',
+                'Department',
+                'Course',
+                'Batch',
+                'Year',
+                'Supply'
             ]
-            missing_columns = [col for col in required_columns if col not in df.columns]
+
+            missing_columns = [
+                col for col in required_columns
+                if col not in df.columns
+            ]
+
             if missing_columns:
-                raise ValueError(f"Missing columns: {', '.join(missing_columns)}")
+                raise ValueError(
+                    f"Missing columns: {', '.join(missing_columns)}"
+                )
 
             inserted_count = 0
             updated_count = 0
 
             for _, row in df.iterrows():
-                try:
-                    student_id = row['Student ID']
 
-                    # Get course object
-                    course = Course.objects.get(name=row['Course'])
+                try:
+
+                    # ---------------------------------
+                    # Student ID
+                    # ---------------------------------
+
+                    student_id = str(
+                        row['Student ID']
+                    ).strip()
+
+                    # ---------------------------------
+                    # Get Department
+                    # ---------------------------------
+
+                    department = tbl_department.objects.get(
+                        name=str(row['Department']).strip()
+                    )
+
+                    # ---------------------------------
+                    # Get Course
+                    # ---------------------------------
+
+                    course = Course.objects.get(
+                        name=str(row['Course']).strip()
+                    )
+
+                    # ---------------------------------
+                    # Prepare Student Data
+                    # ---------------------------------
 
                     defaults = {
-                        'roll_no': row['Roll No'],
-                        'reg_no': row['Reg No'],
-                        'name': row['Student Name'],
-                        'gender': row['Gender'],
-                        'student_email': row['Student Email'],
-                        'student_phone': row['Student phone'],
-                        'parent_phone': row['Parent phone'],
-                        'address': row['Address'],
-                        'course': course  # Correcting course assignment
+
+                        'roll_no': str(
+                            row['Roll No']
+                        ).strip(),
+
+                        'reg_no': str(
+                            row['Reg No']
+                        ).strip(),
+
+                        'name': str(
+                            row['Student Name']
+                        ).strip(),
+
+                        'gender': str(
+                            row['Gender']
+                        ).strip(),
+
+                        'student_email': str(
+                            row['Student Email']
+                        ).strip(),
+
+                        'student_phone': str(
+                            row['Student phone']
+                        ).strip(),
+
+                        'parent_phone': str(
+                            row['Parent phone']
+                        ).strip(),
+
+                        'address': str(
+                            row['Address']
+                        ).strip(),
+
+                        # Foreign Keys
+                        'department': department,
+                        'course': course,
+
+                        # Other fields
+                        'batch': str(
+                            row['Batch']
+                        ).strip(),
+
+                        'year': int(
+                            row['Year']
+                        ),
+
+                        'supply': int(
+                            row['Supply']
+                        ),
                     }
+
+                    # ---------------------------------
+                    # Create / Update Student
+                    # ---------------------------------
+
                     student, created = tbl_student.objects.update_or_create(
+
                         student_id=student_id,
+
                         defaults=defaults
                     )
+
                     if created:
-                        print(f"Inserted: {student}")  # Debugging
+
+                        print(
+                            f"Inserted: {student.name}"
+                        )
+
                         inserted_count += 1
+
                     else:
-                        print(f"Updated: {student}")  # Debugging
+
+                        print(
+                            f"Updated: {student.name}"
+                        )
+
                         updated_count += 1
 
                 except Exception as e:
-                    print(f"Error processing row: {row}, Error: {e}")
+
+                    print(
+                        f"Error processing row: {row}"
+                    )
+
+                    print(
+                        f"Error: {e}"
+                    )
+
                     continue
 
             messages.success(
                 request,
-                f"File uploaded successfully! {inserted_count} new records added and {updated_count} records updated."
+                f"File uploaded successfully! "
+                f"{inserted_count} new records added and "
+                f"{updated_count} records updated."
             )
+
             return redirect('list_student')
 
         except Exception as e:
-            messages.error(request, f"An error occurred: {e}")
-            print(f"Error: {e}")  # Debugging
 
-        return redirect('list_student')
+            messages.error(
+                request,
+                f"An error occurred: {e}"
+            )
 
-    return render(request, 'tutor/list_student.html')
+            print(
+                f"Upload Error: {e}"
+            )
+
+            return redirect('list_student')
+
+    return render(
+        request,
+        'tutor/list_student.html'
+    )
+
+
 
 
 from django.shortcuts import render
