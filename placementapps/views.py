@@ -304,6 +304,7 @@ def list_student(request):
         'course'
     )
 
+
     return render(
         request,
         'tutor/list_student.html',
@@ -312,7 +313,6 @@ def list_student(request):
         }
     )
     
-
 
 
 
@@ -1485,11 +1485,25 @@ def reject_application(request, application_id):
     return redirect('tutor_jobapplylist', job_id=job.id)
 
 def reapprove_application(request, application_id):
-    application = get_object_or_404(JobApplication, id=application_id)
-    application.status = "Approved"
+    application = get_object_or_404(
+        JobApplication,
+        id=application_id
+    )
+
+    application.status = 'Approved'
     application.save()
-    messages.success(request, "Application has been reapproved.")
-    return redirect('tutor_jobapplylist', job_id=application.job.id)
+
+    messages.success(
+        request,
+        "Application has been reapproved."
+    )
+
+    return redirect(
+        'tutor_jobapplylist',
+        job_id=application.job.id
+    )
+
+
 
 
 from django.shortcuts import render
